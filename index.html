@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIVAGANGA: THE QUEEN'S GAMBIT</title>
+
+  <!-- GitHub Pages SPA Deep-Link Query Restorer -->
+  <script type="text/javascript">
+    (function(l) {
+      if (l.search[1] === '/') {
+        var decoded = l.search.slice(1).split('&').map(function(s) { 
+          return s.replace(/~and~/g, '&');
+        }).join('?');
+        window.history.replaceState(null, null,
+          l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location));
+  </script>
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css?v=2.2">
+  <link rel="stylesheet" href="css/animations.css?v=2.2">
+  <link rel="stylesheet" href="css/style.css?v=2.2">
+</head>
+
+<body>
+  <div id="app-root">
+    <!-- Ambient Canvas for Background Temple/Fort Silhouettes & Embers -->
+    <canvas id="ambient-canvas"></canvas>
+
+    <!-- Tanjore Fort Decorative Architectural Frame -->
+    <div class="fort-frame-border"></div>
+    <div class="fort-frame-corner tl"></div>
+    <div class="fort-frame-corner tr"></div>
+    <div class="fort-frame-corner bl"></div>
+    <div class="fort-frame-corner br"></div>
+
+    <!-- DIEGETIC ARCHITECTURAL HUD (Fully integrated, zero floating chrome boxes) -->
+    <div id="diegetic-hud">
+      <!-- 1. Morale / Health: Diya Lamp in Wall Niche (Top Left) -->
+      <div class="hud-diya-niche" title="Diya Lamp of Morale">
+        <div class="diya-vessel">
+          <div class="diya-wick"></div>
+          <div class="diya-flame diya-flame-live"></div>
+        </div>
+        <span class="hud-shape-indicator shape-circle" title="Circle: Royal Morale">●</span>
+      </div>
+
+      <!-- 2. Alliance Count: Archway Bells (Top Center) -->
+      <div class="hud-archway-bells">
+        <div class="archway-rope"></div>
+        <div class="temple-bell-node locked" id="bell-virupakshi" title="Virupakshi Compact">
+          <div class="bell-string"></div>
+          <div class="bell-brass"></div>
+        </div>
+        <div class="temple-bell-node locked" id="bell-mysore" title="Mysore Alliance">
+          <div class="bell-string"></div>
+          <div class="bell-brass"></div>
+        </div>
+        <div class="temple-bell-node locked" id="bell-maruthu" title="Maruthu Pandiyar">
+          <div class="bell-string"></div>
+          <div class="bell-brass"></div>
+        </div>
+        <div class="temple-bell-node locked" id="bell-udaiyaal" title="Udaiyaal Regiment">
+          <div class="bell-string"></div>
+          <div class="bell-brass"></div>
+        </div>
+      </div>
+
+      <!-- 3. Trust / Loyalty: Wrist Bangles (Bottom Left) -->
+      <div class="hud-wrist-bangles" title="Bangles of Velu Nachiyar (Trust & Loyalty)">
+        <div class="wrist-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+          </svg>
+        </div>
+        <div class="bangles-stack">
+          <!-- Dynamic Bangles -->
+        </div>
+      </div>
+
+      <!-- 4. Intel / Spy Resource: Garland of Woven Beads (Bottom Right) -->
+      <div class="hud-intel-garland" title="Garland of Couriers (Intel & Dispatch Beads)">
+        <span class="shape-triangle" title="Triangle: Intel Resource"></span>
+        <div class="garland-string">
+          <!-- Dynamic Beads -->
+        </div>
+        <span class="garland-count-numeral">3</span>
+      </div>
+
+      <!-- Diegetic Tooltip Plaque -->
+      <div id="hud-tooltip" class="diegetic-tooltip-plaque"></div>
+    </div>
+
+    <!-- =====================================================================
+         SCREEN 1: HOME SCREEN (THE RUINED OUTER GATE OF SIVAGANGA FORT)
+         ===================================================================== -->
+    <section id="view-title" class="game-view active-view">
+      <!-- 2D/2.5D Ruined Outer Gate Canvas with Gopuram, Ajar Doors, Gate Lamp, Mist -->
+      <canvas id="home-gate-canvas"></canvas>
+
+      <!-- Majestic Highlighted Title Header at Top of Page -->
+      <header class="home-title-header">
+        <h1 class="title-main-heading">SIVAGANGA: THE QUEEN'S GAMBIT</h1>
+        <div class="title-sub-heading">RANI VELU NACHIYAR &bull; 1730–1796</div>
+      </header>
+
+      <!-- Stone Ramp with 4 Carved Waystone Sigils -->
+      <div class="home-ramp-wrapper">
+        <div id="home-selection-desc" class="home-lore-plaque">
+          Touch or highlight a carved waystone to commune with the chronicle.
+        </div>
+        <div id="home-waystone-ramp" class="home-waystones-grid">
+          <!-- Rendered dynamically by home_screen.js:
+               1. Play (Rangoli Spiral)
+               2. Continue (Bead Strand - uncarved outline if no save)
+               3. Chronicle (Fort Rampart Map Icon)
+               4. Settings (Folded Palm Leaf)
+          -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SCREEN 2: THE CHRONICLE ROADMAP (HOLLOW KNIGHT MODAL CONNECTED MAP)
+         ===================================================================== -->
+    <section id="view-chronicle" class="game-view">
+      <div class="chronicle-header-bar">
+        <!-- Carved Doorway Icon matching Home Screen ruined gate -->
+        <button id="chronicle-back-home-btn" class="btn-tamil chronicle-doorway-btn"
+          title="Return to Sivaganga Outer Gate">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            style="margin-right: 6px;">
+            <path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M9 21v-8a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8" />
+          </svg>
+          <span>Gate</span>
+        </button>
+        <div class="chronicle-title-banner">The Chronicle of Sivaganga (1772–1780)</div>
+        <button id="chronicle-settings-btn" class="btn-tamil">
+          <span>Settings</span>
+        </button>
+      </div>
+
+      <!-- Scrollable Cartographic World Map Viewport -->
+      <div class="chronicle-map-scroll-viewport">
+        <div class="chronicle-world-canvas-wrap">
+          <canvas id="chronicle-cartography-canvas" width="2600" height="1200"></canvas>
+          <div id="chronicle-nodes-container" class="chronicle-nodes-layer">
+            <!-- 20 Sequential Level Nodes placed across 4 Chapters -->
+          </div>
+          <!-- Firefly-Ember Progress Marker floating over current vanguard position -->
+          <div id="chronicle-firefly-marker"></div>
+        </div>
+      </div>
+
+      <!-- Ink-Bleed Plaque (Fades in on node focus in Cambria) -->
+      <div id="chronicle-ink-plaque" class="interactive-elem">
+        <div id="plaque-chapter-tag" class="plaque-chapter-line">Chapter I</div>
+        <div id="plaque-node-title" class="plaque-title-line">1. The Midnight Sanctuary</div>
+        <div id="plaque-node-desc" class="plaque-desc-line">Escape through banyan shadows beneath fallen granite
+          ramparts.</div>
+        <div class="plaque-actions-row">
+          <button id="plaque-embark-btn" class="btn-tamil btn-primary">Embark Trial</button>
+        </div>
+      </div>
+
+      <!-- Explorable Zoom & Pan Floating Controls -->
+      <div class="chronicle-zoom-toolbar">
+        <button id="chronicle-zoom-out" class="zoom-btn" title="Pull back view">-</button>
+        <span id="chronicle-zoom-level" class="zoom-indicator-text">100%</span>
+        <button id="chronicle-zoom-in" class="zoom-btn" title="Zoom in detail">+</button>
+        <button id="chronicle-zoom-reset" class="zoom-btn" title="Reset view">⟲</button>
+        <button id="chronicle-unlock-all-btn" class="zoom-btn" style="width: auto; padding: 0 10px; font-size: 11px; font-family: var(--font-serif); border-color: var(--accent-gold); color: var(--accent-gold);" title="Unlock all 20 historical trials for seamless evaluation">Demo: Unlock All 20</button>
+      </div>
+
+      <!-- Tanjore Dossier Modal (Level Briefing & Historical Record) -->
+      <div id="chronicle-dossier-modal" class="palm-manuscript-modal">
+        <div class="manuscript-leaf-body" style="max-width: 620px;">
+          <div id="dossier-chapter-title"
+            style="font-size: 13px; color: var(--accent-sage); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px;">
+          </div>
+          <h2 id="dossier-level-title" class="manuscript-title" style="margin-bottom: 4px;"></h2>
+          <div id="dossier-subtitle"
+            style="text-align: center; font-style: italic; color: #4a2d18; margin-bottom: 16px;"></div>
+          <div id="dossier-mechanic-tag"
+            style="background: rgba(46, 31, 27, 0.1); border: 1px solid var(--accent-gold); padding: 6px 12px; border-radius: 4px; font-weight: 600; margin-bottom: 14px; font-size: 14px; color: #2e1f1b;">
+          </div>
+          <p id="dossier-briefing-text" style="font-size: 15px; line-height: 1.6; margin-bottom: 14px;"></p>
+          <div id="dossier-objective-text"
+            style="font-weight: 700; color: #7a2d1d; margin-bottom: 14px; font-size: 14px;"></div>
+          <div id="dossier-history-text"
+            style="font-size: 13px; font-style: italic; border-top: 1px dashed #7a5030; padding-top: 10px; margin-bottom: 22px; color: #3c2415;">
+          </div>
+          <div style="display: flex; gap: 14px; justify-content: flex-end;">
+            <button id="dossier-close-btn" class="btn-tamil">Back to Map</button>
+            <button id="dossier-embark-btn" class="btn-tamil btn-primary">Embark Trial</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SCREEN 3: LEVEL PLAY STAGE (STEALTH / PUZZLE / DURBAR)
+         ===================================================================== -->
+    <section id="view-level-play" class="game-view">
+      <div class="level-stage-container">
+        <!-- Level Header Row: Clean, Diegetic, Unobstructed Canvas Viewport -->
+        <div class="level-header-row">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div id="level-title-text" class="level-title-display">1. The Only Child</div>
+            <button id="level-lore-toggle-btn" class="btn-tamil" title="Inspect Historical Lore &amp; Sacred Objective [Press H or F1]" style="padding: 5px 12px; font-size: 12.5px;">
+              <span>📜 Lore [H]</span>
+            </button>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-items: center; margin-left: auto;">
+            <button id="level-pause-btn" class="btn-tamil" style="padding: 6px 14px; font-size: 13px;">Pause</button>
+            <button id="level-restart-btn" class="btn-tamil"
+              style="padding: 6px 14px; font-size: 13px;">Regroup</button>
+            <button id="level-exit-btn" class="btn-tamil" style="padding: 6px 14px; font-size: 13px;">Chronicle</button>
+          </div>
+        </div>
+
+        <!-- Interactive Canvas Stage -->
+        <div class="level-canvas-stage">
+          <canvas id="gameplay-canvas"></canvas>
+
+          <!-- Specialized Puzzle Overlay (For Durbar, Granary, Valari, Cipher, etc.) -->
+          <div id="level-puzzle-overlay"
+            style="position: absolute; inset: 0; background: rgba(22, 13, 11, 0.94); z-index: 20; display: none; align-items: center; justify-content: center; padding: 20px;">
+          </div>
+
+          <!-- In-Game Dialogue Box -->
+          <div id="level-dialogue-box" class="level-dialogue-overlay" style="display: none;">
+            <div id="dialogue-speaker-name" class="dialogue-speaker">Velu Nachiyar</div>
+            <div id="dialogue-content-text" class="dialogue-text">Dialogue</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         IN-LEVEL HISTORICAL LORE & SACRED OBJECTIVE MODAL
+         Toggleable via [📜 Lore (H)] button or [H] / [F1] / [Esc]
+         ===================================================================== -->
+    <div id="level-lore-modal" class="palm-manuscript-modal" style="display: none;">
+      <div class="manuscript-leaf-body" style="max-width: 580px; text-align: left;">
+        <div id="lore-modal-chapter-tag" style="font-size: 12px; letter-spacing: 2px; color: var(--accent-sage); text-transform: uppercase; margin-bottom: 6px;">
+          CHAPTER I &bull; RAMANATHAPURAM
+        </div>
+        <h2 id="lore-modal-title" class="manuscript-title" style="text-align: left; margin-bottom: 8px;">1. The Only Child</h2>
+        <div id="lore-modal-mechanic" style="display: inline-block; background: rgba(217, 164, 65, 0.15); border: 1px solid var(--accent-gold); border-radius: 4px; padding: 4px 10px; font-size: 12.5px; color: var(--accent-gold); margin-bottom: 16px; font-family: var(--font-serif);">
+          Courtyard Free-Roam &amp; Tutelage
+        </div>
+        <p id="lore-modal-body" style="font-size: 15px; line-height: 1.65; color: #2e1c12; margin-bottom: 16px;">
+          Under the watchful eye of King Chellamuthu Sethupathy...
+        </p>
+        <div id="lore-modal-objective-box" style="background: rgba(184, 80, 66, 0.1); border-left: 3px solid var(--bg-terracotta); padding: 10px 14px; margin-bottom: 18px; border-radius: 0 4px 4px 0;">
+          <strong style="color: #7a2318; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Sacred Objective:</strong>
+          <div id="lore-modal-objective" style="font-size: 14.5px; color: #3b2216; margin-top: 4px;">Explore fort grounds and discover the hidden pathway to the training arena.</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #7a5030; padding-top: 14px;">
+          <span style="font-size: 12px; color: #7a5030; font-style: italic;">Hotkeys: [H] or [Esc] to dismiss</span>
+          <button id="lore-modal-close-btn" class="btn-tamil btn-primary" style="padding: 7px 20px;">Return to Stage [H]</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         IN-LEVEL TACTICAL PAUSE MODAL
+         Strict 4 Options: Resume, The Chronicle, Settings, Quit to Home
+         ===================================================================== -->
+    <div id="level-pause-modal" class="palm-manuscript-modal">
+      <div class="manuscript-leaf-body" style="max-width: 440px; text-align: center;">
+        <h2 class="manuscript-title">Royal Tactical Pause</h2>
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 18px;">
+          <button id="pause-resume-btn" class="btn-tamil btn-primary">Resume</button>
+          <button id="pause-chronicle-btn" class="btn-tamil">The Chronicle</button>
+          <button id="pause-settings-btn" class="btn-tamil">Settings</button>
+          <button id="pause-home-btn" class="btn-tamil">Quit to Home</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         IN-WORLD INK-WASH "BEGIN ANEW?" CONFIRMATION PLAQUE MODAL
+         ===================================================================== -->
+    <div id="begin-anew-modal" class="palm-manuscript-modal">
+      <div class="manuscript-leaf-body" style="max-width: 480px; text-align: center;">
+        <h2 class="manuscript-title" style="color: var(--danger-deep); border-color: var(--danger-deep);">Begin Anew?</h2>
+        <div style="font-size: 32px; margin-bottom: 12px; color: var(--accent-gold);">᯼</div>
+        <p style="font-size: 15px; line-height: 1.6; margin-bottom: 18px; color: #2e1c12;">
+          A journey already rests carved into the palm leaves. Commencing anew will disperse all current campaign progress and return to the threshold of Level 1.
+        </p>
+        <p style="font-size: 14px; font-weight: 600; margin-bottom: 24px; color: #7a1f1f;">
+          Do you wish to overwrite your save and embark upon a fresh journey?
+        </p>
+        <div style="display: flex; gap: 14px; justify-content: center;">
+          <button id="begin-anew-cancel-btn" class="btn-tamil">Keep Journey</button>
+          <button id="begin-anew-confirm-btn" class="btn-tamil" style="background: var(--danger-deep); color: #fff; border-color: #5a1414;">Begin Anew</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         PRE-TRIAL RANGOLI SIGIL PREVIEW MODAL
+         ===================================================================== -->
+    <div id="sigil-modal" class="sigil-preview-modal" style="display: none;">
+      <div class="sigil-canvas-box">
+        <canvas id="sigil-canvas" width="160" height="160"></canvas>
+      </div>
+      <h2 id="sigil-title" class="sigil-mechanic-name">New Mechanic</h2>
+      <p id="sigil-desc" class="sigil-mechanic-desc">Stone inscription description.</p>
+      <button id="sigil-proceed-btn" class="btn-tamil btn-primary">Commence Trial</button>
+    </div>
+
+    <!-- =====================================================================
+         VICTORY & NON-GRAPHIC RESOLUTION MODAL
+         ===================================================================== -->
+    <div id="level-victory-modal" class="palm-manuscript-modal">
+      <div class="manuscript-leaf-body" style="max-width: 560px; text-align: center;">
+        <h2 id="victory-title-text" class="manuscript-title"
+          style="color: var(--accent-gold); border-color: var(--accent-gold);">Trial Accomplished</h2>
+        <div style="font-size: 42px; margin-bottom: 12px; color: var(--accent-gold);">𑁍</div>
+        <p id="victory-lore-text" style="font-size: 15px; line-height: 1.6; margin-bottom: 24px; color: #2e1c12;"></p>
+        <div style="display: flex; gap: 14px; justify-content: center;">
+          <button id="victory-chronicle-btn" class="btn-tamil">The Chronicle</button>
+          <button id="victory-next-btn" class="btn-tamil btn-primary">Next Chapter Trial</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         SETTINGS MODAL (FOLDED PALM-LEAF MANUSCRIPT)
+         ===================================================================== -->
+    <div id="settings-modal" class="palm-manuscript-modal">
+      <div class="manuscript-leaf-body">
+        <h2 class="manuscript-title">The Royal Manuscript: Settings & Covenants</h2>
+
+        <!-- Interface Response Speed (Accessibility Timings Slider) -->
+        <div class="setting-row">
+          <div class="setting-label-row">
+            <span>Interface Response Speed (Timings Scale)</span>
+          </div>
+          <select id="setting-interface-speed" class="setting-slider"
+            style="padding: 8px; font-family: var(--font-serif); background: #f4e8d5; border: 1.5px solid #825028; border-radius: 4px;">
+            <option value="slow">Slow (Accessible 1.5x pacing)</option>
+            <option value="default" selected>Default (Standard 1.0x pacing)</option>
+            <option value="fast">Fast (Brisk 0.6x pacing)</option>
+          </select>
+        </div>
+
+        <!-- Text Speed -->
+        <div class="setting-row">
+          <div class="setting-label-row">
+            <span>Text Delivery Speed</span>
+          </div>
+          <select id="setting-text-speed" class="setting-slider"
+            style="padding: 8px; font-family: var(--font-serif); background: #f4e8d5; border: 1.5px solid #825028; border-radius: 4px;">
+            <option value="slow">Deliberate Courtly</option>
+            <option value="normal" selected>Standard</option>
+            <option value="instant">Instantaneous</option>
+          </select>
+        </div>
+
+        <!-- Subtitle Size -->
+        <div class="setting-row">
+          <div class="setting-label-row">
+            <span>Subtitle & Dialogue Size</span>
+          </div>
+          <select id="setting-subtitle-size" class="setting-slider"
+            style="padding: 8px; font-family: var(--font-serif); background: #f4e8d5; border: 1.5px solid #825028; border-radius: 4px;">
+            <option value="medium" selected>Standard (16px)</option>
+            <option value="large">Large (18px)</option>
+          </select>
+        </div>
+
+        <!-- Reduce Motion Toggle -->
+        <div class="setting-toggle-row">
+          <span>Reduce Motion (Skips heavy wipes & camera shakes)</span>
+          <input type="checkbox" id="setting-reduce-motion" class="setting-toggle-checkbox">
+        </div>
+
+        <!-- Master Acoustic Volume -->
+        <div class="setting-row">
+          <div class="setting-label-row">
+            <span>Temple Bells & Tanpura Acoustic Volume</span>
+          </div>
+          <input type="range" id="setting-volume" min="0" max="1" step="0.05" value="0.8" class="setting-slider">
+        </div>
+
+        <!-- Mute Audio -->
+        <div class="setting-toggle-row">
+          <span>Silence Acoustics (Mute)</span>
+          <input type="checkbox" id="setting-mute" class="setting-toggle-checkbox">
+        </div>
+
+        <!-- Deterministic QA Seed for Testing -->
+        <div class="setting-row" style="border-top: 1px dashed #825028; padding-top: 14px;">
+          <div class="setting-toggle-row">
+            <span>Deterministic Random Seed (QA Reproducibility)</span>
+            <input type="checkbox" id="setting-qa-seed" class="setting-toggle-checkbox">
+          </div>
+          <input type="number" id="setting-qa-val" value="1780" disabled
+            style="padding: 6px; font-family: var(--font-sans); background: #f4e8d5; border: 1px solid #825028; border-radius: 4px; width: 140px;">
+          <span style="font-size: 12px; color: #5a351d; margin-top: 4px;">Locks sentry patrol sequences and distraction
+            vectors to a reproducible seed.</span>
+        </div>
+
+        <!-- Reset Campaign -->
+        <div
+          style="margin-top: 20px; border-top: 1px solid #825028; padding-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+          <button id="settings-reset-save-btn" class="btn-tamil"
+            style="color: #913328; border-color: #913328; font-size: 13px; padding: 8px 16px;">Reset Campaign</button>
+          <button id="settings-close-btn" class="btn-tamil btn-primary">Roll Up Manuscript</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Palm-Leaf Scroll Screen Wipe Transition Overlay Container -->
+    <div id="olai-wipe-overlay" class="olai-wipe-container"></div>
+
+    <!-- Non-Blocking Router Notice Toast -->
+    <div id="router-notice-toast" class="router-notice-toast"></div>
+  </div>
+
+  <!-- JavaScript Modules in Dependency Order -->
+  <script src="js/save.js?v=2.2"></script>
+  <script src="js/audio.js?v=2.2"></script>
+  <script src="js/diegetic_hud.js?v=2.2"></script>
+  <script src="js/interaction.js?v=2.2"></script>
+  <script src="js/settings.js?v=2.2"></script>
+  <script src="js/tanjore_art.js?v=2.2"></script>
+  <script src="js/transitions.js?v=2.2"></script>
+  <script src="js/flow_state_machine.js?v=2.3"></script>
+  <script src="js/levels.js?v=2.2"></script>
+  <script src="js/chronicle.js?v=2.2"></script>
+  <script src="js/level1_courtyard.js?v=2.2"></script>
+  <script src="js/level2_valari_silambam.js?v=2.2"></script>
+  <script src="js/gameplay.js?v=2.2"></script>
+  <script src="js/home_screen.js?v=2.2"></script>
+  <script src="js/router.js?v=2.2"></script>
+  <script src="js/main.js?v=2.2"></script>
+</body>
+
+</html>

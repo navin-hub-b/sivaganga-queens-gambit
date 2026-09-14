@@ -1,0 +1,49 @@
+/* ==========================================================================
+   SIVAGANGA: THE QUEEN'S GAMBIT - DESIGN TOKENS
+   Strict adherence to Tamil Fort & Temple architectural aesthetics
+   ========================================================================== */
+
+:root {
+  /* --- Strict Color Tokens --- */
+  --bg-maroon: #2E1F1B;       /* Deep background, near-black warm brown */
+  --bg-terracotta: #B85042;   /* Primary: granite/sandstone walls, banners */
+  --accent-gold: #D9A441;     /* UI, torchlight, jewelry, positive state */
+  --accent-sage: #A7BEAE;     /* Diplomacy/calm accent, trust-related UI */
+  --danger-deep: #7A1F1F;     /* Threat/detection state - muted, never bright red */
+  --map-parchment: #C9A876;   /* Roadmap/chronicle page background only */
+
+  /* --- Translucent & Tonal Variants --- */
+  --bg-maroon-dark: #1e1411;
+  --bg-maroon-translucent: rgba(46, 31, 27, 0.92);
+  --bg-maroon-subtle: rgba(46, 31, 27, 0.6);
+  --bg-terracotta-dark: #8c382d;
+  --bg-terracotta-translucent: rgba(184, 80, 66, 0.25);
+  --accent-gold-glow: rgba(217, 164, 65, 0.35);
+  --accent-gold-bright: #ebd076;
+  --accent-sage-glow: rgba(167, 190, 174, 0.35);
+  --accent-sage-dark: #749080;
+  --danger-deep-glow: rgba(122, 31, 31, 0.4);
+  --map-parchment-dark: #ad8a57;
+  --map-parchment-translucent: rgba(201, 168, 118, 0.9);
+
+  /* --- Typography Tokens --- */
+  --font-serif: 'Cinzel', 'Cambria', 'Georgia', 'Times New Roman', serif;
+  --font-sans: 'Montserrat', 'Calibri', 'Segoe UI', system-ui, sans-serif;
+
+  /* --- Responsive Timing Variables (Scaled by Interface Response Speed) --- */
+  --speed-scale: 1.0; /* Slow: 1.5, Default: 1.0, Fast: 0.6 */
+  --time-focus: calc(130ms * var(--speed-scale));
+  --time-active: calc(250ms * var(--speed-scale));
+  --time-resolve: calc(300ms * var(--speed-scale));
+  --time-fail: calc(400ms * var(--speed-scale));
+  --time-transition: calc(650ms * var(--speed-scale));
+
+  /* --- Spatial & Border Tokens --- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-temple: 12px 12px 0 0;
+  --border-gold-ornate: 2px solid var(--accent-gold);
+  --shadow-granite: 0 8px 32px rgba(15, 10, 8, 0.7);
+  --shadow-torchlight: 0 0 25px rgba(217, 164, 65, 0.3);
+}

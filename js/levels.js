@@ -1,0 +1,523 @@
+/**
+ * SIVAGANGA: THE QUEEN'S GAMBIT - 20 SEQUENTIAL LEVELS DEFINITION
+ * 4 Chronological Chapters (1772–1780) tracking Rani Velu Nachiyar's historic campaign.
+ * Each level introduces exactly one new system and never regresses a previously taught one.
+ * English-only text with accurate transliterated Tamil proper nouns.
+ * Non-graphic conflict resolution.
+ */
+
+window.sivagangaLevels = [
+  // =========================================================================
+  // CHAPTER 1: THE FALL OF KALAIYAR KOVIL (1772)
+  // =========================================================================
+  {
+    id: 1,
+    chapter: 1,
+    chapterTitle: 'Chapter I: The Royal Lineage & The Fall of Kalaiyar Kovil',
+    title: 'The Only Child',
+    subtitle: 'Ramanathapuram Fort-Palace Courtyard (1740s)',
+    sigilType: 'shadow',
+    mechanicName: 'Free-Roam Movement & Royal Mentorship',
+    mechanicDesc: 'Explore the fort-palace grounds freely. Master walking, running, and interacting as young Velu Nachiyar meets her three royal mentors.',
+    loreBriefing: 'Born in 1730 as the only child to King Chellamuthu Vijayaragunatha Sethupathy and Queen Sakandhimuthal of the Ramnad kingdom, Velu Nachiyar was raised with the complete education of a crown prince—trained in Silambam, archery, horse riding, Valari throwing, and multiple court languages.',
+    objective: 'Explore the palace grounds, practice with the weapon rack, and confer with your three mentors.',
+    newSystem: 'Free-Roam Movement & Interaction',
+    isFreeRoam: true,
+    dialogue: {
+      speaker: 'King Chellamuthu Sethupathy',
+      text: 'My daughter, you are the only heir to the Sethupathy throne. No art of war or diplomacy shall be withheld from you.'
+    },
+    historicalFact: 'Velu Nachiyar was trained in martial arts including Valari, Silambam, archery, and swordplay, as well as horse riding, and mastered Tamil, Telugu, Malayalam, Sanskrit, French, English, and Urdu.'
+  },
+  {
+    id: 2,
+    chapter: 1,
+    chapterTitle: 'Chapter I: The Royal Lineage & The Fall of Kalaiyar Kovil',
+    title: 'Valari & Silambam',
+    subtitle: 'Ramanathapuram Fort Training Grounds (1740s)',
+    sigilType: 'valari_boomerang',
+    mechanicName: 'Rhythm & Timing Combat (Rangoli Beat)',
+    mechanicDesc: 'Attune your strikes and blocks to the environmental drumbeat and the pulsing floor Rangoli sigil. Defeat the training dummy and spar with your partner.',
+    loreBriefing: 'Under the watchful gaze of Master Veera Maravar and the fort drummer, young Velu Nachiyar trains in the traditional arts of Valari—the curved iron throwing sickle—and Silambam staff combat.',
+    objective: 'Follow the drummer\'s pulse to land Silambam strikes, throw the Valari crescent, and complete the sparring drill.',
+    newSystem: 'Rhythm / Timing Combat & Telegraph React',
+    isRhythmCombat: true,
+    dialogue: {
+      speaker: 'Master Veera Maravar',
+      text: 'Combat in our kingdom is not brute force, Velu Nachiyar. It is rhythm. Feel the Murasu drum pulse through the stone floor!'
+    },
+    historicalFact: 'The Valari is an ancient Tamil crescent-shaped projectile made of seasoned iron or ironwood, capable of rotating with lethal precision and returning along aerodynamic arcs.'
+  },
+  {
+    id: 3,
+    chapter: 1,
+    chapterTitle: 'Chapter I: The Fall of Kalaiyar Kovil (1772)',
+    title: 'The Pillared Mandapam',
+    subtitle: 'Hall of a Thousand Pillars',
+    sigilType: 'vision',
+    mechanicName: 'Vision Cones & Granite Pillar Occlusion',
+    mechanicDesc: 'Massive granite pillars block sentry lines of sight. Sentries project square threat cones (Square Indicator). Hide directly behind pillars.',
+    loreBriefing: 'To escape the temple complex, Velu Nachiyar enters the vast pillared hall. Intricate Yali-carved granite pillars break up the sentry lanterns.',
+    objective: 'Navigate through the pillared hall using columns to obstruct sentry vision cones.',
+    newSystem: 'Pillar Line-of-Sight Occlusion',
+    gridSize: { cols: 10, rows: 7 },
+    startPos: { x: 1, y: 5 },
+    targetPos: { x: 8, y: 1 },
+    pillars: [
+      { x: 3, y: 2 }, { x: 3, y: 4 },
+      { x: 5, y: 2 }, { x: 5, y: 4 },
+      { x: 7, y: 2 }, { x: 7, y: 4 }
+    ],
+    shadows: [
+      { x: 1, y: 5 }, { x: 2, y: 5 }, { x: 3, y: 5 },
+      { x: 4, y: 5 }, { x: 4, y: 4 }, { x: 4, y: 3 },
+      { x: 6, y: 3 }, { x: 6, y: 2 }, { x: 6, y: 1 },
+      { x: 7, y: 1 }, { x: 8, y: 1 }
+    ],
+    sentries: [
+      { x: 4, y: 1, dir: 'down', range: 4 },
+      { x: 6, y: 5, dir: 'up', range: 4 }
+    ],
+    dialogue: {
+      speaker: 'Chinna Maruthu',
+      text: 'Stand flush against the pillar, Rani. Their lantern light cannot pierce solid granite.'
+    },
+    historicalFact: 'The Maruthu Pandiyar brothers—Periya Maruthu and Chinna Maruthu—were trusted generals of King Muthu Vaduganatha and remained fiercely loyal to Queen Velu Nachiyar.'
+  },
+  {
+    id: 4,
+    chapter: 1,
+    chapterTitle: 'Chapter I: The Fall of Kalaiyar Kovil (1772)',
+    title: 'The Courier\'s Message',
+    subtitle: 'Royal Dispatch Interception',
+    sigilType: 'bead_strand',
+    mechanicName: 'Intel Garland Collection',
+    mechanicDesc: 'Intercept British patrol dispatches marked as glowing courier bags. Each gathered letter threads a new bead onto your Intel Garland (Triangle Indicator).',
+    loreBriefing: 'British dispatch riders carry orders outlining the search cordons. Intercepting these letters gives Velu Nachiyar the exact positions of colonial road pickets.',
+    objective: 'Gather 2 British dispatch orders and reach the forest exit.',
+    newSystem: 'Intel Garland Collection',
+    gridSize: { cols: 10, rows: 7 },
+    startPos: { x: 1, y: 2 },
+    targetPos: { x: 8, y: 4 },
+    intelPickups: [
+      { x: 4, y: 2, id: 'intel_1' },
+      { x: 5, y: 5, id: 'intel_2' }
+    ],
+    shadows: [
+      { x: 1, y: 2 }, { x: 2, y: 2 }, { x: 3, y: 2 }, { x: 4, y: 2 },
+      { x: 4, y: 3 }, { x: 4, y: 4 }, { x: 5, y: 4 }, { x: 5, y: 5 },
+      { x: 6, y: 5 }, { x: 7, y: 5 }, { x: 8, y: 5 }, { x: 8, y: 4 }
+    ],
+    sentries: [
+      { x: 3, y: 4, dir: 'right', range: 3 },
+      { x: 6, y: 2, dir: 'left', range: 3 }
+    ],
+    dialogue: {
+      speaker: 'Velu Nachiyar',
+      text: 'Their courier carries the sealed orders of Colonel Joseph Smith. Knowledge of their march is our greatest weapon.'
+    },
+    historicalFact: 'British documents reveal Colonel Joseph Smith and Abraham Bonne Vane were tasked with eliminating the Sivaganga royal line to ensure Nawab rule.'
+  },
+  {
+    id: 5,
+    chapter: 1,
+    chapterTitle: 'Chapter I: The Fall of Kalaiyar Kovil (1772)',
+    title: 'Escape to the Western Ghats',
+    subtitle: 'The Midnight Mountain Defile (Chapter Trial)',
+    sigilType: 'rangoli_spiral',
+    mechanicName: 'Chapter 1 Master Trial: Retinue Escort',
+    mechanicDesc: 'Escort your infant daughter Vellachi and loyal commanders through the British mountain defile, combining shadows, water pebbles, pillar cover, and dispatch intel.',
+    loreBriefing: 'The British dragnet tightens around the base of the Western Ghats. Velu Nachiyar, cradling her infant child, must lead her loyal commanders into the safety of the Virupakshi hills.',
+    objective: 'Guide the royal party safely across the cordon into the Western Ghats.',
+    newSystem: 'Retinue Escort & Coordinated Stealth',
+    isTrial: true,
+    gridSize: { cols: 12, rows: 8 },
+    startPos: { x: 1, y: 1 },
+    targetPos: { x: 10, y: 6 },
+    shadows: [
+      { x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 },
+      { x: 3, y: 2 }, { x: 3, y: 3 }, { x: 4, y: 3 },
+      { x: 5, y: 3 }, { x: 6, y: 3 }, { x: 7, y: 3 },
+      { x: 7, y: 4 }, { x: 7, y: 5 }, { x: 8, y: 5 },
+      { x: 9, y: 5 }, { x: 10, y: 5 }, { x: 10, y: 6 }
+    ],
+    pillars: [
+      { x: 4, y: 2 }, { x: 6, y: 4 }, { x: 8, y: 3 }
+    ],
+    pebbles: 3,
+    intelPickups: [{ x: 5, y: 2, id: 'intel_ch1' }],
+    sentries: [
+      { x: 5, y: 1, dir: 'down', range: 3 },
+      { x: 2, y: 4, dir: 'right', range: 3 },
+      { x: 8, y: 6, dir: 'up', range: 2 },
+      { x: 9, y: 2, dir: 'left', range: 2 }
+    ],
+    dialogue: {
+      speaker: 'Velu Nachiyar',
+      text: 'Hush, little Vellachi. The jungle will shield us tonight. One day, we shall return to Sivaganga not as fugitives, but as liberators.'
+    },
+    historicalFact: 'Velu Nachiyar escaped with her baby daughter Vellachi Nachiyar and walked hundreds of miles through dense forests to find sanctuary under Chieftain Gopala Nayaker of Virupakshi.'
+  },
+
+  // =========================================================================
+  // CHAPTER 2: THE EXILE AT DINDIGUL & THE TRIPLE ALLIANCE (1772–1779)
+  // =========================================================================
+  {
+    id: 6,
+    chapter: 2,
+    chapterTitle: 'Chapter II: The Exile at Dindigul & The Triple Alliance (1772–1779)',
+    title: 'The Gates of Virupakshi',
+    subtitle: 'Highland Sanctuary of the Palayakarar',
+    sigilType: 'bangles',
+    mechanicName: 'Diplomatic Dialogue & Trust Bangles',
+    mechanicDesc: 'Engage in diplomatic negotiation with Chieftain Gopala Nayaker. Dignified, strategic answers earn Trust Bangles on the Queen\'s wrist.',
+    loreBriefing: 'Velu Nachiyar reaches the hill fortress of Virupakshi, governed by the brave chieftain Gopala Nayaker. To secure sanctuary and grain for her people, she must win his unshakeable trust.',
+    objective: 'Earn 3 Trust Bangles through diplomatic dialogue to secure the Virupakshi compact.',
+    newSystem: 'Diplomatic Dialogue & Trust Bangles',
+    dialogueTree: [
+      {
+        prompt: 'Gopala Nayaker: "Rani of Sivaganga, the British Company demands I surrender you. Why should Virupakshi risk war for an exiled queen?"',
+        choices: [
+          { text: '"Because Sivaganga\'s fall today is Virupakshi\'s fall tomorrow. Divided, our palayams perish one by one."', deltaTrust: 1, reply: 'Gopala Nayaker nods gravely: "You speak the truth of our ancestors. We stand together."' },
+          { text: '"I carry gold and jewels to pay handsomely for your protection."', deltaTrust: 0, reply: 'Gopala Nayaker frowns: "Virupakshi fights for honor and sovereign dignity, not coin."' },
+          { text: '"We come not seeking charity, but offering a sworn brotherhood in arms."', deltaTrust: 1, reply: 'Gopala Nayaker clasps his hands: "A queen with an unyielding warrior\'s spirit. Welcome to our hearth."' }
+        ]
+      },
+      {
+        prompt: 'Gopala Nayaker: "My scouts report Company spies watch the mountain trails. How do you propose we conceal your presence?"',
+        choices: [
+          { text: '"We shall disguise our people as temple pilgrims gathering medicinal herbs in the Kodai hills."', deltaTrust: 1, reply: 'Gopala Nayaker smiles: "Wise and subtle. The hills shall keep your counsel."' },
+          { text: '"We shall attack any spy who approaches our borders."', deltaTrust: -1, reply: 'Gopala Nayaker warns: "Premature clashes will bring the full Arcot garrison down upon us."' }
+        ]
+      }
+    ],
+    allianceUnlocked: 0, // Virupakshi alliance
+    historicalFact: 'Gopala Nayaker of Virupakshi was a legendary leader of the Palayakarar confederacy who gave shelter to Velu Nachiyar and her daughter for eight years.'
+  },
+  {
+    id: 7,
+    chapter: 2,
+    chapterTitle: 'Chapter II: The Exile at Dindigul & The Triple Alliance (1772–1779)',
+    title: 'The Granary Allocation',
+    subtitle: 'Virupakshi Supply Depot',
+    sigilType: 'bead_strand',
+    mechanicName: 'Resource Rationing (Grain & Silver Clamping)',
+    mechanicDesc: 'Allocate grain bags and silver coins among the refugee camp, the garrison, and scout networks. Ensure no sector falls below survival thresholds.',
+    loreBriefing: 'Winter descends upon the highlands. Over two thousand refugees from Sivaganga have gathered. Velu Nachiyar personally oversees fair grain rationing to maintain high morale and prepare troops.',
+    objective: 'Balance the rations so that Refugee Morale >= 75 and Defense Readiness >= 75.',
+    newSystem: 'Resource Management & Clamping',
+    puzzleType: 'granary_balance',
+    initialSupplies: { grain: 400, gold: 200 },
+    historicalFact: 'During her exile, Velu Nachiyar earned deep reverence because she shared the same modest coarse millets as her followers, ensuring no family starved in exile.'
+  },
+  {
+    id: 8,
+    chapter: 2,
+    chapterTitle: 'Chapter II: The Exile at Dindigul & The Triple Alliance (1772–1779)',
+    title: 'The Dindigul Durbar',
+    subtitle: 'Negotiations with Sultan Hyder Ali',
+    sigilType: 'bangles',
+    mechanicName: 'High-Stakes Persian Treaty Diplomacy',
+    mechanicDesc: 'Converse in fluent Persian/Urdu with Sultan Hyder Ali of Mysore. Your command of diplomacy and shared anti-colonial vision secures artillery and cavalry.',
+    loreBriefing: 'In 1779, Velu Nachiyar traveled to the formidable rock fort of Dindigul to meet Sultan Hyder Ali of Mysore. Writing and speaking in flawless Persian, she outlined a joint strategy against the British East India Company.',
+    objective: 'Impress Sultan Hyder Ali with strategic insight to forge the Mysore Alliance.',
+    newSystem: 'High-Stakes Treaty Negotiation',
+    dialogueTree: [
+      {
+        prompt: 'Sultan Hyder Ali: "You address my court in courtly Persian, Queen of Sivaganga. What terms do you bring to Mysore?"',
+        choices: [
+          { text: '"We seek not mere rescue, but a military coalition. While you strike Company strongholds in the Carnatic, we will liberate Sivaganga and cut their southern supply lines."', deltaTrust: 2, reply: 'Hyder Ali smiles with great admiration: "A true commander\'s eye. You see the whole chessboard."' },
+          { text: '"We ask your mighty army to defeat the British on our behalf."', deltaTrust: 0, reply: 'Hyder Ali shakes his head: "A kingdom reclaimed by foreign swords alone is never truly sovereign."' }
+        ]
+      },
+      {
+        prompt: 'Sultan Hyder Ali: "I command five thousand cavalry, five thousand infantry, and heavy bronze cannon in Dindigul. How will you supply them?"',
+        choices: [
+          { text: '"Chieftain Gopala Nayaker and the Maruthu brothers have prepared grain depots across Virupakshi and the jungle corridors."', deltaTrust: 1, reply: 'Hyder Ali raises his hand: "The compact is struck! Commandant Syed Karki shall march under your strategic banner."' }
+        ]
+      }
+    ],
+    allianceUnlocked: 1, // Mysore Alliance
+    historicalFact: 'Velu Nachiyar was a prodigy who mastered Persian, Urdu, French, and English, alongside Tamil. Sultan Hyder Ali was so impressed by her letter in Persian that he granted 5,000 cavalry and 5,000 infantry.'
+  },
+  {
+    id: 9,
+    chapter: 2,
+    chapterTitle: 'Chapter II: The Exile at Dindigul & The Triple Alliance (1772–1779)',
+    title: 'The Udaiyaal Regiment',
+    subtitle: 'Training the Women\'s Brigade',
+    sigilType: 'rangoli_spiral',
+    mechanicName: 'Unit Formation Drills & Silambam Stances',
+    mechanicDesc: 'Direct the Udaiyaal women\'s brigade in traditional Silambam staff formations. Coordinate synchronized defensive and offensive rings.',
+    loreBriefing: 'Velu Nachiyar commissions her trusted commander Kuyili to build the Udaiyaal Regiment—the first documented all-female military brigade in Indian history, named in honor of a loyal shepherdess Udaiyaal who died protecting royal secrets.',
+    objective: 'Align 4 training squads into balanced defensive and offensive rings.',
+    newSystem: 'Squad Formation Coordination',
+    puzzleType: 'regiment_drill',
+    allianceUnlocked: 3, // Udaiyaal Regiment Alliance
+    historicalFact: 'The Udaiyaal regiment was named after Udaiyaal, a young shepherdess tortured by the British who refused to disclose Velu Nachiyar\'s whereabouts, sacrificing her life for the queen.'
+  },
+  {
+    id: 10,
+    chapter: 2,
+    chapterTitle: 'Chapter II: The Exile at Dindigul & The Triple Alliance (1772–1779)',
+    title: 'The Convoy of Five Thousand',
+    subtitle: 'The Highland Mountain Defile (Chapter Trial)',
+    sigilType: 'fort_rampart',
+    mechanicName: 'Chapter 2 Master Trial: Allied Army Escort',
+    mechanicDesc: 'Coordinate the march of Mysore cavalry, Maruthu scouts, and supply wagons through mountain passes while neutralizing scout warnings.',
+    loreBriefing: 'The allied army departs Dindigul toward Sivaganga. British outposts along the highways must be scouted and bypassed before they can send alarm couriers to Madras.',
+    objective: 'Guide the vanguard across 3 mountain sectors without raising fortress alarms.',
+    isTrial: true,
+    newSystem: 'Allied Army Defile Escort',
+    gridSize: { cols: 12, rows: 8 },
+    startPos: { x: 1, y: 2 },
+    targetPos: { x: 10, y: 5 },
+    shadows: [
+      { x: 1, y: 2 }, { x: 2, y: 2 }, { x: 3, y: 2 },
+      { x: 4, y: 2 }, { x: 5, y: 2 }, { x: 5, y: 3 },
+      { x: 5, y: 4 }, { x: 6, y: 4 }, { x: 7, y: 4 },
+      { x: 8, y: 4 }, { x: 9, y: 4 }, { x: 10, y: 4 }, { x: 10, y: 5 }
+    ],
+    sentries: [
+      { x: 3, y: 4, dir: 'up', range: 2 },
+      { x: 7, y: 2, dir: 'down', range: 2 },
+      { x: 9, y: 6, dir: 'up', range: 2 }
+    ],
+    pebbles: 3,
+    allianceUnlocked: 2, // Maruthu Brothers Alliance
+    dialogue: {
+      speaker: 'Chinna Maruthu',
+      text: 'Five thousand horsemen move with the thunder of the monsoon. We must silence their watchtowers before the alarm bells can toll.'
+    },
+    historicalFact: 'The alliance of Velu Nachiyar, Hyder Ali, and the Palayakarars was one of the earliest united fronts against British colonial expansion in southern India.'
+  },
+
+  // =========================================================================
+  // CHAPTER 3: THE SHADOW NETWORK & RECONNAISSANCE (1779–1780)
+  // =========================================================================
+  {
+    id: 11,
+    chapter: 3,
+    chapterTitle: 'Chapter III: The Shadow Network & Reconnaissance (1779–1780)',
+    title: 'Kuyili\'s Eye',
+    subtitle: 'Dual-Character Infiltration',
+    sigilType: 'vision',
+    mechanicName: 'Dual-Hero Switching (Kuyili & Velu Nachiyar)',
+    mechanicDesc: 'Switch between Kuyili (inside the barracks in disguise) and Velu Nachiyar (on the ramparts) to open locked gates and create mutual distractions.',
+    loreBriefing: 'Commander Kuyili has infiltrated the British garrison inside Sivaganga. Working in tandem with Velu Nachiyar on the perimeter, they map out colonial armories.',
+    objective: 'Coordinate Kuyili and Velu to unlock the gatehouse mechanism.',
+    newSystem: 'Dual-Character Perspective Switching',
+    puzzleType: 'dual_switch',
+    dialogue: {
+      speaker: 'Kuyili',
+      text: 'I have bypassed the inner courtyard, my Queen. When I extinguish the courtyard torch, scale the southern trellis.'
+    },
+    historicalFact: 'Kuyili was Velu Nachiyar\'s chief intelligence officer and commander of the Udaiyaal regiment, known for her unmatched courage and disguise tactics.'
+  },
+  {
+    id: 12,
+    chapter: 3,
+    chapterTitle: 'Chapter III: The Shadow Network & Reconnaissance (1779–1780)',
+    title: 'The Valari Arc',
+    subtitle: 'Ranged Non-Lethal Disarm',
+    sigilType: 'valari',
+    mechanicName: 'Valari Boomerang Throwing (Parabolic Arc)',
+    mechanicDesc: 'Aim and release the traditional Tamil Valari boomerang along curved trajectories to sever rope lanterns and snip tripwires non-lethally.',
+    loreBriefing: 'The Valari is a forged curved throwing weapon of Tamil warfare. Velu Nachiyar was renowned for her mastery of the weapon, using it to disarm sentry lanterns in complete silence.',
+    objective: 'Sever 2 lantern ropes with curved Valari throws to plunge sentry posts into darkness.',
+    newSystem: 'Valari Ranged Non-Lethal Aiming',
+    puzzleType: 'valari_target',
+    dialogue: {
+      speaker: 'Velu Nachiyar',
+      text: 'The Valari curves like the crescent moon. One clean strike severs the lantern cord—silence and darkness follow.'
+    },
+    historicalFact: 'The Valari was an iron or hardened wood curved throwing weapon unique to Tamil warriors, feared by colonial forces for its silent, deadly accuracy.'
+  },
+  {
+    id: 13,
+    chapter: 3,
+    chapterTitle: 'Chapter III: The Shadow Network & Reconnaissance (1779–1780)',
+    title: 'The EIC Cantonment Ledgers',
+    subtitle: 'Decryption of Colonial Munitions Ciphers',
+    sigilType: 'bead_strand',
+    mechanicName: 'Cipher Disk Decryption',
+    mechanicDesc: 'Rotate the concentric Tamil and Latin cipher rings to decode British logistics manifests and locate the concealed gunpowder depot.',
+    loreBriefing: 'British East India Company officers recorded ammunition shipments in encrypted ledger books. Velu Nachiyar uses her multilingual intellect to break their logistical code.',
+    objective: 'Align the cipher wheels to decipher the location: "RAJARAJESHWARI TEMPLE DEPOT".',
+    newSystem: 'Cryptographic Ledger Alignment',
+    puzzleType: 'cipher_wheel',
+    dialogue: {
+      speaker: 'Velu Nachiyar',
+      text: 'They write in coded Latin figures, but their shipments speak of black powder and sulfur stored inside the temple precinct itself!'
+    },
+    historicalFact: 'The British East India Company routinely converted sacred Indian temples into fortified ammunition stores, knowing local rulers hesitated to fire upon holy shrines.'
+  },
+  {
+    id: 14,
+    chapter: 3,
+    chapterTitle: 'Chapter III: The Shadow Network & Reconnaissance (1779–1780)',
+    title: 'The Cartographer\'s Trap',
+    subtitle: 'Sentry Patrol Route Tampering',
+    sigilType: 'rangoli_spiral',
+    mechanicName: 'Patrol Waypoint Manipulation',
+    mechanicDesc: 'Switch the carved granite way-markers at crossroads to misdirect British patrols away from the central avenue into dead-end courtyards.',
+    loreBriefing: 'Before launching the assault, Velu Nachiyar\'s scouts alter the patrol markers and lantern signals of the garrison.',
+    objective: 'Redirect 2 redcoat patrol routes so the southern avenue remains completely unguarded.',
+    newSystem: 'Patrol Route Tampering',
+    gridSize: { cols: 10, rows: 7 },
+    startPos: { x: 1, y: 3 },
+    targetPos: { x: 8, y: 3 },
+    switches: [{ x: 4, y: 3, toggled: false }],
+    sentries: [{ x: 5, y: 1, dir: 'down', range: 3 }],
+    historicalFact: 'Tamil guerrilla tactics in the 18th century relied heavily on intimate knowledge of terrain and deceptive signage to confuse colonial regiments.'
+  },
+  {
+    id: 15,
+    chapter: 3,
+    chapterTitle: 'Chapter III: The Shadow Network & Reconnaissance (1779–1780)',
+    title: 'The Vijayadashami Infiltration',
+    subtitle: 'Festival of the Goddess (Chapter Trial)',
+    sigilType: 'bangles',
+    mechanicName: 'Chapter 3 Master Trial: Devotee Disguise',
+    mechanicDesc: 'Guide Kuyili and the Udaiyaal women into the fortress gates disguised as flower and ghee-bearing devotees during the Navaratri festival.',
+    loreBriefing: 'On Vijayadashami in October 1780, the Sivaganga palace gates were opened for women devotees to worship at the Rajarajeshwari temple. Velu Nachiyar and Kuyili conceived the daring plan to enter the fortress undetected.',
+    objective: 'Bypass fortress security checkpoints without arousing suspicion.',
+    isTrial: true,
+    newSystem: 'Festival Devotee Disguise',
+    gridSize: { cols: 12, rows: 8 },
+    startPos: { x: 1, y: 4 },
+    targetPos: { x: 11, y: 4 },
+    shadows: [
+      { x: 1, y: 4 }, { x: 2, y: 4 }, { x: 3, y: 4 },
+      { x: 4, y: 4 }, { x: 5, y: 4 }, { x: 6, y: 4 },
+      { x: 7, y: 4 }, { x: 8, y: 4 }, { x: 9, y: 4 },
+      { x: 10, y: 4 }, { x: 11, y: 4 }
+    ],
+    sentries: [
+      { x: 4, y: 2, dir: 'down', range: 2 },
+      { x: 8, y: 6, dir: 'up', range: 2 }
+    ],
+    dialogue: {
+      speaker: 'Kuyili',
+      text: 'Underneath our flower garlands and sweet oils, our staves and daggers are concealed. The temple doors stand open.'
+    },
+    historicalFact: 'Vijayadashami 1780 was the only day women were permitted entry into the temple inside Sivaganga Fort. Velu Nachiyar utilized this cultural opening with tactical genius.'
+  },
+
+  // =========================================================================
+  // CHAPTER 4: THE RECLAMATION OF SIVAGANGA (1780)
+  // =========================================================================
+  {
+    id: 16,
+    chapter: 4,
+    chapterTitle: 'Chapter IV: The Reclamation of Sivaganga (1780)',
+    title: 'The Outer Ramparts',
+    subtitle: 'Coordinated Multi-Front Breach',
+    sigilType: 'fort_rampart',
+    mechanicName: 'Coordinated Multi-Hero Breach',
+    mechanicDesc: 'Command the Maruthu brothers to stage a noisy feint at the Eastern Gate while Velu Nachiyar scales the Southern Bastion in darkness.',
+    loreBriefing: 'The battle for Sivaganga begins. The Maruthu brothers light signal fires and sound war drums on the eastern moat, drawing the colonial garrison away from the southern battlements.',
+    objective: 'Time the diversion at the East Gate to open the unguarded southern breach.',
+    newSystem: 'Multi-Front Diversion Timing',
+    puzzleType: 'dual_breach',
+    dialogue: {
+      speaker: 'Periya Maruthu',
+      text: 'Our war horns echo along the river, Rani! All redcoats rush east. Scale the south wall now!'
+    },
+    historicalFact: 'The Maruthu Pandiyars staged masterclass diversionary assaults, engaging British cannon while the main strike force penetrated palace weak points.'
+  },
+  {
+    id: 17,
+    chapter: 4,
+    chapterTitle: 'Chapter IV: The Reclamation of Sivaganga (1780)',
+    title: 'The Moat Sluice Gates',
+    subtitle: 'Hydro-Engineering Alignment',
+    sigilType: 'ripple',
+    mechanicName: 'Sluice Gate Hydro-Puzzle',
+    mechanicDesc: 'Rotate the granite sluice wheels to drain the northern moat and uncover a dry subterranean aqueduct leading under the palace walls.',
+    loreBriefing: 'The moat around Sivaganga Fort was fed by ancestral tank spillways. Velu Nachiyar opens the ancient drainage valves to expose a secret watercourse.',
+    objective: 'Align 3 sluice gate wheels to lower the water level below the passage threshold.',
+    newSystem: 'Hydro-Engineering Sluice Alignment',
+    puzzleType: 'sluice_puzzle',
+    dialogue: {
+      speaker: 'Velu Nachiyar',
+      text: 'My father taught me the hydrology of these tanks. Turn the central wheel twice—the waters will recede.'
+    },
+    historicalFact: 'Sivaganga\'s fortress design incorporated ingenious water management systems connecting temple tanks with defensive moats.'
+  },
+  {
+    id: 18,
+    chapter: 4,
+    chapterTitle: 'Chapter IV: The Reclamation of Sivaganga (1780)',
+    title: 'The Powder Magazine',
+    subtitle: 'Kuyili\'s Supreme Sacrifice',
+    sigilType: 'shadow',
+    mechanicName: 'The Heroic Turning Point (Non-Graphic)',
+    mechanicDesc: 'Navigate Commander Kuyili into the colonial ammunition vault. Through solemn, heroic self-sacrifice, she ignites the British gunpowder reserves, disabling their artillery without harming the sacred temple.',
+    loreBriefing: 'Inside the Rajarajeshwari temple storehouse, thousands of barrels of British gunpowder threaten the entire city. Commander Kuyili douses herself in sacred lamp ghee, slips into the magazine, and sets the powder alight. Her sacrifice cripples the East India Company garrison in one stroke.',
+    objective: 'Guide Kuyili to the central powder magazine. Rendered respectfully and non-graphically.',
+    newSystem: 'Climactic Objective Trigger',
+    gridSize: { cols: 10, rows: 6 },
+    startPos: { x: 1, y: 3 },
+    targetPos: { x: 8, y: 3 },
+    shadows: [
+      { x: 1, y: 3 }, { x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 },
+      { x: 5, y: 3 }, { x: 6, y: 3 }, { x: 7, y: 3 }, { x: 8, y: 3 }
+    ],
+    sentries: [
+      { x: 4, y: 1, dir: 'down', range: 2 },
+      { x: 6, y: 5, dir: 'up', range: 2 }
+    ],
+    dialogue: {
+      speaker: 'Kuyili',
+      text: 'For Sivaganga. For our Queen. Our people shall be free.'
+    },
+    historicalFact: 'Commander Kuyili is recognized in historical records as the first recorded suicide attacker in Indian anti-colonial history. Her sacrifice in 1780 destroyed the British ammunition stockpile and turned the tide of the war.'
+  },
+  {
+    id: 19,
+    chapter: 4,
+    chapterTitle: 'Chapter IV: The Reclamation of Sivaganga (1780)',
+    title: 'The Royal Palace Courtyard',
+    subtitle: 'Disarming the Colonial Command',
+    sigilType: 'valari',
+    mechanicName: 'Commander Disarm & Garrison Evasion',
+    mechanicDesc: 'With British munitions neutralized, disarm the remaining colonial sentries using Silambam sweeps and Valari strikes, clearing the throne room.',
+    loreBriefing: 'The British garrison commanders retreat to the central courtyard. Rani Velu Nachiyar and the Maruthu brothers corner the colonial forces, demanding unconditional evacuation.',
+    objective: 'Disarm 3 defensive pickets and reach the throne room doors.',
+    newSystem: 'Tactical Area Disarm',
+    gridSize: { cols: 10, rows: 7 },
+    startPos: { x: 1, y: 3 },
+    targetPos: { x: 8, y: 3 },
+    shadows: [
+      { x: 1, y: 3 }, { x: 2, y: 3 }, { x: 3, y: 3 },
+      { x: 4, y: 3 }, { x: 5, y: 3 }, { x: 6, y: 3 },
+      { x: 7, y: 3 }, { x: 8, y: 3 }
+    ],
+    sentries: [
+      { x: 3, y: 1, dir: 'down', range: 2 },
+      { x: 5, y: 5, dir: 'up', range: 2 },
+      { x: 7, y: 1, dir: 'down', range: 2 }
+    ],
+    dialogue: {
+      speaker: 'Velu Nachiyar',
+      text: 'Lay down your arms! Sivaganga is reclaimed by its rightful sovereign!'
+    },
+    historicalFact: 'The British forces under Captain Malleson and the Nawab of Arcot were routed in Sivaganga, fleeing toward Madurai.'
+  },
+  {
+    id: 20,
+    chapter: 4,
+    chapterTitle: 'Chapter IV: The Reclamation of Sivaganga (1780)',
+    title: 'The Coronation of Sivaganga',
+    subtitle: 'Enthronement of the Veerangna (Grand Finale)',
+    sigilType: 'rangoli_spiral',
+    mechanicName: 'Grand Coronation & Victory Symphony',
+    mechanicDesc: 'Ascend the granite throne of Sivaganga. All four alliance bells chime in celebratory chorus as the golden royal umbrella is unfurled.',
+    loreBriefing: 'In 1780, eight long years after the fall of Kalaiyar Kovil, Rani Velu Nachiyar was crowned Queen of Sivaganga. She ruled with wisdom, justice, and diplomatic brilliance, entering world history as the first Indian queen to vanquish the British Empire.',
+    objective: 'Ascend the throne and witness the grand epilogue of Sivaganga.',
+    isTrial: true,
+    newSystem: 'Victory Coronation Sequence',
+    historicalFact: 'Rani Velu Nachiyar ruled Sivaganga for over a decade in peace and prosperity, appointing the Maruthu Pandiyar brothers as her royal administrators and naming her daughter Vellachi Nachiyar as successor.'
+  }
+];

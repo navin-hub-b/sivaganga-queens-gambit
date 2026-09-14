@@ -1,0 +1,232 @@
+/* ==========================================================================
+   SIVAGANGA: THE QUEEN'S GAMBIT - ANIMATIONS
+   Palm-leaf wipes, temple bells, diya flame, and 4-state interaction model
+   ========================================================================== */
+
+/* --- Palm-Leaf Scroll (Olai Chuvadi) Screen Wipe --- */
+.olai-wipe-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity calc(120ms * var(--speed-scale)) ease-in-out;
+}
+
+.olai-wipe-container.active {
+  pointer-events: all;
+  opacity: 1;
+}
+
+.olai-leaf-strip {
+  width: 100%;
+  flex: 1;
+  background: linear-gradient(90deg, #b08d55 0%, #d4b584 25%, #c9a876 50%, #b8935c 75%, #a6814b 100%);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.35), 0 3px 6px rgba(0,0,0,0.45);
+  border-top: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform calc(450ms * var(--speed-scale)) cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+}
+
+.olai-leaf-strip::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(70,45,20,0.3) 0, rgba(70,45,20,0.3) 12px, transparent 12px, transparent 24px);
+}
+
+.olai-wipe-container.unroll .olai-leaf-strip {
+  transform: scaleX(1);
+}
+
+.olai-wipe-container.roll-out .olai-leaf-strip {
+  transform-origin: right center;
+  transform: scaleX(0);
+}
+
+/* --- Diya Flame Ambient Animation --- */
+@keyframes diyaFlicker {
+  0% {
+    transform: scale(1) translate(0, 0) rotate(0deg);
+    filter: drop-shadow(0 -4px 8px rgba(217, 164, 65, 0.7));
+  }
+  25% {
+    transform: scale(1.04, 0.96) translate(-1px, -1px) rotate(-1deg);
+    filter: drop-shadow(0 -6px 12px rgba(217, 164, 65, 0.85));
+  }
+  50% {
+    transform: scale(0.97, 1.05) translate(1px, -2px) rotate(1.5deg);
+    filter: drop-shadow(0 -3px 7px rgba(217, 164, 65, 0.65));
+  }
+  75% {
+    transform: scale(1.02, 0.98) translate(-1px, 0px) rotate(-0.8deg);
+    filter: drop-shadow(0 -5px 10px rgba(217, 164, 65, 0.8));
+  }
+  100% {
+    transform: scale(1) translate(0, 0) rotate(0deg);
+    filter: drop-shadow(0 -4px 8px rgba(217, 164, 65, 0.7));
+  }
+}
+
+.diya-flame-live {
+  animation: diyaFlicker 1.8s infinite ease-in-out;
+  transform-origin: bottom center;
+}
+
+/* --- Temple Bell Swing & Glow --- */
+@keyframes bellSwing {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(14deg); }
+  40% { transform: rotate(-11deg); }
+  60% { transform: rotate(7deg); }
+  80% { transform: rotate(-3deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.bell-swinging {
+  animation: bellSwing 1.2s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  transform-origin: top center;
+}
+
+@keyframes goldPulse {
+  0% { filter: drop-shadow(0 0 4px var(--accent-gold)); }
+  50% { filter: drop-shadow(0 0 16px var(--accent-gold-bright)) brightness(1.25); }
+  100% { filter: drop-shadow(0 0 4px var(--accent-gold)); }
+}
+
+.gold-pulsing {
+  animation: goldPulse 1.4s infinite ease-in-out;
+}
+
+/* --- Wrist Bangles Glint --- */
+@keyframes bangleShimmer {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.4) drop-shadow(0 0 6px var(--accent-gold)); }
+  100% { filter: brightness(1); }
+}
+
+.bangle-shimmer {
+  animation: bangleShimmer 0.6s ease-in-out;
+}
+
+/* --- Rangoli Sigil Stone Inscription Reveal --- */
+@keyframes sigilDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.rangoli-path {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: sigilDraw 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* --- 4-State Responsive Interaction Engine CSS Hooks --- */
+
+/* 1. IDLE State */
+.interactive-node,
+.btn-tamil,
+.hud-interactive {
+  position: relative;
+  transition:
+    transform var(--time-active) cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow var(--time-focus) ease-out,
+    border-color var(--time-focus) ease-out,
+    background-color var(--time-focus) ease-out,
+    filter var(--time-focus) ease-out,
+    opacity var(--time-fail) ease-out;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* 2. FOCUSED State (100–150ms soft glow halo, brighten one step toward GOLD/SAGE) */
+.interactive-node:hover,
+.interactive-node:focus-visible,
+.interactive-node.state-focused,
+.btn-tamil:hover,
+.btn-tamil:focus-visible,
+.btn-tamil.state-focused {
+  outline: none;
+  border-color: var(--accent-gold) !important;
+  background-color: rgba(217, 164, 65, 0.12) !important;
+  box-shadow: 0 0 14px var(--accent-gold-glow), inset 0 0 8px rgba(217, 164, 65, 0.2) !important;
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+}
+
+.interactive-node.focused-sage:hover,
+.interactive-node.focused-sage:focus-visible {
+  border-color: var(--accent-sage) !important;
+  background-color: rgba(167, 190, 174, 0.12) !important;
+  box-shadow: 0 0 14px var(--accent-sage-glow), inset 0 0 8px rgba(167, 190, 174, 0.2) !important;
+}
+
+/* 3. ACTIVE State (200–300ms deform/tilt/lift in real time, never snap on release) */
+.interactive-node:active,
+.interactive-node.state-active,
+.btn-tamil:active,
+.btn-tamil.state-active {
+  transform: translateY(2px) scale(0.97) rotate(0.4deg) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  filter: brightness(0.95);
+  transition-duration: var(--time-active) !important;
+}
+
+/* 4. RESOLVED State (Settles with one clean brighten-pulse within 300ms) */
+@keyframes resolvePulse {
+  0% {
+    transform: scale(0.98);
+    filter: brightness(1);
+    box-shadow: 0 0 0 rgba(217, 164, 65, 0);
+  }
+  50% {
+    transform: scale(1.04);
+    filter: brightness(1.35);
+    box-shadow: 0 0 22px var(--accent-gold-bright);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+    box-shadow: 0 0 8px var(--accent-gold-glow);
+  }
+}
+
+.state-resolved {
+  animation: resolvePulse var(--time-resolve) cubic-bezier(0.2, 0.9, 0.3, 1) forwards !important;
+}
+
+/* Failed / Incorrect action: simply fades back to IDLE over ~400ms without buzz */
+.state-failed {
+  transition: all var(--time-fail) ease-out !important;
+  transform: translateY(0) scale(1) !important;
+  box-shadow: none !important;
+  filter: brightness(0.85) grayscale(0.2);
+}
+
+/* --- Accessibility: Reduced Motion Overrides --- */
+body.reduce-motion *,
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .diya-flame-live {
+    animation: none !important;
+  }
+  .bell-swinging {
+    animation: none !important;
+  }
+}
