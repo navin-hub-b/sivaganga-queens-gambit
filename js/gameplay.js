@@ -79,6 +79,9 @@ class SivagangaGameplay {
     if (window.sivagangaTonguesOfTheWorld && window.sivagangaTonguesOfTheWorld.isActive) {
       window.sivagangaTonguesOfTheWorld.stop();
     }
+    if (window.sivagangaTheBetrothal && window.sivagangaTheBetrothal.isActive) {
+      window.sivagangaTheBetrothal.stop();
+    }
 
     const lvl = window.sivagangaLevels.find(l => l.id === levelNumber);
     if (!lvl) return;
@@ -90,8 +93,8 @@ class SivagangaGameplay {
     this.selectedHero = 'velu';
     this.ripples = [];
 
-    // For Levels 1, 2, 3, and 4, enter the training grounds/study hall directly!
-    if (lvl.id === 1 || lvl.id === 2 || lvl.id === 3 || lvl.id === 4) {
+    // For Levels 1, 2, 3, 4, and 5, enter the bespoke experiences directly!
+    if (lvl.id === 1 || lvl.id === 2 || lvl.id === 3 || lvl.id === 4 || lvl.id === 5) {
       const sigilModal = document.getElementById('sigil-modal');
       if (sigilModal) sigilModal.style.display = 'none';
       this.setupStage(lvl);
@@ -183,6 +186,12 @@ class SivagangaGameplay {
       this.handleResize();
       window.sivagangaTonguesOfTheWorld.init(this.canvas);
       window.sivagangaTonguesOfTheWorld.start();
+    } else if (lvl.id === 5 && window.sivagangaTheBetrothal) {
+      // Level 5: "The Betrothal" - Chapter 1 Finale Tournament & Diplomatic Betrothal
+      this.hidePuzzleOverlays();
+      this.handleResize();
+      window.sivagangaTheBetrothal.init(this.canvas);
+      window.sivagangaTheBetrothal.start();
     } else {
       // Standard Grid Stealth Stage
       this.hidePuzzleOverlays();

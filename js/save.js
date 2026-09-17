@@ -80,7 +80,11 @@ class SivagangaSaveManager {
     fresh.levelStats = (data.levelStats && typeof data.levelStats === 'object') ? data.levelStats : {};
 
     // Auto-heal progression: if a level was completed, the subsequent level must be unlocked
-    if (fresh.completedLevels.includes(3)) {
+    if (fresh.completedLevels.includes(5)) {
+      fresh.unlockedLevel = Math.max(fresh.unlockedLevel, 6);
+    } else if (fresh.completedLevels.includes(4)) {
+      fresh.unlockedLevel = Math.max(fresh.unlockedLevel, 5);
+    } else if (fresh.completedLevels.includes(3)) {
       fresh.unlockedLevel = Math.max(fresh.unlockedLevel, 4);
     } else if (fresh.completedLevels.includes(2)) {
       fresh.unlockedLevel = Math.max(fresh.unlockedLevel, 3);

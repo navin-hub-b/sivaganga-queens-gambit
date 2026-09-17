@@ -569,6 +569,46 @@ class SivagangaAudio {
     bell.start(t);
     bell.stop(t + 0.30);
   }
+
+  /**
+   * Royal Ceremonial Fanfare (Celebratory pentatonic temple chime flourish for royal betrothal & alliances)
+   */
+  playCeremonialFanfare() {
+    this.ensureContext();
+    if (!this.ctx || this.isMuted) return;
+
+    const t = this.ctx.currentTime;
+    // Pentatonic royal raga celebration notes: C5, D5, E5, G5, A5, C6
+    const notes = [523.25, 587.33, 659.25, 783.99, 880.0, 1046.5];
+    const delays = [0, 0.08, 0.16, 0.24, 0.34, 0.46];
+
+    notes.forEach((freq, idx) => {
+      const noteTime = t + delays[idx] * this.speedMultiplier;
+      const osc = this.ctx.createOscillator();
+      const osc2 = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, noteTime);
+
+      // Overtone for festive reed/nagaswaram brightness
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(freq * 2, noteTime);
+
+      gain.gain.setValueAtTime(0.001, noteTime);
+      gain.gain.linearRampToValueAtTime(0.12 / (idx === 5 ? 0.7 : 1.0), noteTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + (idx === 5 ? 1.4 : 0.6) * this.speedMultiplier);
+
+      osc.connect(gain);
+      osc2.connect(gain);
+      gain.connect(this.masterGain);
+
+      osc.start(noteTime);
+      osc2.start(noteTime);
+      osc.stop(noteTime + (idx === 5 ? 1.5 : 0.65) * this.speedMultiplier);
+      osc2.stop(noteTime + (idx === 5 ? 1.5 : 0.65) * this.speedMultiplier);
+    });
+  }
 }
 
 // Global audio engine singleton

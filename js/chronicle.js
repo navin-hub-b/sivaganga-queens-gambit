@@ -78,8 +78,8 @@ class SivagangaChronicle {
       },
       {
         id: 5, chapter: 1, chapterName: 'I. Ramanathapuram & Kalaiyar Kovil',
-        title: 'Escape to the Western Ghats', icon: 'defile_crest',
-        desc: 'Chapter I Finale: Escort infant Vellachi and ministers across the cordon.',
+        title: 'The Betrothal', icon: 'betrothal_garland',
+        desc: 'Chapter I Finale: Master archery, combat rhythm, and court diplomacy in the ceremonial fort tournament.',
         x: 800, y: 700, isChapterFinale: true
       },
 
@@ -309,7 +309,15 @@ class SivagangaChronicle {
         this.completedLevels = [];
       }
 
-      // Auto-heal check: if Level 3 is completed, unlockedLevel must be at least 4
+      // Auto-heal check: if a level was completed, subsequent level must be unlocked
+      if (this.completedLevels.includes(5) && this.unlockedLevel < 6) {
+        this.unlockedLevel = 6;
+        if (state) state.unlockedLevel = 6;
+      }
+      if (this.completedLevels.includes(4) && this.unlockedLevel < 5) {
+        this.unlockedLevel = 5;
+        if (state) state.unlockedLevel = 5;
+      }
       if (this.completedLevels.includes(3) && this.unlockedLevel < 4) {
         this.unlockedLevel = 4;
         if (state) state.unlockedLevel = 4;
@@ -627,7 +635,8 @@ class SivagangaChronicle {
       { from: 0, to: 1, label: '~ Royal Tutelage Bridge ~', minUnlocked: 2, curveOffset: -28 },
       { from: 1, to: 2, label: '~ Rampart Bastion Track ~', minUnlocked: 3, curveOffset: 28 },
       { from: 2, to: 3, label: '~ Scribes\' Mandapam Path ~', minUnlocked: 4, curveOffset: -28 },
-      { from: 3, to: 4, label: '~ Western Ghats Highway ~', minUnlocked: 5, curveOffset: 28 }
+      { from: 3, to: 4, label: '~ Ceremonial Courtyard Procession ~', minUnlocked: 5, curveOffset: 28 },
+      { from: 4, to: 5, label: '~ Western Ghats Highway ~', minUnlocked: 6, curveOffset: -28 }
     ];
 
     bridges.forEach(b => {
@@ -1023,6 +1032,8 @@ class SivagangaChronicle {
         return `<svg viewBox="0 0 40 40" width="36" height="36"><path d="M11 8 C21 14 21 26 11 32" fill="none" stroke="${stroke}" stroke-width="2.2" ${dash}/><line x1="11" y1="8" x2="11" y2="32" stroke="${stroke}" stroke-width="1.2" stroke-dasharray="2,1"/><line x1="8" y1="20" x2="28" y2="20" stroke="${stroke}" stroke-width="2"/><polygon points="28,20 23,17 24,20 23,23" fill="${stroke}"/><circle cx="27" cy="20" r="7" fill="${fill}" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="3,2"/></svg>`;
       case 'palm_leaf_scroll':
         return `<svg viewBox="0 0 40 40" width="36" height="36"><rect x="8" y="11" width="24" height="5" rx="1.5" fill="${fill}" stroke="${stroke}" stroke-width="1.5" ${dash}/><rect x="8" y="18" width="24" height="5" rx="1.5" fill="${fill}" stroke="${stroke}" stroke-width="1.5" ${dash}/><rect x="8" y="25" width="24" height="5" rx="1.5" fill="${fill}" stroke="${stroke}" stroke-width="1.5" ${dash}/><line x1="16" y1="9" x2="16" y2="32" stroke="${stroke}" stroke-width="1.8"/><circle cx="20" cy="20" r="3.5" fill="${stroke}"/></svg>`;
+      case 'betrothal_garland':
+        return `<svg viewBox="0 0 40 40" width="36" height="36"><circle cx="20" cy="20" r="13" fill="${fill}" stroke="${stroke}" stroke-width="2" ${dash}/><path d="M12 12 Q 20 6 28 12 Q 32 20 28 28 Q 20 34 12 28 Z" fill="none" stroke="${stroke}" stroke-width="1.2" stroke-dasharray="3,2"/><circle cx="20" cy="11" r="2.5" fill="${stroke}"/><circle cx="27" cy="18" r="2.5" fill="${stroke}"/><circle cx="20" cy="27" r="2.5" fill="${stroke}"/><circle cx="13" cy="18" r="2.5" fill="${stroke}"/><circle cx="20" cy="19" r="4.5" fill="${stroke}"/></svg>`;
       case 'water_kalyani':
         return `<svg viewBox="0 0 40 40" width="36" height="36"><circle cx="20" cy="20" r="14" fill="none" stroke="${stroke}" stroke-width="1.5" ${dash}/><circle cx="20" cy="20" r="9" fill="none" stroke="${stroke}" stroke-width="1.5" ${dash}/><circle cx="20" cy="20" r="4" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/></svg>`;
       case 'granite_column':

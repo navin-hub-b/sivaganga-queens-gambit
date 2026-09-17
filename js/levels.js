@@ -89,42 +89,23 @@ window.sivagangaLevels = [
   {
     id: 5,
     chapter: 1,
-    chapterTitle: 'Chapter I: The Fall of Kalaiyar Kovil (1772)',
-    title: 'Escape to the Western Ghats',
-    subtitle: 'The Midnight Mountain Defile (Chapter Trial)',
-    sigilType: 'rangoli_spiral',
-    mechanicName: 'Chapter 1 Master Trial: Retinue Escort',
-    mechanicDesc: 'Escort your infant daughter Vellachi and loyal commanders through the British mountain defile, combining shadows, water pebbles, pillar cover, and dispatch intel.',
-    loreBriefing: 'The British dragnet tightens around the base of the Western Ghats. Velu Nachiyar, cradling her infant child, must lead her loyal commanders into the safety of the Virupakshi hills.',
-    objective: 'Guide the royal party safely across the cordon into the Western Ghats.',
-    newSystem: 'Retinue Escort & Coordinated Stealth',
+    chapterTitle: 'Chapter I: The Heir of Ramanathapuram (1746)',
+    title: 'The Betrothal',
+    subtitle: 'Ceremonial Fort Tournament & Royal Union (Chapter I Finale)',
+    sigilType: 'garland_ring',
+    mechanicName: 'Chapter 1 Finale: Tournament of Three Virtues',
+    mechanicDesc: 'Master the three ceremonial trials of the royal betrothal tournament: Archery Precision, Silambam Combat Rhythm, and Thamboolam Betel-Leaf Court Diplomacy.',
+    loreBriefing: 'At age sixteen, Princess Velu Nachiyar enters the grand ceremonial courtyard of Ramanathapuram Fort for her betrothal tournament. To seal the historic alliance with King Muthuvaduganatha Periyavudaya Thevar of Sivaganga, she must prove her sovereign mastery before the gathered royal courts across three sacred trials: archery, rhythmic combat, and diplomatic counsel.',
+    objective: 'Triumph in the three tournament trials (Archery, Sparring, and Royal Thamboolam Diplomacy) to earn all three ceremonial flames and seal the Sivaganga alliance.',
+    newSystem: 'Multi-Trial Tournament & Thamboolam Diplomacy',
+    isTournament: true,
     isTrial: true,
-    gridSize: { cols: 12, rows: 8 },
-    startPos: { x: 1, y: 1 },
-    targetPos: { x: 10, y: 6 },
-    shadows: [
-      { x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 },
-      { x: 3, y: 2 }, { x: 3, y: 3 }, { x: 4, y: 3 },
-      { x: 5, y: 3 }, { x: 6, y: 3 }, { x: 7, y: 3 },
-      { x: 7, y: 4 }, { x: 7, y: 5 }, { x: 8, y: 5 },
-      { x: 9, y: 5 }, { x: 10, y: 5 }, { x: 10, y: 6 }
-    ],
-    pillars: [
-      { x: 4, y: 2 }, { x: 6, y: 4 }, { x: 8, y: 3 }
-    ],
-    pebbles: 3,
-    intelPickups: [{ x: 5, y: 2, id: 'intel_ch1' }],
-    sentries: [
-      { x: 5, y: 1, dir: 'down', range: 3 },
-      { x: 2, y: 4, dir: 'right', range: 3 },
-      { x: 8, y: 6, dir: 'up', range: 2 },
-      { x: 9, y: 2, dir: 'left', range: 2 }
-    ],
+    isChapterFinale: true,
     dialogue: {
-      speaker: 'Velu Nachiyar',
-      text: 'Hush, little Vellachi. The jungle will shield us tonight. One day, we shall return to Sivaganga not as fugitives, but as liberators.'
+      speaker: 'King Muthuvaduganatha Thevar',
+      text: 'Princess of Ramnad, your arrows fly true, your staff keeps the rhythm of the Murasu, and your counsel rings with sovereign wisdom. Sivaganga welcomes our eternal union.'
     },
-    historicalFact: 'Velu Nachiyar escaped with her baby daughter Vellachi Nachiyar and walked hundreds of miles through dense forests to find sanctuary under Chieftain Gopala Nayaker of Virupakshi.'
+    historicalFact: 'In 1746, at the age of sixteen, Princess Velu Nachiyar of Ramanathapuram married King Muthuvaduganatha Periyavudaya Thevar of Sivaganga. The marriage united the Sethupathi dynasty with the royal kingdom of Sivaganga, establishing an alliance that later became the heart of the southern resistance against colonial rule.'
   },
 
   // =========================================================================

@@ -1167,7 +1167,7 @@ class SivagangaLevel4TonguesOfTheWorld {
         () => {
           this.stop();
           if (window.sivagangaRouter) {
-            window.sivagangaRouter.navigate('/level/05-escape-to-the-western-ghats', { skipWipe: true });
+            window.sivagangaRouter.routeTo('/level/05-the-betrothal', { skipWipe: true });
           } else if (window.sivagangaGameplay) {
             window.sivagangaGameplay.start(5);
           }
