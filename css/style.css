@@ -855,6 +855,19 @@ html, body {
   margin-bottom: 6px;
 }
 
+.plaque-mechanic-tag {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 11.5px;
+  color: var(--accent-gold);
+  background: rgba(217, 164, 65, 0.14);
+  border: 1px solid rgba(217, 164, 65, 0.45);
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
 .plaque-desc-line {
   font-family: var(--font-serif);
   font-size: 14px;
