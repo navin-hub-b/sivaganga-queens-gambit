@@ -14,7 +14,7 @@ class SivagangaRouter {
     this.canonicalLevels = [
       { id: 1, slug: '01-the-only-child', title: 'The Only Child', chapter: 1 },
       { id: 2, slug: '02-valari-silambam', title: 'Valari & Silambam', chapter: 1 },
-      { id: 3, slug: '03-the-pillared-mandapam', title: 'The Pillared Mandapam', chapter: 1 },
+      { id: 3, slug: '03-horse-and-bow', title: 'Horse and Bow', chapter: 1 },
       { id: 4, slug: '04-the-couriers-message', title: "The Courier's Message", chapter: 1 },
       { id: 5, slug: '05-escape-to-the-western-ghats', title: 'Escape to the Western Ghats', chapter: 1, isFinale: true },
       { id: 6, slug: '06-queen-of-sivaganga', title: 'The Gates of Virupakshi', chapter: 2 },

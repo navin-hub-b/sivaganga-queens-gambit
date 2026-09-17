@@ -51,38 +51,21 @@ window.sivagangaLevels = [
   {
     id: 3,
     chapter: 1,
-    chapterTitle: 'Chapter I: The Fall of Kalaiyar Kovil (1772)',
-    title: 'The Pillared Mandapam',
-    subtitle: 'Hall of a Thousand Pillars',
-    sigilType: 'vision',
-    mechanicName: 'Vision Cones & Granite Pillar Occlusion',
-    mechanicDesc: 'Massive granite pillars block sentry lines of sight. Sentries project square threat cones (Square Indicator). Hide directly behind pillars.',
-    loreBriefing: 'To escape the temple complex, Velu Nachiyar enters the vast pillared hall. Intricate Yali-carved granite pillars break up the sentry lanterns.',
-    objective: 'Navigate through the pillared hall using columns to obstruct sentry vision cones.',
-    newSystem: 'Pillar Line-of-Sight Occlusion',
-    gridSize: { cols: 10, rows: 7 },
-    startPos: { x: 1, y: 5 },
-    targetPos: { x: 8, y: 1 },
-    pillars: [
-      { x: 3, y: 2 }, { x: 3, y: 4 },
-      { x: 5, y: 2 }, { x: 5, y: 4 },
-      { x: 7, y: 2 }, { x: 7, y: 4 }
-    ],
-    shadows: [
-      { x: 1, y: 5 }, { x: 2, y: 5 }, { x: 3, y: 5 },
-      { x: 4, y: 5 }, { x: 4, y: 4 }, { x: 4, y: 3 },
-      { x: 6, y: 3 }, { x: 6, y: 2 }, { x: 6, y: 1 },
-      { x: 7, y: 1 }, { x: 8, y: 1 }
-    ],
-    sentries: [
-      { x: 4, y: 1, dir: 'down', range: 4 },
-      { x: 6, y: 5, dir: 'up', range: 4 }
-    ],
+    chapterTitle: 'Chapter I: The Heir of Ramanathapuram (1740s)',
+    title: 'Horse and Bow',
+    subtitle: 'Equestrian Archery on the Outer Ramparts',
+    sigilType: 'garland_ring',
+    mechanicName: 'Precision Lead-Aim & Horsemanship',
+    mechanicDesc: 'Ride along the sun-baked fort rampart while aiming at woven garland rings. The garland-ring reticle tightens gold on focus and loosens to warm amber as it drifts. Hold draw, time the release, and lead moving targets.',
+    loreBriefing: 'Upon the windswept outer ramparts of Ramanathapuram Fort, young Velu Nachiyar trains in equestrian horsemanship and mounted archery. Master Veera Maravar sets up garland-ring targets along the bastion perimeter to teach precision lead-aim at full canter.',
+    objective: 'Mount your saddled horse, control riding pace along the rampart track, and hit a majority of static and swinging garland rings with the precision reticle.',
+    newSystem: 'Mounted Archery & Lead-Aim Precision',
+    isEquestrianArchery: true,
     dialogue: {
-      speaker: 'Chinna Maruthu',
-      text: 'Stand flush against the pillar, Rani. Their lantern light cannot pierce solid granite.'
+      speaker: 'Master Veera Maravar',
+      text: 'A true Sethupathi warrior rides and shoots as one breath. Watch the garland ring tighten gold—hold your draw, lead the swing, and release!'
     },
-    historicalFact: 'The Maruthu Pandiyar brothers—Periya Maruthu and Chinna Maruthu—were trusted generals of King Muthu Vaduganatha and remained fiercely loyal to Queen Velu Nachiyar.'
+    historicalFact: 'Rani Velu Nachiyar was formally trained from childhood in equestrian horsemanship, Vilvithai (classical archery), Valari, and Silambam, making her one of the rare 18th-century monarchs to master mounted combat.'
   },
   {
     id: 4,

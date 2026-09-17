@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import re
 import urllib.request
 import urllib.error
@@ -10,7 +10,7 @@ CANONICAL_ROUTES = [
     "/chronicle",
     "/level/01-the-only-child",
     "/level/02-valari-silambam",
-    "/level/03-the-pillared-mandapam",
+    "/level/03-horse-and-bow",
     "/level/04-the-couriers-message",
     "/level/05-escape-to-the-western-ghats",
     "/level/06-queen-of-sivaganga",
@@ -33,6 +33,7 @@ CANONICAL_ROUTES = [
 
 EDGE_ROUTES = [
     "/level/02-renamed-future-title",
+    "/level/03-the-pillared-mandapam",
     "/level/99-nonexistent-level",
     "/unknown-deep/exploratory/trail"
 ]

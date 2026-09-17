@@ -73,6 +73,9 @@ class SivagangaGameplay {
     if (window.sivagangaValariSilambam && window.sivagangaValariSilambam.isActive) {
       window.sivagangaValariSilambam.stop();
     }
+    if (window.sivagangaHorseAndBow && window.sivagangaHorseAndBow.isActive) {
+      window.sivagangaHorseAndBow.stop();
+    }
 
     const lvl = window.sivagangaLevels.find(l => l.id === levelNumber);
     if (!lvl) return;
@@ -84,9 +87,8 @@ class SivagangaGameplay {
     this.selectedHero = 'velu';
     this.ripples = [];
 
-    // For Level 1 and Level 2, enter the fort courtyard directly!
-    // Both levels have their rangoli sigils painted diegetically onto the central floor tile.
-    if (lvl.id === 1 || lvl.id === 2) {
+    // For Levels 1, 2, and 3, enter the fort training grounds directly!
+    if (lvl.id === 1 || lvl.id === 2 || lvl.id === 3) {
       const sigilModal = document.getElementById('sigil-modal');
       if (sigilModal) sigilModal.style.display = 'none';
       this.setupStage(lvl);
@@ -166,6 +168,12 @@ class SivagangaGameplay {
       this.handleResize();
       window.sivagangaValariSilambam.init(this.canvas);
       window.sivagangaValariSilambam.start();
+    } else if (lvl.id === 3 && window.sivagangaHorseAndBow) {
+      // Level 3: "Horse and Bow" - Equestrian Horsemanship & Precision Archery
+      this.hidePuzzleOverlays();
+      this.handleResize();
+      window.sivagangaHorseAndBow.init(this.canvas);
+      window.sivagangaHorseAndBow.start();
     } else {
       // Standard Grid Stealth Stage
       this.hidePuzzleOverlays();

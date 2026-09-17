@@ -410,6 +410,165 @@ class SivagangaAudio {
       osc.stop(noteTime + 0.38 * this.speedMultiplier);
     });
   }
+
+  /**
+   * Equestrian Hoofbeat (Dual impact canter rhythm on sun-baked fort earth)
+   */
+  playHoofbeat(intensity = 0.5) {
+    this.ensureContext();
+    if (!this.ctx || this.isMuted) return;
+
+    const t = this.ctx.currentTime;
+    const vol = Math.max(0.05, Math.min(0.25, 0.12 * intensity));
+
+    // Two-beat impact (foreleg then hindleg ground contact ~80ms apart)
+    [0, 0.08].forEach((offset, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const filter = this.ctx.createBiquadFilter();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(idx === 0 ? 85 : 70, t + offset);
+      osc.frequency.exponentialRampToValueAtTime(35, t + offset + 0.05);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(160, t + offset);
+
+      gain.gain.setValueAtTime(0.001, t + offset);
+      gain.gain.linearRampToValueAtTime(vol * (idx === 0 ? 1.0 : 0.8), t + offset + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + offset + 0.065);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.masterGain);
+
+      osc.start(t + offset);
+      osc.stop(t + offset + 0.07);
+    });
+  }
+
+  /**
+   * Bowstring Draw Tension (Subtle wood creak & string stretch)
+   */
+  playBowstringDraw(chargeRatio = 0.5) {
+    this.ensureContext();
+    if (!this.ctx || this.isMuted) return;
+
+    const t = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(140 + chargeRatio * 80, t);
+    osc.frequency.linearRampToValueAtTime(220 + chargeRatio * 120, t + 0.08);
+
+    gain.gain.setValueAtTime(0.001, t);
+    gain.gain.linearRampToValueAtTime(0.04, t + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+
+    osc.start(t);
+    osc.stop(t + 0.10);
+  }
+
+  /**
+   * Arrow Release & Flight (High-speed string twang & aerodynamic whoosh)
+   */
+  playArrowRelease() {
+    this.ensureContext();
+    if (!this.ctx || this.isMuted) return;
+
+    const t = this.ctx.currentTime;
+
+    // 1. String snap twang
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(420, t);
+    osc.frequency.exponentialRampToValueAtTime(95, t + 0.09);
+
+    gain.gain.setValueAtTime(0.12, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.10);
+
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(t);
+    osc.stop(t + 0.11);
+
+    // 2. Flight whoosh (White noise band-pass sweep)
+    try {
+      const bufferSize = Math.floor(this.ctx.sampleRate * 0.18);
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1200, t);
+      filter.frequency.exponentialRampToValueAtTime(450, t + 0.16);
+      filter.Q.setValueAtTime(3.5, t);
+
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.001, t);
+      noiseGain.gain.linearRampToValueAtTime(0.09, t + 0.03);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.17);
+
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.masterGain);
+
+      noise.start(t);
+      noise.stop(t + 0.18);
+    } catch (e) {}
+  }
+
+  /**
+   * Garland Ring Impact Snap (Target post thud + crisp floral burst chime)
+   */
+  playGarlandSnap(isGoldHit = true) {
+    this.ensureContext();
+    if (!this.ctx || this.isMuted) return;
+
+    const t = this.ctx.currentTime;
+
+    // Wooden post target thud
+    const thud = this.ctx.createOscillator();
+    const thudGain = this.ctx.createGain();
+    thud.type = 'sine';
+    thud.frequency.setValueAtTime(180, t);
+    thud.frequency.exponentialRampToValueAtTime(50, t + 0.08);
+
+    thudGain.gain.setValueAtTime(0.18, t);
+    thudGain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+
+    thud.connect(thudGain);
+    thudGain.connect(this.masterGain);
+    thud.start(t);
+    thud.stop(t + 0.10);
+
+    // Golden floral harmonic sparkle (Jasmine & Marigold bell ping)
+    const bellFreq = isGoldHit ? 880 : 660;
+    const bell = this.ctx.createOscillator();
+    const bellGain = this.ctx.createGain();
+    bell.type = 'triangle';
+    bell.frequency.setValueAtTime(bellFreq, t);
+
+    bellGain.gain.setValueAtTime(0.001, t);
+    bellGain.gain.linearRampToValueAtTime(0.15, t + 0.015);
+    bellGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.28);
+
+    bell.connect(bellGain);
+    bellGain.connect(this.masterGain);
+    bell.start(t);
+    bell.stop(t + 0.30);
+  }
 }
 
 // Global audio engine singleton
