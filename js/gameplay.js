@@ -76,6 +76,9 @@ class SivagangaGameplay {
     if (window.sivagangaHorseAndBow && window.sivagangaHorseAndBow.isActive) {
       window.sivagangaHorseAndBow.stop();
     }
+    if (window.sivagangaTonguesOfTheWorld && window.sivagangaTonguesOfTheWorld.isActive) {
+      window.sivagangaTonguesOfTheWorld.stop();
+    }
 
     const lvl = window.sivagangaLevels.find(l => l.id === levelNumber);
     if (!lvl) return;
@@ -87,8 +90,8 @@ class SivagangaGameplay {
     this.selectedHero = 'velu';
     this.ripples = [];
 
-    // For Levels 1, 2, and 3, enter the fort training grounds directly!
-    if (lvl.id === 1 || lvl.id === 2 || lvl.id === 3) {
+    // For Levels 1, 2, 3, and 4, enter the training grounds/study hall directly!
+    if (lvl.id === 1 || lvl.id === 2 || lvl.id === 3 || lvl.id === 4) {
       const sigilModal = document.getElementById('sigil-modal');
       if (sigilModal) sigilModal.style.display = 'none';
       this.setupStage(lvl);
@@ -174,6 +177,12 @@ class SivagangaGameplay {
       this.handleResize();
       window.sivagangaHorseAndBow.init(this.canvas);
       window.sivagangaHorseAndBow.start();
+    } else if (lvl.id === 4 && window.sivagangaTonguesOfTheWorld) {
+      // Level 4: "Tongues of the World" - Multilingual Translation & Code Matching
+      this.hidePuzzleOverlays();
+      this.handleResize();
+      window.sivagangaTonguesOfTheWorld.init(this.canvas);
+      window.sivagangaTonguesOfTheWorld.start();
     } else {
       // Standard Grid Stealth Stage
       this.hidePuzzleOverlays();

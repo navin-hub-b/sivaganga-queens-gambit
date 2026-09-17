@@ -718,7 +718,7 @@ class SivagangaLevel3HorseBow {
         () => {
           this.stop();
           if (window.sivagangaRouter) {
-            window.sivagangaRouter.navigate('/level/04-the-couriers-message', { skipWipe: true });
+            window.sivagangaRouter.navigate('/level/04-tongues-of-the-world', { skipWipe: true });
           } else if (window.sivagangaGameplay) {
             window.sivagangaGameplay.start(4);
           }

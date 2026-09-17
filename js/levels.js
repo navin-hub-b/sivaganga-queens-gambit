@@ -71,35 +71,20 @@ window.sivagangaLevels = [
     id: 4,
     chapter: 1,
     chapterTitle: 'Chapter I: The Fall of Kalaiyar Kovil (1772)',
-    title: 'The Courier\'s Message',
-    subtitle: 'Royal Dispatch Interception',
+    title: 'Tongues of the World',
+    subtitle: 'Multilingual Diplomacy & Scribes\' Cipher',
     sigilType: 'bead_strand',
-    mechanicName: 'Intel Garland Collection',
-    mechanicDesc: 'Intercept British patrol dispatches marked as glowing courier bags. Each gathered letter threads a new bead onto your Intel Garland (Triangle Indicator).',
-    loreBriefing: 'British dispatch riders carry orders outlining the search cordons. Intercepting these letters gives Velu Nachiyar the exact positions of colonial road pickets.',
-    objective: 'Gather 2 British dispatch orders and reach the forest exit.',
-    newSystem: 'Intel Garland Collection',
-    gridSize: { cols: 10, rows: 7 },
-    startPos: { x: 1, y: 2 },
-    targetPos: { x: 8, y: 4 },
-    intelPickups: [
-      { x: 4, y: 2, id: 'intel_1' },
-      { x: 5, y: 5, id: 'intel_2' }
-    ],
-    shadows: [
-      { x: 1, y: 2 }, { x: 2, y: 2 }, { x: 3, y: 2 }, { x: 4, y: 2 },
-      { x: 4, y: 3 }, { x: 4, y: 4 }, { x: 5, y: 4 }, { x: 5, y: 5 },
-      { x: 6, y: 5 }, { x: 7, y: 5 }, { x: 8, y: 5 }, { x: 8, y: 4 }
-    ],
-    sentries: [
-      { x: 3, y: 4, dir: 'right', range: 3 },
-      { x: 6, y: 2, dir: 'left', range: 3 }
-    ],
+    mechanicName: 'Palm-Leaf Translation & Code Matching',
+    mechanicDesc: 'Decipher intercepted colonial and diplomatic dispatches by matching torn palm-leaf script fragments across Tamil, English, French, and Urdu.',
+    loreBriefing: 'Inside the quiet, lamplit scribes\' hall of Ramanathapuram Fort, young Velu Nachiyar studies the four strategic tongues of the subcontinent with Chief Royal Scholar Periya Pandithar. Deciphering intercepted colonial and allied letters reveals critical troop movements and foreshadows the covert spy network of Chapter 3.',
+    objective: 'Match the torn palm-leaf fragments across three translation puzzles to decipher intercepted dispatches and uncover the shadow spy network.',
+    newSystem: 'Palm-Leaf Translation & Code Matching',
+    isTranslationPuzzle: true,
     dialogue: {
-      speaker: 'Velu Nachiyar',
-      text: 'Their courier carries the sealed orders of Colonel Joseph Smith. Knowledge of their march is our greatest weapon.'
+      speaker: 'Periya Pandithar',
+      text: 'A true sovereign commands the tongues of both her allies and adversaries. Read the palm-leaves, Princess Velu—for wars are decided by shadow spies.'
     },
-    historicalFact: 'British documents reveal Colonel Joseph Smith and Abraham Bonne Vane were tasked with eliminating the Sivaganga royal line to ensure Nawab rule.'
+    historicalFact: 'Rani Velu Nachiyar was renowned as a multilingual scholar-warrior, having mastered Tamil, English, French, and Urdu. Her direct diplomacy in Urdu with Nawab Hyder Ali of Mysore later secured 5,000 cavalry and infantry to liberate Sivaganga.'
   },
   {
     id: 5,
