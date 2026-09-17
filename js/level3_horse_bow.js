@@ -36,6 +36,7 @@ class SivagangaLevel3HorseBow {
     // 2: Drill Completed / Gateway Unlocked
     this.phase = 0;
     this.isTransitioning = false;
+    this.victoryRecorded = false;
 
     // Protagonist & Horse
     this.horse = {
@@ -170,6 +171,8 @@ class SivagangaLevel3HorseBow {
   resetState() {
     this.phase = 0;
     this.isTransitioning = false;
+    this.victoryRecorded = false;
+    this.cleanupGatewayUI();
     this.cameraX = 0;
     this.targetCameraX = 0;
     this.hitCount = 0;
@@ -236,6 +239,7 @@ class SivagangaLevel3HorseBow {
 
   stop() {
     this.isActive = false;
+    this.cleanupGatewayUI();
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
       this.animationId = null;
@@ -267,6 +271,12 @@ class SivagangaLevel3HorseBow {
       if (this.phase === 0) {
         // Mount horse from first screen
         this.mountHorse();
+        return;
+      }
+      if (this.phase >= 2 || (this.hitCount >= this.requiredHits && this.victoryRecorded)) {
+        // Instant advance to Level 4
+        e.preventDefault();
+        this.transitionToLevel4();
         return;
       }
     }
@@ -444,8 +454,12 @@ class SivagangaLevel3HorseBow {
     this.cameraX += (this.targetCameraX - this.cameraX) * dt * 4.0;
     this.cameraX = Math.min(Math.max(0, this.cameraX), this.trackLength - this.width);
 
-    // Check if horse completed the track run
-    if (this.horse.x >= this.trackLength - 280 && this.phase === 1) {
+    // Check if horse completed the track run, passed final targets with victory, or exhausted arrows
+    const passedTargets = this.horse.x >= 2850;
+    const endOfTrack = this.horse.x >= this.trackLength - 280;
+    const outOfArrows = this.velu.arrowsLeft <= 0 && this.arrows.length === 0;
+
+    if (this.phase === 1 && (endOfTrack || (this.hitCount >= this.requiredHits && (passedTargets || this.horse.x >= 2600)) || outOfArrows)) {
       this.evaluateDrillCompletion();
     }
 
@@ -617,16 +631,33 @@ class SivagangaLevel3HorseBow {
             window.sivagangaAudio.playGarlandSnap(true);
           }
 
-          // Mentor encouragement
+          // Mentor encouragement & early threshold unlock
           if (this.hitCount === 1) {
             this.mentor.message = 'Direct hit! The garland ring shattered clean!';
             this.mentor.timer = 4.0;
-          } else if (this.hitCount === this.requiredHits) {
-            this.mentor.message = 'Superb accuracy! You have satisfied the archer threshold!';
-            this.mentor.timer = 4.5;
+          } else if (this.hitCount >= this.requiredHits && !this.victoryRecorded) {
+            this.victoryRecorded = true;
+            this.mentor.message = 'Superb accuracy! Bastion Rampart Gate Unlocked! Press [Enter] or tap button to advance to Scribes\' Hall.';
+            this.mentor.timer = 6.0;
+
+            if (window.sivagangaSave) {
+              window.sivagangaSave.recordLevelVictory(3, {
+                accuracyHits: this.hitCount,
+                totalTargets: this.totalTargets,
+                discipline: 'Equestrian Archery Mastered'
+              });
+              window.sivagangaSave.unlockLevel(4);
+              window.sivagangaSave.recordChronicleNode(3);
+            }
+            this.showBastionGatewayPrompt();
           } else if (this.hitCount === this.totalTargets) {
             this.mentor.message = 'FLAWLESS! Every single garland ring cleaved in canter!';
             this.mentor.timer = 5.0;
+            setTimeout(() => {
+              if (this.isActive && this.phase === 1) {
+                this.evaluateDrillCompletion();
+              }
+            }, 800);
           }
 
           this.arrows.splice(i, 1);
@@ -658,13 +689,64 @@ class SivagangaLevel3HorseBow {
     }
   }
 
+  showBastionGatewayPrompt() {
+    if (document.getElementById('level3-bastion-gateway-banner')) return;
+    const stage = document.querySelector('.level-canvas-stage') || document.getElementById('view-level-play');
+    if (!stage) return;
+
+    const banner = document.createElement('div');
+    banner.id = 'level3-bastion-gateway-banner';
+    banner.className = 'level3-gateway-banner';
+    banner.style.position = 'absolute';
+    banner.style.bottom = '42px';
+    banner.style.left = '50%';
+    banner.style.transform = 'translateX(-50%)';
+    banner.style.zIndex = '45';
+    banner.style.background = 'rgba(32, 18, 14, 0.95)';
+    banner.style.border = '2px solid #D9A441';
+    banner.style.borderRadius = '6px';
+    banner.style.padding = '12px 24px';
+    banner.style.display = 'flex';
+    banner.style.flexDirection = 'column';
+    banner.style.alignItems = 'center';
+    banner.style.gap = '8px';
+    banner.style.boxShadow = '0 6px 20px rgba(0,0,0,0.7), 0 0 16px rgba(217, 164, 65, 0.4)';
+
+    banner.innerHTML = `
+      <div style="color: #A7BEAE; font-family: 'Calibri', sans-serif; font-size: 11px; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase;">
+        Ramparts Cleared &bull; Bastion Gate Unlocked
+      </div>
+      <div style="color: #fcedcb; font-family: 'Cambria', serif; font-size: 14px; text-align: center;">
+        Archery threshold achieved (${this.hitCount}/${this.totalTargets} Rings Struck).
+      </div>
+      <button id="level3-proceed-btn" class="btn-tamil btn-primary" style="margin-top: 4px; padding: 8px 22px; font-size: 13.5px; cursor: pointer;">
+        Proceed to Level 4: Tongues of the World [Enter] &rarr;
+      </button>
+    `;
+
+    stage.appendChild(banner);
+
+    const btn = banner.querySelector('#level3-proceed-btn');
+    if (btn) {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        this.transitionToLevel4();
+      };
+    }
+  }
+
+  cleanupGatewayUI() {
+    const banner = document.getElementById('level3-bastion-gateway-banner');
+    if (banner) banner.remove();
+  }
+
   evaluateDrillCompletion() {
     if (this.phase >= 2) return;
     this.phase = 2;
 
     if (this.hitCount >= this.requiredHits) {
       // Threshold satisfied: Unlock Bastion Gate to Level 4
-      this.mentor.message = `TRIUMPH! ${this.hitCount}/${this.totalTargets} garland rings struck. The Outer Bastion Rampart Gate is unlocked!`;
+      this.mentor.message = `TRIUMPH! ${this.hitCount}/${this.totalTargets} garland rings struck. Outer Bastion Rampart Gate is unlocked!`;
       this.mentor.timer = 6.0;
 
       if (window.sivagangaAudio) {
@@ -677,15 +759,18 @@ class SivagangaLevel3HorseBow {
           totalTargets: this.totalTargets,
           discipline: 'Equestrian Archery Mastered'
         });
+        window.sivagangaSave.unlockLevel(4);
         window.sivagangaSave.recordChronicleNode(3);
       }
 
-      // Auto-step through the gateway after a brief reflection period
+      this.showBastionGatewayPrompt();
+
+      // Auto-step through the gateway after a brief reflection period (2.4s)
       setTimeout(() => {
         if (this.isActive && !this.isTransitioning) {
           this.transitionToLevel4();
         }
-      }, 3400);
+      }, 2400);
     } else {
       // Under threshold: Friendly mentor reset for practice
       this.mentor.message = `${this.hitCount}/${this.totalTargets} hits. Turn the horse around and try again, Princess Velu!`;
@@ -705,6 +790,7 @@ class SivagangaLevel3HorseBow {
   transitionToLevel4() {
     if (this.isTransitioning) return;
     this.isTransitioning = true;
+    this.cleanupGatewayUI();
 
     if (window.sivagangaAudio) {
       window.sivagangaAudio.playResolveBell();
@@ -713,21 +799,37 @@ class SivagangaLevel3HorseBow {
 
     if (window.sivagangaInteraction) window.sivagangaInteraction.setLock(true);
 
+    if (window.sivagangaSave) {
+      window.sivagangaSave.recordLevelVictory(3, {
+        accuracyHits: this.hitCount,
+        totalTargets: this.totalTargets,
+        discipline: 'Equestrian Archery Mastered'
+      });
+      window.sivagangaSave.unlockLevel(4);
+      window.sivagangaSave.recordChronicleNode(3);
+    }
+
+    const proceed = () => {
+      this.stop();
+      if (window.sivagangaRouter) {
+        window.sivagangaRouter.routeTo('/level/04-tongues-of-the-world', { skipWipe: true });
+      } else if (window.sivagangaGameplay) {
+        window.sivagangaGameplay.start(4);
+      }
+      if (window.sivagangaInteraction) window.sivagangaInteraction.setLock(false);
+      this.isTransitioning = false;
+    };
+
     if (window.sivagangaTransitions) {
       window.sivagangaTransitions.wipe(
-        () => {
-          this.stop();
-          if (window.sivagangaRouter) {
-            window.sivagangaRouter.navigate('/level/04-tongues-of-the-world', { skipWipe: true });
-          } else if (window.sivagangaGameplay) {
-            window.sivagangaGameplay.start(4);
-          }
-        },
+        proceed,
         () => {
           if (window.sivagangaInteraction) window.sivagangaInteraction.setLock(false);
           this.isTransitioning = false;
         }
       );
+    } else {
+      proceed();
     }
   }
 

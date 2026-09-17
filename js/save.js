@@ -79,6 +79,13 @@ class SivagangaSaveManager {
     fresh.completedLevels = Array.isArray(data.completedLevels) ? data.completedLevels : [];
     fresh.levelStats = (data.levelStats && typeof data.levelStats === 'object') ? data.levelStats : {};
 
+    // Auto-heal progression: if a level was completed, the subsequent level must be unlocked
+    if (fresh.completedLevels.includes(3)) {
+      fresh.unlockedLevel = Math.max(fresh.unlockedLevel, 4);
+    } else if (fresh.completedLevels.includes(2)) {
+      fresh.unlockedLevel = Math.max(fresh.unlockedLevel, 3);
+    }
+
     // Resources clamping
     if (data.resources) {
       fresh.resources.morale = SivagangaSaveManager.clamp(data.resources.morale, 0, 100);

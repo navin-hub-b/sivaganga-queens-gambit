@@ -66,14 +66,14 @@ class SivagangaChronicle {
       },
       {
         id: 3, chapter: 1, chapterName: 'I. Ramanathapuram & Kalaiyar Kovil',
-        title: 'The Pillared Mandapam', icon: 'granite_column',
-        desc: 'Use one thousand granite pillars to occlude British lantern cones.',
+        title: 'Horse and Bow', icon: 'horse_bow',
+        desc: 'Master equestrian horsemanship and precision mounted lead-aim archery along the fort ramparts.',
         x: 520, y: 720
       },
       {
         id: 4, chapter: 1, chapterName: 'I. Ramanathapuram & Kalaiyar Kovil',
-        title: 'The Courier\'s Message', icon: 'garland_bead',
-        desc: 'Intercept Colonel Smith\'s search dispatch bags for the intel garland.',
+        title: 'Tongues of the World', icon: 'palm_leaf_scroll',
+        desc: 'Decipher intercepted colonial and diplomatic dispatches across Tamil, French, English, and Urdu to uncover the shadow spy network.',
         x: 660, y: 620
       },
       {
@@ -307,6 +307,16 @@ class SivagangaChronicle {
         this.completedLevels = state.completedLevels.filter(n => typeof n === 'number' && n >= 1 && n <= 20);
       } else {
         this.completedLevels = [];
+      }
+
+      // Auto-heal check: if Level 3 is completed, unlockedLevel must be at least 4
+      if (this.completedLevels.includes(3) && this.unlockedLevel < 4) {
+        this.unlockedLevel = 4;
+        if (state) state.unlockedLevel = 4;
+      }
+      if (this.completedLevels.includes(2) && this.unlockedLevel < 3) {
+        this.unlockedLevel = Math.max(this.unlockedLevel, 3);
+        if (state) state.unlockedLevel = Math.max(state.unlockedLevel || 1, 3);
       }
 
       this.currentNodeId = this.unlockedLevel;
@@ -612,10 +622,21 @@ class SivagangaChronicle {
     });
     ctx.stroke();
 
-    // Prominent golden pedagogical arc connecting Level 1 (Courtyard) and Level 2 (Valari & Silambam)
-    const n1 = this.nodes[0];
-    const n2 = this.nodes[1];
-    if (n1 && n2) {
+    // Prominent golden pedagogical arcs connecting unlocked/completed levels in Chapter 1
+    const bridges = [
+      { from: 0, to: 1, label: '~ Royal Tutelage Bridge ~', minUnlocked: 2, curveOffset: -28 },
+      { from: 1, to: 2, label: '~ Rampart Bastion Track ~', minUnlocked: 3, curveOffset: 28 },
+      { from: 2, to: 3, label: '~ Scribes\' Mandapam Path ~', minUnlocked: 4, curveOffset: -28 },
+      { from: 3, to: 4, label: '~ Western Ghats Highway ~', minUnlocked: 5, curveOffset: 28 }
+    ];
+
+    bridges.forEach(b => {
+      const na = this.nodes[b.from];
+      const nb = this.nodes[b.to];
+      if (!na || !nb) return;
+      const isAchieved = this.completedLevels.includes(nb.id) || this.unlockedLevel >= b.minUnlocked;
+      if (!isAchieved) return;
+
       ctx.save();
       ctx.strokeStyle = '#D9A441';
       ctx.lineWidth = 5;
@@ -623,20 +644,20 @@ class SivagangaChronicle {
       ctx.shadowColor = '#D9A441';
       ctx.shadowBlur = 10;
       ctx.beginPath();
-      ctx.moveTo(n1.x, n1.y);
-      const midX = (n1.x + n2.x) / 2;
-      const midY = (n1.y + n2.y) / 2 - 28;
-      ctx.quadraticCurveTo(midX, midY, n2.x, n2.y);
+      ctx.moveTo(na.x, na.y);
+      const midX = (na.x + nb.x) / 2;
+      const midY = (na.y + nb.y) / 2 + b.curveOffset;
+      ctx.quadraticCurveTo(midX, midY, nb.x, nb.y);
       ctx.stroke();
 
-      // Label: Tutelage Flow
+      // Label
       ctx.font = 'bold 11px "Cambria", serif';
       ctx.fillStyle = '#4a2817';
       ctx.textAlign = 'center';
       ctx.shadowBlur = 0;
-      ctx.fillText('~ Tutelage Bridge ~', midX, midY - 6);
+      ctx.fillText(b.label, midX, midY + (b.curveOffset < 0 ? -6 : 16));
       ctx.restore();
-    }
+    });
 
     ctx.restore();
   }
@@ -998,6 +1019,10 @@ class SivagangaChronicle {
     switch (iconType) {
       case 'shadow_crescent':
         return `<svg viewBox="0 0 40 40" width="36" height="36"><path d="M20 6 C12 6 6 12 6 20 C6 28 12 34 20 34 C15 30 15 10 20 6 Z" fill="${fill}" stroke="${stroke}" stroke-width="2" ${dash}/></svg>`;
+      case 'horse_bow':
+        return `<svg viewBox="0 0 40 40" width="36" height="36"><path d="M11 8 C21 14 21 26 11 32" fill="none" stroke="${stroke}" stroke-width="2.2" ${dash}/><line x1="11" y1="8" x2="11" y2="32" stroke="${stroke}" stroke-width="1.2" stroke-dasharray="2,1"/><line x1="8" y1="20" x2="28" y2="20" stroke="${stroke}" stroke-width="2"/><polygon points="28,20 23,17 24,20 23,23" fill="${stroke}"/><circle cx="27" cy="20" r="7" fill="${fill}" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="3,2"/></svg>`;
+      case 'palm_leaf_scroll':
+        return `<svg viewBox="0 0 40 40" width="36" height="36"><rect x="8" y="11" width="24" height="5" rx="1.5" fill="${fill}" stroke="${stroke}" stroke-width="1.5" ${dash}/><rect x="8" y="18" width="24" height="5" rx="1.5" fill="${fill}" stroke="${stroke}" stroke-width="1.5" ${dash}/><rect x="8" y="25" width="24" height="5" rx="1.5" fill="${fill}" stroke="${stroke}" stroke-width="1.5" ${dash}/><line x1="16" y1="9" x2="16" y2="32" stroke="${stroke}" stroke-width="1.8"/><circle cx="20" cy="20" r="3.5" fill="${stroke}"/></svg>`;
       case 'water_kalyani':
         return `<svg viewBox="0 0 40 40" width="36" height="36"><circle cx="20" cy="20" r="14" fill="none" stroke="${stroke}" stroke-width="1.5" ${dash}/><circle cx="20" cy="20" r="9" fill="none" stroke="${stroke}" stroke-width="1.5" ${dash}/><circle cx="20" cy="20" r="4" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/></svg>`;
       case 'granite_column':
