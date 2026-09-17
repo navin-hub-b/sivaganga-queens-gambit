@@ -225,6 +225,23 @@
           </div>
         </div>
 
+        <!-- Campaign Journey Ribbon: Chapter · Trial step · Mechanic badge · Prev/Chronicle/Next nav -->
+        <div class="journey-ribbon" id="journey-ribbon">
+          <div class="journey-ribbon-left">
+            <span id="level-breadcrumb-chapter" class="journey-chapter-tag">CHAPTER I · THE ROYAL LINEAGE (1730–1746)</span>
+            <span class="journey-sep">·</span>
+            <span id="level-breadcrumb-step" class="journey-step">TRIAL 1 OF 20</span>
+          </div>
+          <div class="journey-ribbon-center">
+            <span id="level-mechanic-badge" class="journey-mechanic-badge">Courtyard Free-Roam &amp; Tutelage</span>
+          </div>
+          <div class="journey-ribbon-right">
+            <button id="level-prev-btn" class="journey-nav-btn" title="Previous Trial" style="display:none;">&#8592; Prev</button>
+            <button id="level-chronicle-btn-ribbon" class="journey-nav-btn journey-chronicle-btn" title="Chronicle Map">&#9783; Chronicle</button>
+            <button id="level-next-btn" class="journey-nav-btn" title="Next Trial" style="display:none;">Next &#8594;</button>
+          </div>
+        </div>
+
         <!-- Interactive Canvas Stage -->
         <div class="level-canvas-stage">
           <canvas id="gameplay-canvas"></canvas>
@@ -240,6 +257,9 @@
             <div id="dialogue-content-text" class="dialogue-text">Dialogue</div>
           </div>
         </div>
+
+        <!-- Royal Scribe Narrative Bridge Modal (injected by narrative_flow.js) -->
+        <div id="campaign-narrative-bridge-modal" class="narrative-bridge-overlay" style="display:none;"></div>
       </div>
     </section>
 
@@ -446,7 +466,8 @@
   <script src="js/level5_the_betrothal.js?v=2.5"></script>
   <script src="js/level6_queen_of_sivaganga.js?v=2.5"></script>
   <script src="js/level7_the_companys_shadow.js?v=2.6"></script>
-  <script src="js/gameplay.js?v=2.5"></script>
+  <script src="js/narrative_flow.js?v=2.6"></script>
+  <script src="js/gameplay.js?v=2.6"></script>
   <script src="js/home_screen.js?v=2.5"></script>
   <script src="js/router.js?v=2.5"></script>
   <script src="js/main.js?v=2.5"></script>

@@ -1672,6 +1672,201 @@ html, body {
   color: var(--accent-gold);
   margin-bottom: 6px;
 }
+.flow-bridge-objective {
+  background: rgba(46, 27, 21, 0.7);
+  border: 1px solid rgba(217, 164, 65, 0.45);
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 26px;
+  font-family: var(--font-serif);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--accent-sage);
+  text-align: left;
+}
+
+.flow-bridge-action-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Floating Courtyard Flow Waypoint Prompt in Level 1 */
+.courtyard-flow-prompt-banner {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(36, 20, 16, 0.95);
+  border: 2px solid var(--accent-gold);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(217, 164, 65, 0.4);
+  border-radius: 30px;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 15;
+  animation: pulseGlow 2.5s infinite alternate;
+}
+
+.courtyard-flow-prompt-text {
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  color: #faebd7;
+}
+
+.flow-header-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  background: rgba(46, 31, 27, 0.8);
+  transition: all 0.25s ease;
+}
+
+.flow-header-link-btn:hover {
+  background: var(--accent-gold);
+  color: var(--bg-maroon);
+  box-shadow: 0 0 12px rgba(217, 164, 65, 0.6);
+}
+
+.tutor-progress-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(30, 18, 14, 0.85);
+  border: 1px solid var(--accent-gold);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--accent-gold);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* In-Level Historical Lore & Sacred Objective Toggle */
+#level-lore-toggle-btn {
+  background: rgba(46, 31, 27, 0.85);
+  border: 1.5px solid var(--accent-gold);
+  color: var(--accent-gold);
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-family: var(--font-serif);
+  font-size: 12.5px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#level-lore-toggle-btn:hover {
+  background: var(--accent-gold);
+  color: var(--bg-maroon);
+  box-shadow: 0 0 12px rgba(217, 164, 65, 0.5);
+  transform: translateY(-1px);
+}
+
+#level-lore-modal {
+  z-index: 9100;
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 10, 8, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* =========================================================================
+   LEVEL 7: THE COMPANY'S SHADOW - DUSK STEALTH & VICTORY OVERLAY
+   ========================================================================= */
+
+.level7-victory-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 12, 10, 0.88);
+  backdrop-filter: blur(5px);
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.level7-victory-card {
+  background: var(--bg-maroon);
+  border: 2.5px solid var(--accent-gold);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9), 0 0 24px rgba(217, 164, 65, 0.3);
+  border-radius: 6px;
+  max-width: 540px;
+  width: 100%;
+  padding: 28px;
+  text-align: center;
+  position: relative;
+}
+
+.level7-victory-card::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(217, 164, 65, 0.4);
+  pointer-events: none;
+}
+
+.level7-victory-chapter {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--accent-sage);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.level7-victory-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--accent-gold);
+  margin: 0 0 4px 0;
+}
+
+.level7-victory-subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 14px;
+  color: #eeddcc;
+  margin: 0 0 18px 0;
+}
+
+.level7-victory-body {
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #eeddcc;
+  margin-bottom: 22px;
+}
+
+.level7-intel-summary {
+  background: rgba(30, 20, 16, 0.7);
+  border: 1px solid rgba(217, 164, 65, 0.4);
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin: 14px 0;
+  text-align: left;
+}
+
+.intel-summary-item {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--accent-gold);
+  margin-bottom: 6px;
+}
 
 .intel-summary-item:last-child {
   margin-bottom: 0;
@@ -1682,4 +1877,264 @@ html, body {
   justify-content: center;
   gap: 14px;
   flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   CAMPAIGN JOURNEY RIBBON
+   Thin contextual band beneath the level header: chapter tag · trial step ·
+   mechanic badge · quick nav buttons (prev / chronicle / next)
+   ========================================================================== */
+
+.journey-ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 16px;
+  background: rgba(22, 13, 11, 0.82);
+  border-bottom: 1px solid rgba(217, 164, 65, 0.22);
+  font-family: 'Calibri', 'Segoe UI', sans-serif;
+  font-size: 11.5px;
+  letter-spacing: 0.9px;
+  color: #c8b08a;
+  z-index: 5;
+  min-height: 32px;
+  flex-shrink: 0;
+}
+
+.journey-ribbon-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 1 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.journey-chapter-tag {
+  text-transform: uppercase;
+  color: var(--accent-sage, #A7BEAE);
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: 1.2px;
+}
+
+.journey-sep {
+  color: rgba(217, 164, 65, 0.5);
+  font-size: 10px;
+}
+
+.journey-step {
+  color: var(--accent-gold, #D9A441);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+}
+
+.journey-ribbon-center {
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
+}
+
+.journey-mechanic-badge {
+  display: inline-block;
+  background: rgba(217, 164, 65, 0.12);
+  border: 1px solid rgba(217, 164, 65, 0.35);
+  border-radius: 3px;
+  padding: 2px 9px;
+  font-size: 10px;
+  color: #d9c08a;
+  letter-spacing: 0.8px;
+  font-family: 'Cambria', Georgia, serif;
+  white-space: nowrap;
+}
+
+.journey-ribbon-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.journey-nav-btn {
+  background: rgba(46, 31, 27, 0.9);
+  border: 1px solid rgba(217, 164, 65, 0.3);
+  border-radius: 4px;
+  color: #c8b08a;
+  font-family: 'Calibri', 'Segoe UI', sans-serif;
+  font-size: 10.5px;
+  letter-spacing: 0.7px;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.journey-nav-btn:hover {
+  background: rgba(184, 80, 66, 0.22);
+  border-color: rgba(217, 164, 65, 0.65);
+  color: #f0d9a0;
+}
+
+.journey-chronicle-btn {
+  border-color: rgba(167, 190, 174, 0.4);
+  color: var(--accent-sage, #A7BEAE);
+}
+
+.journey-chronicle-btn:hover {
+  background: rgba(167, 190, 174, 0.12);
+  border-color: var(--accent-sage, #A7BEAE);
+  color: #c8dfcc;
+}
+
+/* ==========================================================================
+   ROYAL SCRIBE NARRATIVE BRIDGE MODAL
+   Full-screen overlay shown after each level completes.
+   Three story paragraphs + next-trial preview + action buttons.
+   ========================================================================== */
+
+.narrative-bridge-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(14, 8, 6, 0.92);
+  display: none;             /* toggled to flex by JS */
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(3px);
+}
+
+.narrative-bridge-card {
+  background: linear-gradient(160deg, #2a1710 0%, #1c0e09 100%);
+  border: 1px solid rgba(217, 164, 65, 0.45);
+  border-radius: 8px;
+  max-width: 660px;
+  width: 100%;
+  padding: 32px 36px;
+  box-shadow:
+    0 0 0 1px rgba(184, 80, 66, 0.15),
+    0 8px 40px rgba(0, 0, 0, 0.75),
+    0 0 60px rgba(217, 164, 65, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(217, 164, 65, 0.3) transparent;
+}
+
+.narrative-bridge-header {
+  border-bottom: 1px solid rgba(217, 164, 65, 0.18);
+  padding-bottom: 14px;
+}
+
+.narrative-bridge-chapter-tag {
+  display: block;
+  font-family: 'Calibri', 'Segoe UI', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--accent-sage, #A7BEAE);
+  margin-bottom: 8px;
+}
+
+.narrative-bridge-title {
+  font-family: 'Cambria', Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent-gold, #D9A441);
+  margin-bottom: 4px;
+  line-height: 1.25;
+}
+
+.narrative-bridge-subtitle {
+  font-family: 'Cambria', Georgia, serif;
+  font-size: 13px;
+  color: #b09070;
+  font-style: italic;
+  margin: 0;
+}
+
+.narrative-bridge-story {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.narrative-bridge-story p {
+  font-family: 'Cambria', Georgia, serif;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: #eeddc8;
+  margin: 0;
+}
+
+.narrative-bridge-next-preview {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: rgba(184, 80, 66, 0.08);
+  border: 1px solid rgba(184, 80, 66, 0.28);
+  border-radius: 6px;
+  padding: 14px 16px;
+}
+
+.narrative-next-icon {
+  font-size: 26px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.narrative-next-label {
+  font-family: 'Calibri', 'Segoe UI', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--accent-gold, #D9A441);
+  margin-bottom: 5px;
+}
+
+.narrative-next-desc {
+  font-family: 'Cambria', Georgia, serif;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #c8b49a;
+}
+
+.narrative-bridge-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+.narrative-btn-wide {
+  flex: 1 1 auto;
+}
+
+/* Small-screen adjustments */
+@media (max-width: 600px) {
+  .narrative-bridge-card {
+    padding: 22px 18px;
+  }
+
+  .narrative-bridge-actions {
+    flex-direction: column;
+  }
+
+  .journey-ribbon {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px 10px;
+  }
+
+  .journey-ribbon-center {
+    display: none;
+  }
 }

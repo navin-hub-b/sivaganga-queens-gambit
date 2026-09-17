@@ -47,6 +47,10 @@ class SivagangaLevel6QueenOfSivaganga {
     this.decisionsHistory = [];
     this.viewMode = 'table'; // 'table' (council desk) or 'town' (panoramic window zoom)
 
+    // Intro screen: shown on first entry to explain the mechanic
+    this.showIntro = true;
+    this.introTimer = 0; // counts up after player dismisses; -1 means not yet shown
+
     // Smooth physical object animation ratios (interpolated towards target)
     this.displayGrainRatio = 0.5;
     this.displayGoldRatio = 0.5;
@@ -326,8 +330,11 @@ class SivagangaLevel6QueenOfSivaganga {
         if (this.currentTurn >= this.totalTurns) {
           this.isLevelCompleted = true;
           this.viewMode = 'town';
+          this.showIntro = false;
         } else {
-          this.showFeedback(`Council Resumed: Decision ${this.currentTurn + 1} of 4`, '#D9A441', 3.0);
+          // Resuming: skip intro, show resume message
+          this.showIntro = false;
+          this.showFeedback(`Council Resumed — Decision ${this.currentTurn + 1} of 4`, '#D9A441', 3.0);
         }
       } else {
         this.currentTurn = 0;
@@ -516,7 +523,7 @@ class SivagangaLevel6QueenOfSivaganga {
     this.spawnCeremonialPetals();
   }
 
-  transitionToChronicle() {
+  transitionToLevel7() {
     if (this.isTransitioning) return;
     this.isTransitioning = true;
 
@@ -531,10 +538,10 @@ class SivagangaLevel6QueenOfSivaganga {
       window.sivagangaTransitions.wipe(
         () => {
           this.stop();
-          if (window.sivagangaRouter) {
-            window.sivagangaRouter.routeTo('/chronicle', { skipWipe: true });
-          } else if (window.sivagangaFlow) {
-            window.sivagangaFlow.transition('CHRONICLE');
+          if (window.sivagangaGameplay) {
+            window.sivagangaGameplay.start(7);
+          } else if (window.sivagangaRouter) {
+            window.sivagangaRouter.navigate('/level/07-the-companys-shadow');
           }
         },
         () => {
@@ -551,11 +558,22 @@ class SivagangaLevel6QueenOfSivaganga {
   handleKeyDown(e) {
     if (!this.isActive) return;
 
-    // Finale keypress: continue to Chronicle
+    // Dismiss intro screen
+    if (this.showIntro) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape' ||
+          e.key === '1' || e.key === '2' || e.key === '3') {
+        e.preventDefault();
+        this.showIntro = false;
+        if (window.sivagangaAudio) window.sivagangaAudio.playFocusPing();
+      }
+      return;
+    }
+
+    // Finale keypress: advance to Level 7
     if (this.isLevelCompleted) {
       if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
         e.preventDefault();
-        this.transitionToChronicle();
+        this.transitionToLevel7();
         return;
       }
     }
@@ -593,8 +611,15 @@ class SivagangaLevel6QueenOfSivaganga {
     const mx = (e.clientX - rect.left) * (this.width / rect.width);
     const my = (e.clientY - rect.top) * (this.height / rect.height);
 
+    // Dismiss intro
+    if (this.showIntro) {
+      this.showIntro = false;
+      if (window.sivagangaAudio) window.sivagangaAudio.playFocusPing();
+      return;
+    }
+
     if (this.isLevelCompleted) {
-      this.transitionToChronicle();
+      this.transitionToLevel7();
       return;
     }
 
@@ -755,7 +780,7 @@ class SivagangaLevel6QueenOfSivaganga {
       this.renderArchedWindowView(ctx, 260, 55, 280, 180, false);
 
       // 3. Current Decision Dialogue & Advisor Counsel
-      this.renderDecisionPanel(ctx, w, h);
+      if (!this.showIntro) this.renderDecisionPanel(ctx, w, h);
 
       // 4. Low Teak Council Table with Physical Objects
       this.renderCouncilTableAndResources(ctx, w, h);
@@ -763,11 +788,19 @@ class SivagangaLevel6QueenOfSivaganga {
       // 5. Particles
       this.renderParticles(ctx);
 
-      // 6. Action Guide & Feedback Toast
-      this.renderBottomGuideAndFeedback(ctx, w, h);
+      // 6. Turn Progress Bar (always visible when in table view)
+      if (!this.showIntro) this.renderTurnProgressBar(ctx, w, h);
+
+      // 7. Action Guide & Feedback Toast
+      if (!this.showIntro) this.renderBottomGuideAndFeedback(ctx, w, h);
     } else {
       // Full Panoramic Window Establishing View
       this.renderPanoramicTownView(ctx, w, h);
+    }
+
+    // Intro overlay (shown first time only)
+    if (this.showIntro) {
+      this.renderIntroOverlay(ctx, w, h);
     }
 
     // Finale Proclamation Overlay when all 4 decisions conclude
@@ -1567,7 +1600,153 @@ class SivagangaLevel6QueenOfSivaganga {
 
     ctx.font = 'bold 13.5px "Cambria", serif';
     ctx.fillStyle = '#fdfbf7';
-    ctx.fillText('ENTER THE CHRONICLE [ENTER / SPACE]', w / 2, btnY + 25);
+    ctx.fillText('ADVANCE TO LEVEL 7: THE COMPANY\'S SHADOW  [ENTER / SPACE]', w / 2, btnY + 25);
+
+    ctx.restore();
+  }
+
+  // -------------------------------------------------------------------------
+  // INTRO OVERLAY — explains the mechanic on first entry
+  // -------------------------------------------------------------------------
+  renderIntroOverlay(ctx, w, h) {
+    ctx.save();
+
+    // Dim background
+    ctx.fillStyle = 'rgba(14, 8, 6, 0.90)';
+    ctx.fillRect(0, 0, w, h);
+
+    // Card
+    const cx = w * 0.1;
+    const cy = h * 0.08;
+    const cw = w * 0.8;
+    const ch = h * 0.84;
+
+    ctx.fillStyle = '#2E1F1B';
+    ctx.beginPath();
+    ctx.roundRect(cx, cy, cw, ch, 8);
+    ctx.fill();
+    ctx.strokeStyle = '#D9A441';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // Inner border
+    ctx.strokeStyle = 'rgba(217,164,65,0.3)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(cx + 6, cy + 6, cw - 12, ch - 12);
+
+    // Chapter tag
+    ctx.font = 'bold 10px "Calibri", sans-serif';
+    ctx.fillStyle = '#A7BEAE';
+    ctx.textAlign = 'center';
+    ctx.fillText('CHAPTER II · THE SOVEREIGN REIGN (1746–1772)', w / 2, cy + 26);
+
+    // Title
+    ctx.font = 'bold 22px "Cambria", serif';
+    ctx.fillStyle = '#D9A441';
+    ctx.fillText('Trial VI: Queen of Sivaganga', w / 2, cy + 58);
+
+    ctx.font = 'italic 13px "Cambria", serif';
+    ctx.fillStyle = '#A7BEAE';
+    ctx.fillText('Statecraft · Village-Economy Management', w / 2, cy + 80);
+
+    // Divider
+    ctx.strokeStyle = 'rgba(217,164,65,0.35)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(cx + 40, cy + 95);
+    ctx.lineTo(cx + cw - 40, cy + 95);
+    ctx.stroke();
+
+    // Story context
+    ctx.font = '13.5px "Cambria", serif';
+    ctx.fillStyle = '#eeddc8';
+    ctx.textAlign = 'center';
+    const story = [
+      'It is 1746. Velu Nachiyar is now Queen Consort of Sivaganga,',
+      'ruling alongside King Muthuvaduganatha Periyavudaya Thevar.',
+      'You must guide the kingdom through four seasons of statecraft:',
+      'managing grain, gold, and the loyalty of your people.'
+    ];
+    story.forEach((line, i) => ctx.fillText(line, w / 2, cy + 122 + i * 20));
+
+    // HOW TO PLAY section
+    ctx.font = 'bold 11px "Calibri", sans-serif';
+    ctx.fillStyle = '#D9A441';
+    ctx.fillText('HOW TO PLAY', w / 2, cy + 210);
+
+    const tips = [
+      ['📜  Four Seasonal Decisions', 'Spring · Summer · Autumn · Winter. Each season presents a governing crisis.'],
+      ['🏛  Three Choices', 'Press [1], [2] or [3] — or click a card — to choose your policy.'],
+      ['🌾  Watch the Table', 'Grain baskets, gold stacks and the loyalty garland change with each decision.'],
+      ['🪟  See the Town', 'Press [V] or click the arched window to inspect how Sivaganga responds.']
+    ];
+
+    tips.forEach(([title, desc], i) => {
+      const ty = cy + 235 + i * 38;
+      ctx.font = 'bold 12px "Cambria", serif';
+      ctx.fillStyle = '#f4e5d2';
+      ctx.textAlign = 'center';
+      ctx.fillText(title, w / 2, ty);
+      ctx.font = '11.5px "Cambria", serif';
+      ctx.fillStyle = '#b09070';
+      ctx.fillText(desc, w / 2, ty + 17);
+    });
+
+    // CTA button
+    const btnW = 280;
+    const btnH = 38;
+    const btnX = w / 2 - btnW / 2;
+    const btnY = cy + ch - 58;
+
+    ctx.fillStyle = '#B85042';
+    ctx.beginPath();
+    ctx.roundRect(btnX, btnY, btnW, btnH, 5);
+    ctx.fill();
+    ctx.strokeStyle = '#D9A441';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.font = 'bold 13px "Cambria", serif';
+    ctx.fillStyle = '#fdfbf7';
+    ctx.textAlign = 'center';
+    ctx.fillText('BEGIN COUNCIL  [ANY KEY / CLICK]', w / 2, btnY + 24);
+
+    ctx.restore();
+  }
+
+  // -------------------------------------------------------------------------
+  // TURN PROGRESS BAR — 4 seasonal pips across the top
+  // -------------------------------------------------------------------------
+  renderTurnProgressBar(ctx, w, h) {
+    ctx.save();
+
+    const seasons = ['Spring', 'Summer', 'Autumn', 'Winter'];
+    const pipW = 140;
+    const pipH = 22;
+    const gap = 12;
+    const totalW = seasons.length * pipW + (seasons.length - 1) * gap;
+    const startX = (w - totalW) / 2;
+    const barY = h - 50;
+
+    seasons.forEach((season, i) => {
+      const px = startX + i * (pipW + gap);
+      const done = i < this.currentTurn;
+      const current = i === this.currentTurn;
+
+      ctx.fillStyle = done ? '#3a2018' : current ? '#54261d' : '#1a0e0b';
+      ctx.beginPath();
+      ctx.roundRect(px, barY, pipW, pipH, 4);
+      ctx.fill();
+
+      ctx.strokeStyle = done ? '#D9A441' : current ? '#B85042' : 'rgba(217,164,65,0.2)';
+      ctx.lineWidth = current ? 2 : 1;
+      ctx.stroke();
+
+      ctx.font = `${current ? 'bold ' : ''}10px "Calibri", sans-serif`;
+      ctx.fillStyle = done ? '#D9A441' : current ? '#fdfbf7' : '#6b4129';
+      ctx.textAlign = 'center';
+      ctx.fillText((done ? '✓ ' : current ? '▶ ' : '') + season.toUpperCase(), px + pipW / 2, barY + 14);
+    });
 
     ctx.restore();
   }

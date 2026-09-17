@@ -662,47 +662,67 @@ class SivagangaLevel7TheCompanysShadow {
     overlay.innerHTML = `
       <div class="level7-victory-card">
         <div class="level7-victory-header">
-          <span class="level7-victory-chapter">CHAPTER II: THE SOVEREIGN REIGN (1772)</span>
-          <h2 class="level7-victory-title">Trial VII: The Company's Shadow — Victorious</h2>
+          <span class="level7-victory-chapter">CHAPTER II · THE SOVEREIGN REIGN (1772)</span>
+          <h2 class="level7-victory-title">Trial VII: The Company's Shadow — Complete</h2>
           <p class="level7-victory-subtitle">Sivaganga's Counter-Espionage Secured</p>
         </div>
         <div class="level7-victory-body">
           <p>
-            Rani Velu Nachiyar slipped through the twilight shadows of the fort and market, evading British East India Company scouts and Nawab sepoys to secure all three intercepted ledgers.
+            Rani Velu Nachiyar slipped through the twilight shadows of the fort and market,
+            evading British East India Company scouts and Nawab sepoys to secure all three
+            intercepted intelligence ledgers.
           </p>
           <div class="level7-intel-summary">
-            <div class="intel-summary-item">✔ EIC Garrison Roster & Artillery Route</div>
+            <div class="intel-summary-item">✔ EIC Garrison Roster &amp; Artillery Route</div>
             <div class="intel-summary-item">✔ Nawab of Arcot's Extortion Demand</div>
             <div class="intel-summary-item">✔ Secret Sluice Survey of the Southern Moat</div>
           </div>
-          <p style="font-style: italic; color: #eeddcc; font-size: 13px;">
-            "Though storm clouds gather over Kalaiyar Kovil, our queen now knows the paths they tread. We prepare for the long road ahead."
+          <p style="font-style: italic; color: #eeddcc; font-size: 13px; margin-top: 10px;">
+            The ledgers confirm what she feared most: the Company and the Nawab plan a joint
+            assault within the year. She must ride north to Hyder Ali of Mysore — and forge
+            the alliance that will make a recapture possible. The road ahead is long.
+          </p>
+          <p style="font-size: 12px; color: #A7BEAE; margin-top: 8px; letter-spacing: 0.8px;">
+            CHAPTER II COMPLETE — Levels 8–20 are under development.
+            Consult the Chronicle Map to review your full journey so far.
           </p>
         </div>
         <div class="level7-victory-actions">
-          <button id="level7-advance-btn" class="btn-tamil btn-primary">Advance to Level 8: The Dindigul Durbar &rarr;</button>
-          <button id="level7-chronicle-btn" class="btn-tamil">Consult the Chronicle Map</button>
+          <button id="level7-replay-btn" class="btn-tamil">↺ Replay Trial VII</button>
+          <button id="level7-chronicle-btn" class="btn-tamil btn-primary">View Chronicle Map →</button>
         </div>
       </div>
     `;
 
     overlay.style.display = 'flex';
 
-    document.getElementById('level7-advance-btn').onclick = () => {
+    // Replay: restart level 7
+    document.getElementById('level7-replay-btn').onclick = () => {
       overlay.style.display = 'none';
-      if (window.sivagangaRouter) {
-        window.sivagangaRouter.navigate('/level/08-the-dindigul-durbar');
-      } else if (window.sivagangaFlow) {
-        window.sivagangaFlow.transition('SELECT_NODE', { levelId: 8 });
+      this.isLevelCompleted = false;
+      this.stop();
+      if (window.sivagangaGameplay) {
+        window.sivagangaGameplay.start(7);
       }
     };
 
+    // Chronicle Map
     document.getElementById('level7-chronicle-btn').onclick = () => {
       overlay.style.display = 'none';
-      if (window.sivagangaRouter) {
+      if (window.sivagangaTransitions) {
+        window.sivagangaTransitions.wipe(
+          () => {
+            this.stop();
+            if (window.sivagangaRouter) {
+              window.sivagangaRouter.navigate('/chronicle');
+            } else if (window.sivagangaFlow) {
+              window.sivagangaFlow.transition('GO_CHRONICLE');
+            }
+          },
+          () => {}
+        );
+      } else if (window.sivagangaRouter) {
         window.sivagangaRouter.navigate('/chronicle');
-      } else if (window.sivagangaFlow) {
-        window.sivagangaFlow.transition('GATE_CHRONICLE');
       }
     };
   }
