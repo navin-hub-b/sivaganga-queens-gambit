@@ -156,6 +156,11 @@ class SivagangaSaveManager {
     }
   }
 
+  recordLevelVictory(lvlNumber, stats = {}, isReplay = false) {
+    this.unlockLevel(lvlNumber + 1);
+    return this.recordLevelComplete(lvlNumber, stats, isReplay);
+  }
+
   recordLevelComplete(lvlNumber, stats = {}, isReplay = false) {
     // If this is a replay of Level 8 or Level 18, preserve canonical state
     if (isReplay && (lvlNumber === 8 || lvlNumber === 18)) {
@@ -166,8 +171,8 @@ class SivagangaSaveManager {
       this.state.completedLevels.push(lvlNumber);
     }
     this.state.levelStats[lvlNumber] = stats;
-    if (lvlNumber + 1 > this.state.unlockedLevel && lvlNumber < 20) {
-      this.state.unlockedLevel = lvlNumber + 1;
+    if (lvlNumber + 1 > this.state.unlockedLevel && lvlNumber <= 20) {
+      this.state.unlockedLevel = Math.min(20, lvlNumber + 1);
     }
     return this.save();
   }

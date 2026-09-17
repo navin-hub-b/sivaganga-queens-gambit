@@ -21,10 +21,12 @@ class SivagangaLevel2ValariSilambam {
     // Fixed Game-Clock Rhythm Engine (Framerate Independent)
     this.bpm = 72; // 72 Beats Per Minute (~833.33ms per beat)
     this.beatIntervalMs = 60000 / this.bpm;
-    this.hitWindowToleranceMs = 140; // ±140ms on-beat window
+    this.hitWindowToleranceMs = 200; // ±200ms on-beat window (~48% forgiving rhythm detection)
     this.startTime = 0;
     this.lastDrumBeatIndex = -1;
-    this.lastActionBeatIndex = -1; // Clamps input to single action per beat window
+    this.lastActionBeatIndex = -1;
+    this.lastInputTimestamp = 0; // 100ms hardware key debounce
+    this.lastSuccessfulActionBeat = -1; // Prevents double hits on same beat without locking out on-beat presses
 
     // Gameplay Phases:
     // 0: Intro Dialogue
@@ -139,6 +141,8 @@ class SivagangaLevel2ValariSilambam {
     this.startTime = performance.now();
     this.lastDrumBeatIndex = -1;
     this.lastActionBeatIndex = -1;
+    this.lastInputTimestamp = 0;
+    this.lastSuccessfulActionBeat = -1;
     this.phase = 0;
     this.phaseProgress = 0;
     this.particles = [];
@@ -214,12 +218,12 @@ class SivagangaLevel2ValariSilambam {
 
     const btnStrike = document.createElement('button');
     btnStrike.className = 'btn-tamil btn-primary';
-    btnStrike.style.cssText = 'padding: 6px 14px; font-size: 12px;';
+    btnStrike.style.cssText = 'padding: 6px 14px; font-size: 12px; cursor: pointer;';
     btnStrike.innerHTML = `
       <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="margin-right: 4px; vertical-align: middle;">
         <path d="M14.5 2.5l7 7-10 10-7-7 10-10zm-3 5l-5 5 1.5 1.5 5-5-1.5-1.5z"/>
       </svg>
-      <span>Strike [J / Space]</span>
+      <span>Strike [J / Space / D]</span>
     `;
     btnStrike.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -228,12 +232,12 @@ class SivagangaLevel2ValariSilambam {
 
     const btnBlock = document.createElement('button');
     btnBlock.className = 'btn-tamil btn-sage';
-    btnBlock.style.cssText = 'padding: 6px 14px; font-size: 12px;';
+    btnBlock.style.cssText = 'padding: 6px 14px; font-size: 12px; cursor: pointer;';
     btnBlock.innerHTML = `
       <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="margin-right: 4px; vertical-align: middle;">
         <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/>
       </svg>
-      <span>Block [K / Shift]</span>
+      <span>Block [K / Shift / A]</span>
     `;
     btnBlock.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -285,13 +289,16 @@ class SivagangaLevel2ValariSilambam {
       return;
     }
 
-    if (e.code === 'KeyJ' || e.code === 'Space') {
+    const isStrikeKey = e.code === 'KeyJ' || e.code === 'Space' || e.code === 'KeyD' || e.code === 'ArrowRight' || e.code === 'Digit1';
+    const isBlockKey = e.code === 'KeyK' || e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyA' || e.code === 'ArrowLeft' || e.code === 'Digit2';
+
+    if (isStrikeKey) {
       if (!this.keysHeld.strike) {
         this.keysHeld.strike = true;
         this.triggerPlayerAction('strike');
       }
       e.preventDefault();
-    } else if (e.code === 'KeyK' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+    } else if (isBlockKey) {
       if (!this.keysHeld.block) {
         this.keysHeld.block = true;
         this.triggerPlayerAction('block');
@@ -301,9 +308,12 @@ class SivagangaLevel2ValariSilambam {
   }
 
   handleKeyUp(e) {
-    if (e.code === 'KeyJ' || e.code === 'Space') {
+    const isStrikeKey = e.code === 'KeyJ' || e.code === 'Space' || e.code === 'KeyD' || e.code === 'ArrowRight' || e.code === 'Digit1';
+    const isBlockKey = e.code === 'KeyK' || e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyA' || e.code === 'ArrowLeft' || e.code === 'Digit2';
+
+    if (isStrikeKey) {
       this.keysHeld.strike = false;
-    } else if (e.code === 'KeyK' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+    } else if (isBlockKey) {
       this.keysHeld.block = false;
     }
   }
@@ -319,7 +329,17 @@ class SivagangaLevel2ValariSilambam {
       const pathX = w - 70;
       const pathY = 320;
       if (Math.hypot(clickX - pathX, clickY - pathY) < 55) {
-        this.transitionToLevel3();
+        if (this.phase >= 4) {
+          this.transitionToLevel3();
+        } else {
+          this.showTutorPlaque(
+            'Master Veera Maravar',
+            'The secret Mandapam colonnade remains barred until you master staff and sickle drills!'
+          );
+          if (window.sivagangaAudio) {
+            window.sivagangaAudio.playQuietFade();
+          }
+        }
         return;
       }
     }
@@ -330,13 +350,14 @@ class SivagangaLevel2ValariSilambam {
   triggerPlayerAction(actionType) {
     if (!this.isActive) return;
     const now = performance.now();
-    const beatInfo = this.getCurrentBeatInfo(now);
 
-    // ANTI-SPAM CLAMP: Only one action allowed per beat window
-    if (this.lastActionBeatIndex === beatInfo.beatIndex) {
+    // Input debounce (100ms) prevents physical key bouncing without blocking beat accuracy
+    if (now - this.lastInputTimestamp < 100) {
       return;
     }
-    this.lastActionBeatIndex = beatInfo.beatIndex;
+    this.lastInputTimestamp = now;
+
+    const beatInfo = this.getCurrentBeatInfo(now);
 
     if (actionType === 'strike') {
       this.executeStrikeAction(beatInfo);
@@ -352,7 +373,7 @@ class SivagangaLevel2ValariSilambam {
       this.phaseTarget = 3;
       this.showTutorPlaque(
         'Master Veera Maravar',
-        'Phase 1: Strike the training dummy with your Silambam staff in rhythm with the Murasu pulse! [Press J / Space on-beat]'
+        'Phase 1: Strike the training dummy with your Silambam staff in rhythm with the Murasu pulse! [Press J / Space / D on-beat]'
       );
       return;
     }
@@ -362,6 +383,9 @@ class SivagangaLevel2ValariSilambam {
       this.player.actionTimer = 0.28;
 
       if (beatInfo.isOnBeat) {
+        if (this.lastSuccessfulActionBeat === beatInfo.beatIndex) return;
+        this.lastSuccessfulActionBeat = beatInfo.beatIndex;
+
         this.phaseProgress++;
         this.dummy.wobble = 14;
         this.dummy.hitFlash = 0.3;
@@ -405,6 +429,9 @@ class SivagangaLevel2ValariSilambam {
       this.player.actionTimer = 0.35;
 
       if (beatInfo.isOnBeat) {
+        if (this.lastSuccessfulActionBeat === beatInfo.beatIndex) return;
+        this.lastSuccessfulActionBeat = beatInfo.beatIndex;
+
         this.valari.active = true;
         this.valari.startX = this.player.x + 14;
         this.valari.startY = this.player.y - 20;
@@ -433,9 +460,17 @@ class SivagangaLevel2ValariSilambam {
       this.player.stance = 'strike_silambam';
       this.player.actionTimer = 0.28;
 
-      if (this.sparringPartner.state === 'recoiling' && beatInfo.isOnBeat) {
+      const canCounter = (this.sparringPartner.state === 'recoiling' || this.sparringPartner.state === 'striking');
+
+      if (canCounter && beatInfo.isOnBeat) {
+        if (this.lastSuccessfulActionBeat === beatInfo.beatIndex) return;
+        this.lastSuccessfulActionBeat = beatInfo.beatIndex;
+
         this.phaseProgress++;
-        this.sparringPartner.wobble = 16;
+        this.sparringPartner.wobble = 18;
+        this.sparringPartner.state = 'idle';
+        this.sparringPartner.blockedSuccessfully = false;
+        this.sparringPartner.actionTimer = 0;
         this.rangoliSigil.lightFlare = 1.0;
 
         if (window.sivagangaAudio) {
@@ -443,21 +478,26 @@ class SivagangaLevel2ValariSilambam {
           window.sivagangaAudio.playSoftLightFlare();
         }
 
-        this.spawnFlareParticles(this.sparringPartner.x, this.sparringPartner.y - 25, '#A7BEAE');
+        this.spawnFlareParticles(this.sparringPartner.x, this.sparringPartner.y - 25, '#D9A441');
 
         if (this.phaseProgress >= this.phaseTarget) {
           this.resolveLevel();
         } else {
-          this.sparringPartner.state = 'idle';
           this.showTutorPlaque(
             'Master Veera Maravar',
-            `Excellent counter! (${this.phaseProgress}/3) Kandan readies his next telegraph.`
+            `Flawless counter! (${this.phaseProgress}/3) Kandan readies his next staff telegraph.`
           );
         }
       } else {
         this.rangoliSigil.missFade = 0.4;
         if (window.sivagangaAudio) {
           window.sivagangaAudio.playQuietFade();
+        }
+        if (this.sparringPartner.state === 'idle') {
+          this.showTutorPlaque(
+            'Master Veera Maravar',
+            'Wait for Kandan to raise his guard, block his strike, then counter-attack!'
+          );
         }
       }
     }
@@ -474,9 +514,12 @@ class SivagangaLevel2ValariSilambam {
     this.player.actionTimer = 0.38;
 
     if (this.sparringPartner.state === 'striking' && beatInfo.isOnBeat) {
+      if (this.lastSuccessfulActionBeat === beatInfo.beatIndex) return;
+      this.lastSuccessfulActionBeat = beatInfo.beatIndex;
+
       this.sparringPartner.state = 'recoiling';
       this.sparringPartner.blockedSuccessfully = true;
-      this.sparringPartner.actionTimer = 0.8;
+      this.sparringPartner.actionTimer = 1.8; // Generous 1.8s recoil window spanning the next full beat (~833ms) and follow-up
       this.rangoliSigil.lightFlare = 0.9;
 
       if (window.sivagangaAudio) {
@@ -487,7 +530,7 @@ class SivagangaLevel2ValariSilambam {
 
       this.showTutorPlaque(
         'Master Veera Maravar',
-        'Staff locked in poise! Now COUNTER-STRIKE on the immediate next beat!'
+        'Staff locked in poise! PARRIED! Now COUNTER-STRIKE [J / Space / D] on the next beat!'
       );
     } else {
       this.rangoliSigil.missFade = 0.4;
@@ -566,13 +609,19 @@ class SivagangaLevel2ValariSilambam {
   }
 
   updateSparringPartnerAI(currentBeat) {
+    if (this.sparringPartner.state === 'recoiling') {
+      // Allow player ample time to land their counter-strike
+      return;
+    }
+
     if (this.sparringPartner.state === 'idle') {
       if (currentBeat % 3 === 0) {
         this.sparringPartner.state = 'telegraph_windup';
         this.sparringPartner.telegraphBeat = currentBeat;
+        this.sparringPartner.blockedSuccessfully = false;
         this.showTutorPlaque(
           'Master Veera Maravar',
-          'TELEGRAPH! Kandan raises his rattan staff—read his posture and prepare to BLOCK on the drum strike!'
+          'TELEGRAPH! Kandan raises his rattan staff—prepare to BLOCK [K / Shift / A] on the drum strike!'
         );
       }
     } else if (this.sparringPartner.state === 'telegraph_windup') {
@@ -1326,7 +1375,7 @@ class SivagangaLevel2ValariSilambam {
     this.phase = 4;
     this.showTutorPlaque(
       'Master Veera Maravar',
-      'TRIUMPH! The secret Mandapam colonnade on the eastern boundary is now illuminated—step through into Level 3!'
+      'TRIUMPH! The secret Mandapam colonnade on the eastern rampart is now illuminated—step through into Level 3!'
     );
 
     if (window.sivagangaAudio) {
@@ -1340,6 +1389,7 @@ class SivagangaLevel2ValariSilambam {
         martialCadence: 'Mastered',
         unlockedWeapons: ['Valari Sickle', 'Silambam Rattan']
       });
+      window.sivagangaSave.unlockLevel(3);
       window.sivagangaSave.recordChronicleNode(2);
     }
 
@@ -1368,6 +1418,7 @@ class SivagangaLevel2ValariSilambam {
         martialCadence: 'Mastered',
         unlockedWeapons: ['Valari Sickle', 'Silambam Rattan']
       });
+      window.sivagangaSave.unlockLevel(3);
       window.sivagangaSave.recordChronicleNode(2);
     }
 
@@ -1376,7 +1427,7 @@ class SivagangaLevel2ValariSilambam {
         () => {
           this.stop();
           if (window.sivagangaRouter) {
-            window.sivagangaRouter.navigate('/level/03-the-pillared-mandapam', { skipWipe: true });
+            window.sivagangaRouter.navigate('/level/03-horse-and-bow', { skipWipe: true });
           } else if (window.sivagangaGameplay) {
             window.sivagangaGameplay.start(3);
           }
