@@ -94,9 +94,9 @@ class SivagangaChronicle {
         x: 990, y: 520
       },
       {
-        id: 7, chapter: 2, chapterName: 'II. Virupakshi Sanctuary & Alliance (1772–1779)',
-        title: 'The Granary Allocation', icon: 'grain_basket', mechanic: 'Resource Rationing & Clamping',
-        desc: 'Ration coarse millet and silver among refugee families and scouts in the Virupakshi highland depot.',
+        id: 7, chapter: 2, chapterName: 'II. The Sovereign Reign of Sivaganga (1746–1772)',
+        title: "The Company's Shadow", icon: 'patrol_lantern', mechanic: 'Stealth Infiltration & Patrol Awareness',
+        desc: 'Move unseen through Sivaganga Fort ramparts and market lanes at dusk, evading patrol cones to gather strategic enemy intelligence.',
         x: 1120, y: 640
       },
       {
@@ -1594,6 +1594,9 @@ class SivagangaChronicle {
       case 'council_table':
         // Level 6: Teakwood Council Table with Grain Basket, Gold Coins, and Loyalty Garland
         return `<svg viewBox="0 0 40 40" width="36" height="36"><rect x="6" y="24" width="28" height="5" rx="1" fill="${fill}" stroke="${stroke}" stroke-width="1.8" ${dash}/><line x1="10" y1="29" x2="8" y2="35" stroke="${stroke}" stroke-width="2"/><line x1="30" y1="29" x2="32" y2="35" stroke="${stroke}" stroke-width="2"/><path d="M9 16 Q 14 13 19 16 L 17 24 Q 14 25 11 24 Z" fill="${fill}" stroke="${stroke}" stroke-width="1.5" ${dash}/><rect x="23" y="19" width="8" height="2" rx="1" fill="${stroke}"/><rect x="23" y="16" width="8" height="2" rx="1" fill="${stroke}"/><rect x="23" y="13" width="8" height="2" rx="1" fill="${stroke}"/><path d="M12 24 Q 20 20 28 24" fill="none" stroke="${stroke}" stroke-width="1.6" stroke-dasharray="2,2"/><circle cx="15" cy="22" r="1.5" fill="${stroke}"/><circle cx="20" cy="21" r="1.5" fill="${stroke}"/><circle cx="25" cy="22" r="1.5" fill="${stroke}"/></svg>`;
+      case 'patrol_lantern':
+        // Level 7: Patrol Lantern with soft radiant vision cone rays
+        return `<svg viewBox="0 0 40 40" width="36" height="36"><path d="M14 26 L26 26 L23 15 L17 15 Z" fill="${fill}" stroke="${stroke}" stroke-width="1.8" ${dash}/><path d="M17 15 C17 10 23 10 23 15" fill="none" stroke="${stroke}" stroke-width="1.8"/><circle cx="20" cy="21" r="2.5" fill="${stroke}"/><path d="M26 18 L34 13 M26 21 L35 21 M26 24 L34 29" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="2,2"/></svg>`;
       case 'grain_basket':
         return `<svg viewBox="0 0 40 40" width="36" height="36"><path d="M10 18 Q 20 14 30 18 L26 32 Q 20 34 14 32 Z" fill="${fill}" stroke="${stroke}" stroke-width="2" ${dash}/></svg>`;
       case 'persian_scroll':

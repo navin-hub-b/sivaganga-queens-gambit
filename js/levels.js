@@ -129,18 +129,21 @@ window.sivagangaLevels = [
   {
     id: 7,
     chapter: 2,
-    chapterTitle: 'Chapter II: The Exile at Dindigul & The Triple Alliance (1772–1779)',
-    title: 'The Granary Allocation',
-    subtitle: 'Virupakshi Supply Depot',
-    sigilType: 'bead_strand',
-    mechanicName: 'Resource Rationing (Grain & Silver Clamping)',
-    mechanicDesc: 'Allocate grain bags and silver coins among the refugee camp, the garrison, and scout networks. Ensure no sector falls below survival thresholds.',
-    loreBriefing: 'Winter descends upon the highlands. Over two thousand refugees from Sivaganga have gathered. Velu Nachiyar personally oversees fair grain rationing to maintain high morale and prepare troops.',
-    objective: 'Balance the rations so that Refugee Morale >= 75 and Defense Readiness >= 75.',
-    newSystem: 'Resource Management & Clamping',
-    puzzleType: 'granary_balance',
-    initialSupplies: { grain: 400, gold: 200 },
-    historicalFact: 'During her exile, Velu Nachiyar earned deep reverence because she shared the same modest coarse millets as her followers, ensuring no family starved in exile.'
+    chapterTitle: 'Chapter II: The Sovereign Reign of Sivaganga (1746–1772)',
+    title: "The Company's Shadow",
+    subtitle: 'Sivaganga Fort Ramparts & Market Lanes at Dusk (1772)',
+    sigilType: 'patrol_lantern',
+    mechanicName: 'Awareness & Stealth Infiltration (Patrol Lantern Cones)',
+    mechanicDesc: "Move unseen through Sivaganga Fort's outer ramparts and market lanes at dusk. Avoid East India Company and Nawab patrols whose vision cones render as soft torchlight glows. Watch your oil lamp flicker from steady gold toward amber as risk rises.",
+    loreBriefing: 'By 1772, the British East India Company and the Nawab of Arcot have begun covert reconnaissance around Sivaganga, probing the fort gates and testing defenses. Velu Nachiyar moves through the dusk shadows of the outer ramparts and bustling bazaar to intercept strategic enemy dispatches and assess the threat before Kalaiyar Kovil is struck.',
+    objective: 'Infiltrate the market lanes, evade sentry patrol lantern cones, collect all 3 strategic intelligence ledgers, and escape through the inner council gate.',
+    newSystem: 'Awareness, Fixed-Timestep Patrol Cones & Diegetic Lamp Risk',
+    isStealthInfiltration: true,
+    dialogue: {
+      speaker: 'Velu Nachiyar',
+      text: "The Nawab's sepoys and Company redcoats lurk beyond our outer gates. Stay to the shadows—if the oil lamp begins to flicker amber, retreat to cover!"
+    },
+    historicalFact: 'Prior to the catastrophic 1772 assault on Kalaiyar Kovil by British officers Joseph Smith and Abraham Bonjour, Sivaganga was surrounded by mounting political extortion and espionage from the Nawab of Arcot and the East India Company.'
   },
   {
     id: 8,

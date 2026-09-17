@@ -85,6 +85,9 @@ class SivagangaGameplay {
     if (window.sivagangaQueenOfSivaganga && window.sivagangaQueenOfSivaganga.isActive) {
       window.sivagangaQueenOfSivaganga.stop();
     }
+    if (window.sivagangaTheCompanysShadow && window.sivagangaTheCompanysShadow.isActive) {
+      window.sivagangaTheCompanysShadow.stop();
+    }
 
     const lvl = window.sivagangaLevels.find(l => l.id === levelNumber);
     if (!lvl) return;
@@ -96,8 +99,8 @@ class SivagangaGameplay {
     this.selectedHero = 'velu';
     this.ripples = [];
 
-    // For Levels 1, 2, 3, 4, 5, and 6, enter the bespoke experiences directly!
-    if (lvl.id === 1 || lvl.id === 2 || lvl.id === 3 || lvl.id === 4 || lvl.id === 5 || lvl.id === 6) {
+    // For Levels 1 through 7, enter the bespoke experiences directly!
+    if (lvl.id >= 1 && lvl.id <= 7) {
       const sigilModal = document.getElementById('sigil-modal');
       if (sigilModal) sigilModal.style.display = 'none';
       this.setupStage(lvl);
@@ -201,6 +204,12 @@ class SivagangaGameplay {
       this.handleResize();
       window.sivagangaQueenOfSivaganga.init(this.canvas);
       window.sivagangaQueenOfSivaganga.start();
+    } else if (lvl.id === 7 && window.sivagangaTheCompanysShadow) {
+      // Level 7: "The Company's Shadow" - Awareness & Stealth Infiltration
+      this.hidePuzzleOverlays();
+      this.handleResize();
+      window.sivagangaTheCompanysShadow.init(this.canvas);
+      window.sivagangaTheCompanysShadow.start();
     } else {
       // Standard Grid Stealth Stage
       this.hidePuzzleOverlays();
