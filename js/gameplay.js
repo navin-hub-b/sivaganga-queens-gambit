@@ -82,6 +82,9 @@ class SivagangaGameplay {
     if (window.sivagangaTheBetrothal && window.sivagangaTheBetrothal.isActive) {
       window.sivagangaTheBetrothal.stop();
     }
+    if (window.sivagangaQueenOfSivaganga && window.sivagangaQueenOfSivaganga.isActive) {
+      window.sivagangaQueenOfSivaganga.stop();
+    }
 
     const lvl = window.sivagangaLevels.find(l => l.id === levelNumber);
     if (!lvl) return;
@@ -93,8 +96,8 @@ class SivagangaGameplay {
     this.selectedHero = 'velu';
     this.ripples = [];
 
-    // For Levels 1, 2, 3, 4, and 5, enter the bespoke experiences directly!
-    if (lvl.id === 1 || lvl.id === 2 || lvl.id === 3 || lvl.id === 4 || lvl.id === 5) {
+    // For Levels 1, 2, 3, 4, 5, and 6, enter the bespoke experiences directly!
+    if (lvl.id === 1 || lvl.id === 2 || lvl.id === 3 || lvl.id === 4 || lvl.id === 5 || lvl.id === 6) {
       const sigilModal = document.getElementById('sigil-modal');
       if (sigilModal) sigilModal.style.display = 'none';
       this.setupStage(lvl);
@@ -192,6 +195,12 @@ class SivagangaGameplay {
       this.handleResize();
       window.sivagangaTheBetrothal.init(this.canvas);
       window.sivagangaTheBetrothal.start();
+    } else if (lvl.id === 6 && window.sivagangaQueenOfSivaganga) {
+      // Level 6: "Queen of Sivaganga" - Statecraft & Village-Economy Management
+      this.hidePuzzleOverlays();
+      this.handleResize();
+      window.sivagangaQueenOfSivaganga.init(this.canvas);
+      window.sivagangaQueenOfSivaganga.start();
     } else {
       // Standard Grid Stealth Stage
       this.hidePuzzleOverlays();

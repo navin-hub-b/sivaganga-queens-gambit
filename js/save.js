@@ -80,7 +80,9 @@ class SivagangaSaveManager {
     fresh.levelStats = (data.levelStats && typeof data.levelStats === 'object') ? data.levelStats : {};
 
     // Auto-heal progression: if a level was completed, the subsequent level must be unlocked
-    if (fresh.completedLevels.includes(5)) {
+    if (fresh.completedLevels.includes(6)) {
+      fresh.unlockedLevel = Math.max(fresh.unlockedLevel, 7);
+    } else if (fresh.completedLevels.includes(5)) {
       fresh.unlockedLevel = Math.max(fresh.unlockedLevel, 6);
     } else if (fresh.completedLevels.includes(4)) {
       fresh.unlockedLevel = Math.max(fresh.unlockedLevel, 5);
@@ -156,6 +158,41 @@ class SivagangaSaveManager {
     this.state.resources.intel = SivagangaSaveManager.clamp(this.state.resources.intel + delta, 0, 10);
     this.save();
     return this.state.resources.intel;
+  }
+
+  modifyGrain(delta) {
+    this.state.resources.grain = SivagangaSaveManager.clamp(this.state.resources.grain + delta, 0, 9999);
+    this.save();
+    return this.state.resources.grain;
+  }
+
+  modifyGold(delta) {
+    this.state.resources.gold = SivagangaSaveManager.clamp(this.state.resources.gold + delta, 0, 9999);
+    this.save();
+    return this.state.resources.gold;
+  }
+
+  /**
+   * Batch apply and atomically clamp multiple resources, ensuring consistency against crash.
+   */
+  setResourcesClamped(deltas = {}) {
+    if (typeof deltas.grain === 'number') {
+      this.state.resources.grain = SivagangaSaveManager.clamp(this.state.resources.grain + deltas.grain, 0, 9999);
+    }
+    if (typeof deltas.gold === 'number') {
+      this.state.resources.gold = SivagangaSaveManager.clamp(this.state.resources.gold + deltas.gold, 0, 9999);
+    }
+    if (typeof deltas.trust === 'number') {
+      this.state.resources.trust = SivagangaSaveManager.clamp(this.state.resources.trust + deltas.trust, 0, 5);
+    }
+    if (typeof deltas.morale === 'number') {
+      this.state.resources.morale = SivagangaSaveManager.clamp(this.state.resources.morale + deltas.morale, 0, 100);
+    }
+    if (typeof deltas.intel === 'number') {
+      this.state.resources.intel = SivagangaSaveManager.clamp(this.state.resources.intel + deltas.intel, 0, 10);
+    }
+    this.save();
+    return { ...this.state.resources };
   }
 
   setAlliance(index, status = true, isReplay = false) {

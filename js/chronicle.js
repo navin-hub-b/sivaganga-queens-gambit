@@ -88,9 +88,9 @@ class SivagangaChronicle {
       // Walled fort town, highland sanctuary, granary, Mysore alliance
       // -------------------------------------------------------------
       {
-        id: 6, chapter: 2, chapterName: 'II. Virupakshi & Dindigul Foothills',
-        title: 'The Gates of Virupakshi', icon: 'trust_bangles',
-        desc: 'Persuade Chieftain Gopala Nayaker to earn diplomatic trust bangles.',
+        id: 6, chapter: 2, chapterName: 'II. The Sovereign Reign of Sivaganga',
+        title: 'Queen of Sivaganga', icon: 'grain_basket',
+        desc: 'Allocate grain, gold, and loyalty across the realm from the Sivaganga Fort council chamber.',
         x: 990, y: 520
       },
       {
@@ -310,6 +310,10 @@ class SivagangaChronicle {
       }
 
       // Auto-heal check: if a level was completed, subsequent level must be unlocked
+      if (this.completedLevels.includes(6) && this.unlockedLevel < 7) {
+        this.unlockedLevel = 7;
+        if (state) state.unlockedLevel = 7;
+      }
       if (this.completedLevels.includes(5) && this.unlockedLevel < 6) {
         this.unlockedLevel = 6;
         if (state) state.unlockedLevel = 6;

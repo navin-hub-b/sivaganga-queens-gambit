@@ -109,39 +109,22 @@ window.sivagangaLevels = [
   },
 
   // =========================================================================
-  // CHAPTER 2: THE EXILE AT DINDIGUL & THE TRIPLE ALLIANCE (1772–1779)
+  // CHAPTER 2: THE SOVEREIGN REIGN OF SIVAGANGA (1746–1772)
   // =========================================================================
   {
     id: 6,
     chapter: 2,
-    chapterTitle: 'Chapter II: The Exile at Dindigul & The Triple Alliance (1772–1779)',
-    title: 'The Gates of Virupakshi',
-    subtitle: 'Highland Sanctuary of the Palayakarar',
-    sigilType: 'bangles',
-    mechanicName: 'Diplomatic Dialogue & Trust Bangles',
-    mechanicDesc: 'Engage in diplomatic negotiation with Chieftain Gopala Nayaker. Dignified, strategic answers earn Trust Bangles on the Queen\'s wrist.',
-    loreBriefing: 'Velu Nachiyar reaches the hill fortress of Virupakshi, governed by the brave chieftain Gopala Nayaker. To secure sanctuary and grain for her people, she must win his unshakeable trust.',
-    objective: 'Earn 3 Trust Bangles through diplomatic dialogue to secure the Virupakshi compact.',
-    newSystem: 'Diplomatic Dialogue & Trust Bangles',
-    dialogueTree: [
-      {
-        prompt: 'Gopala Nayaker: "Rani of Sivaganga, the British Company demands I surrender you. Why should Virupakshi risk war for an exiled queen?"',
-        choices: [
-          { text: '"Because Sivaganga\'s fall today is Virupakshi\'s fall tomorrow. Divided, our palayams perish one by one."', deltaTrust: 1, reply: 'Gopala Nayaker nods gravely: "You speak the truth of our ancestors. We stand together."' },
-          { text: '"I carry gold and jewels to pay handsomely for your protection."', deltaTrust: 0, reply: 'Gopala Nayaker frowns: "Virupakshi fights for honor and sovereign dignity, not coin."' },
-          { text: '"We come not seeking charity, but offering a sworn brotherhood in arms."', deltaTrust: 1, reply: 'Gopala Nayaker clasps his hands: "A queen with an unyielding warrior\'s spirit. Welcome to our hearth."' }
-        ]
-      },
-      {
-        prompt: 'Gopala Nayaker: "My scouts report Company spies watch the mountain trails. How do you propose we conceal your presence?"',
-        choices: [
-          { text: '"We shall disguise our people as temple pilgrims gathering medicinal herbs in the Kodai hills."', deltaTrust: 1, reply: 'Gopala Nayaker smiles: "Wise and subtle. The hills shall keep your counsel."' },
-          { text: '"We shall attack any spy who approaches our borders."', deltaTrust: -1, reply: 'Gopala Nayaker warns: "Premature clashes will bring the full Arcot garrison down upon us."' }
-        ]
-      }
-    ],
-    allianceUnlocked: 0, // Virupakshi alliance
-    historicalFact: 'Gopala Nayaker of Virupakshi was a legendary leader of the Palayakarar confederacy who gave shelter to Velu Nachiyar and her daughter for eight years.'
+    chapterTitle: 'Chapter II: The Sovereign Reign of Sivaganga (1746–1772)',
+    title: 'Queen of Sivaganga',
+    subtitle: 'The Council Chamber & Economy of the Realm',
+    sigilType: 'granary',
+    mechanicName: 'Village-Economy Resource Management',
+    mechanicDesc: 'Allocate grain, gold, and public loyalty across seasonal decisions. Watch physical baskets, coin stacks, and loyalty garlands adjust on the council table, and witness consequences in the town below.',
+    loreBriefing: 'Following her betrothal and marriage to King Muthuvaduganatha, Velu Nachiyar assumes her royal duties as Queen Consort of Sivaganga. In the Fort keep council chamber, she masters statecraft: balancing irrigation canals, festival provisions, famine reserves, and rampart defenses.',
+    objective: 'Guide Sivaganga through 4 statecraft decisions, maintaining a thriving economy and high civic trust.',
+    newSystem: 'Village-Economy Management & Physical Table Objects',
+    isBespokeEconomy: true,
+    historicalFact: 'During their joint reign (1746–1772), Rani Velu Nachiyar and King Muthuvaduganatha instituted extensive water-tank desilting and community granary reserves, transforming Sivaganga into a resilient, prosperous agrarian kingdom.'
   },
   {
     id: 7,

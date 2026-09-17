@@ -17,7 +17,7 @@ class SivagangaRouter {
       { id: 3, slug: '03-horse-and-bow', title: 'Horse and Bow', chapter: 1 },
       { id: 4, slug: '04-tongues-of-the-world', title: 'Tongues of the World', chapter: 1 },
       { id: 5, slug: '05-the-betrothal', title: 'The Betrothal', chapter: 1, isFinale: true },
-      { id: 6, slug: '06-queen-of-sivaganga', title: 'The Gates of Virupakshi', chapter: 2 },
+      { id: 6, slug: '06-queen-of-sivaganga', title: 'Queen of Sivaganga', chapter: 2 },
       { id: 7, slug: '07-the-companys-shadow', title: 'The Granary Allocation', chapter: 2 },
       { id: 8, slug: '08-the-dindigul-durbar', title: 'The Dindigul Durbar', chapter: 2 },
       { id: 9, slug: '09-the-udaiyaal-regiment', title: 'The Udaiyaal Regiment', chapter: 2, isFinale: true },
