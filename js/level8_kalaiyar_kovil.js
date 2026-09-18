@@ -1080,10 +1080,10 @@ class SivagangaLevel8KalaiyarKovil {
     // 2. Perform Palm-Leaf Screen Wipe into Level 9
     const proceed = () => {
       this.stop();
-      if (window.sivagangaGameplay) {
-        window.sivagangaGameplay.start(9);
-      } else if (window.sivagangaRouter) {
+      if (window.sivagangaRouter) {
         window.sivagangaRouter.navigate('/level/09-flight-to-virupachi');
+      } else if (window.sivagangaGameplay) {
+        window.sivagangaGameplay.start(9);
       }
       this.isTransitioning = false;
     };

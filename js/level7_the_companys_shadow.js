@@ -707,17 +707,21 @@ class SivagangaLevel7TheCompanysShadow {
         window.sivagangaTransitions.wipe(
           () => {
             this.stop();
-            if (window.sivagangaGameplay) {
-              window.sivagangaGameplay.start(8);
-            } else if (window.sivagangaRouter) {
+            if (window.sivagangaRouter) {
               window.sivagangaRouter.navigate('/level/08-kalaiyar-kovil');
+            } else if (window.sivagangaGameplay) {
+              window.sivagangaGameplay.start(8);
             }
           },
           () => {}
         );
       } else {
         this.stop();
-        if (window.sivagangaGameplay) window.sivagangaGameplay.start(8);
+        if (window.sivagangaRouter) {
+          window.sivagangaRouter.navigate('/level/08-kalaiyar-kovil');
+        } else if (window.sivagangaGameplay) {
+          window.sivagangaGameplay.start(8);
+        }
       }
     };
 

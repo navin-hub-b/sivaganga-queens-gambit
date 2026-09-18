@@ -882,10 +882,10 @@ class SivagangaLevel9FlightToVirupachi {
         window.sivagangaTransitions.wipe(
           () => {
             this.stop();
-            if (window.sivagangaGameplay) {
-              window.sivagangaGameplay.start(10);
-            } else if (window.sivagangaRouter) {
+            if (window.sivagangaRouter) {
               window.sivagangaRouter.navigate('/level/10-the-convoy-of-five-thousand');
+            } else if (window.sivagangaGameplay) {
+              window.sivagangaGameplay.start(10);
             }
           },
           () => {}
