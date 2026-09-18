@@ -523,6 +523,10 @@ class SivagangaLevel6QueenOfSivaganga {
     this.spawnCeremonialPetals();
   }
 
+  transitionToChronicle() {
+    this.transitionToLevel7();
+  }
+
   transitionToLevel7() {
     if (this.isTransitioning) return;
     this.isTransitioning = true;

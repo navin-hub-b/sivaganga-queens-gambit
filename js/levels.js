@@ -148,32 +148,17 @@ window.sivagangaLevels = [
   {
     id: 8,
     chapter: 2,
-    chapterTitle: 'Chapter II: The Exile at Dindigul & The Triple Alliance (1772–1779)',
-    title: 'The Dindigul Durbar',
-    subtitle: 'Negotiations with Sultan Hyder Ali',
-    sigilType: 'bangles',
-    mechanicName: 'High-Stakes Persian Treaty Diplomacy',
-    mechanicDesc: 'Converse in fluent Persian/Urdu with Sultan Hyder Ali of Mysore. Your command of diplomacy and shared anti-colonial vision secures artillery and cavalry.',
-    loreBriefing: 'In 1779, Velu Nachiyar traveled to the formidable rock fort of Dindigul to meet Sultan Hyder Ali of Mysore. Writing and speaking in flawless Persian, she outlined a joint strategy against the British East India Company.',
-    objective: 'Impress Sultan Hyder Ali with strategic insight to forge the Mysore Alliance.',
-    newSystem: 'High-Stakes Treaty Negotiation',
-    dialogueTree: [
-      {
-        prompt: 'Sultan Hyder Ali: "You address my court in courtly Persian, Queen of Sivaganga. What terms do you bring to Mysore?"',
-        choices: [
-          { text: '"We seek not mere rescue, but a military coalition. While you strike Company strongholds in the Carnatic, we will liberate Sivaganga and cut their southern supply lines."', deltaTrust: 2, reply: 'Hyder Ali smiles with great admiration: "A true commander\'s eye. You see the whole chessboard."' },
-          { text: '"We ask your mighty army to defeat the British on our behalf."', deltaTrust: 0, reply: 'Hyder Ali shakes his head: "A kingdom reclaimed by foreign swords alone is never truly sovereign."' }
-        ]
-      },
-      {
-        prompt: 'Sultan Hyder Ali: "I command five thousand cavalry, five thousand infantry, and heavy bronze cannon in Dindigul. How will you supply them?"',
-        choices: [
-          { text: '"Chieftain Gopala Nayaker and the Maruthu brothers have prepared grain depots across Virupakshi and the jungle corridors."', deltaTrust: 1, reply: 'Hyder Ali raises his hand: "The compact is struck! Commandant Syed Karki shall march under your strategic banner."' }
-        ]
-      }
-    ],
-    allianceUnlocked: 1, // Mysore Alliance
-    historicalFact: 'Velu Nachiyar was a prodigy who mastered Persian, Urdu, French, and English, alongside Tamil. Sultan Hyder Ali was so impressed by her letter in Persian that he granted 5,000 cavalry and 5,000 infantry.'
+    chapterTitle: 'Chapter II: The Sovereign Reign of Sivaganga (1746–1772)',
+    title: 'Kalaiyar Kovil',
+    subtitle: 'The Fall of King Muthuvaduganatha & The Sacred Ember (1772)',
+    sigilType: 'solitary_lamp',
+    mechanicName: 'Scripted Narrative Turning Point & Sacred Vigil',
+    mechanicDesc: 'Witness the dawn of June 25, 1772 from the highest ramparts of Sivaganga. Distance and silence veil the tragedy of Kalaiyar Kovil. When the sovereign flame dies, an enduring ember of resistance is born.',
+    loreBriefing: 'On June 25, 1772, forces of the British East India Company under General Joseph Smith and Abraham Bonjour joined with the Nawab of Arcot to execute a surprise assault on Kalaiyar Kovil temple. King Muthuvaduganatha Periyavudaya Thevar fell defending the sacred complex, refusing surrender. From the high fort rampart, Velu Nachiyar watches dawn turn to tragedy, taking up the royal signet and vowing the liberation of Sivaganga.',
+    objective: 'Bear witness to the dawn of Kalaiyar Kovil and the rekindling of the resistance ember.',
+    newSystem: 'Scripted Cinematic Turning Point & Sacred Diya Ember',
+    isScriptedSequence: true,
+    historicalFact: 'The battle of Kalaiyar Kovil on June 25, 1772 was a pivotal tragedy in Tamil history. King Muthuvaduganatha died in battle alongside his brave commander Gandharva Thevar. Rani Velu Nachiyar escaped with her infant daughter Vellachi, initiating an eight-year strategic exile in Dindigul under the protection of Chieftain Gopala Nayaker.'
   },
   {
     id: 9,

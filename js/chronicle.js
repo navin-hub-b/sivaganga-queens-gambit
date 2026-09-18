@@ -100,9 +100,9 @@ class SivagangaChronicle {
         x: 1120, y: 640
       },
       {
-        id: 8, chapter: 2, chapterName: 'II. Virupakshi Sanctuary & Alliance (1772–1779)',
-        title: 'The Dindigul Durbar', icon: 'persian_scroll', mechanic: 'High-Stakes Persian Treaty Diplomacy',
-        desc: 'Present an eloquent Persian treaty to Sultan Hyder Ali of Mysore to secure heavy artillery and cavalry.',
+        id: 8, chapter: 2, chapterName: 'II. The Sovereign Reign of Sivaganga (1746–1772)',
+        title: 'Kalaiyar Kovil', icon: 'solitary_lamp', mechanic: 'Sacred Vigil & The Oath of Exile',
+        desc: 'Witness the fateful dawn of 1772 as King Muthuvaduganatha falls defending Kalaiyar Kovil. The flame dims to an ember as the eight-year exile begins.',
         x: 1250, y: 480
       },
       {
@@ -1599,6 +1599,9 @@ class SivagangaChronicle {
         return `<svg viewBox="0 0 40 40" width="36" height="36"><path d="M14 26 L26 26 L23 15 L17 15 Z" fill="${fill}" stroke="${stroke}" stroke-width="1.8" ${dash}/><path d="M17 15 C17 10 23 10 23 15" fill="none" stroke="${stroke}" stroke-width="1.8"/><circle cx="20" cy="21" r="2.5" fill="${stroke}"/><path d="M26 18 L34 13 M26 21 L35 21 M26 24 L34 29" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="2,2"/></svg>`;
       case 'grain_basket':
         return `<svg viewBox="0 0 40 40" width="36" height="36"><path d="M10 18 Q 20 14 30 18 L26 32 Q 20 34 14 32 Z" fill="${fill}" stroke="${stroke}" stroke-width="2" ${dash}/></svg>`;
+      case 'solitary_lamp':
+        // Level 8: Solitary Brass Diya Lamp with enduring sacred ember
+        return `<svg viewBox="0 0 40 40" width="36" height="36"><ellipse cx="20" cy="24" rx="12" ry="5" fill="${fill}" stroke="${stroke}" stroke-width="1.8" ${dash}/><path d="M12 24 Q 20 28 28 24" stroke="${stroke}" stroke-width="1.2"/><path d="M20 20 C17 20 17 14 20 9 C23 14 23 20 20 20 Z" fill="${stroke}" stroke="${stroke}" stroke-width="1"/><circle cx="20" cy="18" r="2" fill="#fff"/></svg>`;
       case 'persian_scroll':
         return `<svg viewBox="0 0 40 40" width="36" height="36"><rect x="12" y="10" width="16" height="20" rx="2" fill="${fill}" stroke="${stroke}" stroke-width="1.8" ${dash}/><line x1="16" y1="15" x2="24" y2="15" stroke="${stroke}" stroke-width="1.5"/><line x1="16" y1="20" x2="24" y2="20" stroke="${stroke}" stroke-width="1.5"/></svg>`;
       case 'crossed_staves':

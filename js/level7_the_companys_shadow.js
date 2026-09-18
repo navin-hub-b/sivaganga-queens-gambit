@@ -678,23 +678,39 @@ class SivagangaLevel7TheCompanysShadow {
             <div class="intel-summary-item">✔ Secret Sluice Survey of the Southern Moat</div>
           </div>
           <p style="font-style: italic; color: #eeddcc; font-size: 13px; margin-top: 10px;">
-            The ledgers confirm what she feared most: the Company and the Nawab plan a joint
-            assault within the year. She must ride north to Hyder Ali of Mysore — and forge
-            the alliance that will make a recapture possible. The road ahead is long.
-          </p>
-          <p style="font-size: 12px; color: #A7BEAE; margin-top: 8px; letter-spacing: 0.8px;">
-            CHAPTER II COMPLETE — Levels 8–20 are under development.
-            Consult the Chronicle Map to review your full journey so far.
+            The ledgers confirm what she feared most: the Company and the Nawab have plotted a surprise strike on Kalaiyar Kovil. We prepare for the fateful dawn.
           </p>
         </div>
         <div class="level7-victory-actions">
           <button id="level7-replay-btn" class="btn-tamil">↺ Replay Trial VII</button>
-          <button id="level7-chronicle-btn" class="btn-tamil btn-primary">View Chronicle Map →</button>
+          <button id="level7-advance-btn" class="btn-tamil btn-primary">Advance to Level 8: Kalaiyar Kovil →</button>
+          <button id="level7-chronicle-btn" class="btn-tamil">Chronicle Map</button>
         </div>
       </div>
     `;
 
     overlay.style.display = 'flex';
+
+    // Advance to Level 8
+    document.getElementById('level7-advance-btn').onclick = () => {
+      overlay.style.display = 'none';
+      if (window.sivagangaTransitions) {
+        window.sivagangaTransitions.wipe(
+          () => {
+            this.stop();
+            if (window.sivagangaGameplay) {
+              window.sivagangaGameplay.start(8);
+            } else if (window.sivagangaRouter) {
+              window.sivagangaRouter.navigate('/level/08-kalaiyar-kovil');
+            }
+          },
+          () => {}
+        );
+      } else {
+        this.stop();
+        if (window.sivagangaGameplay) window.sivagangaGameplay.start(8);
+      }
+    };
 
     // Replay: restart level 7
     document.getElementById('level7-replay-btn').onclick = () => {

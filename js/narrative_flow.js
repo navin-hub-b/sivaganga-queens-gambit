@@ -126,24 +126,24 @@ class SivagangaNarrativeFlow {
           '"We cannot fight them here," she told her council at midnight. "Not yet. We must ride north — to Hyder Ali of Mysore. An alliance forged in strength is the only answer to an empire built on ledger ink."'
         ],
         nextPreview: {
-          icon: '🏔',
-          label: 'NEXT TRIAL · VIII: THE DINDIGUL DURBAR',
-          desc: 'The road north through Dindigul passes eight chieftain durbars. Each lord holds a piece of the alliance puzzle. Win their trust through negotiation, not force.'
+          icon: '🪔',
+          label: 'NEXT TRIAL · VIII: KALAIYAR KOVIL',
+          desc: 'June 25, 1772. Watch from the highest ramparts of Sivaganga as dawn breaks over the sacred grove of Kalaiyar Kovil. Silence and distance veil the turning point of the war.'
         }
       },
       8: {
         chapterTag: 'CHAPTER II · THE SOVEREIGN REIGN (1746–1772)',
-        completedTitle: 'Trial VIII: The Dindigul Durbar — Alliance Sealed',
-        completedSubtitle: 'Road to Hyder Ali Opens',
+        completedTitle: 'Trial VIII: Kalaiyar Kovil — The Sacred Ember',
+        completedSubtitle: 'The Fall of the King · The Oath of Exile',
         story: [
-          'The durbar hall fell quiet as the last chieftain pressed his seal into the wax. Eight lords, eight pledges. The northern road to Mysore was now safe passage.',
-          'Velu Nachiyar accepted each seal with a formal bow and a remembered name. She had memorised every lord\'s lineage, every old grievance, every shared border. They felt seen — and rulers who feel seen are harder to buy away.',
-          'One lord whispered as she departed: "The Company will send negotiators after you. We will tell them you rode west." She smiled and rode north.'
+          'The solitary brass lamp in the inner sanctuary died to black as the messenger knelt with King Muthuvaduganatha\'s broken signet. At the temple steps of Kalaiyar Kovil, the sovereign had fallen refusing surrender.',
+          'In the silence of the darkened chamber, Rani Velu Nachiyar gathered her infant daughter Vellachi to her heart. From the cold wick, a quiet spark caught—a steadfast ember that would burn through eight years of forest exile.',
+          '"Sivaganga is not lost," she whispered into the dawn. "While we draw breath, foreign arms shall never hold this realm." The ride to the Virupakshi hills had begun.'
         ],
         nextPreview: {
-          icon: '⚜',
-          label: 'NEXT TRIAL · IX: THE MYSORE ALLIANCE (Chapter II Finale)',
-          desc: 'Hyder Ali\'s court at Seringapatam. Present the case for joint resistance and forge the treaty that will fund and arm the recapture of Sivaganga.'
+          icon: '⚔',
+          label: 'NEXT TRIAL · IX: THE UDAIYAAL REGIMENT',
+          desc: 'In the forest sanctuaries of Virupakshi, Commander Kuyili and Velu Nachiyar assemble the first documented all-female regiment in Indian history.'
         }
       },
       9: {
@@ -567,7 +567,8 @@ class SivagangaNarrativeFlow {
       'sivagangaTonguesOfTheWorld',
       'sivagangaTheBetrothal',
       'sivagangaQueenOfSivaganga',
-      'sivagangaTheCompanysShadow'
+      'sivagangaTheCompanysShadow',
+      'sivagangaKalaiyarKovil'
     ];
     stoppers.forEach(key => {
       if (window[key]?.isActive) window[key].stop();
@@ -596,8 +597,8 @@ class SivagangaNarrativeFlow {
       5: 'the-betrothal',
       6: 'queen-of-sivaganga',
       7: 'the-companys-shadow',
-      8: 'the-dindigul-durbar',
-      9: 'the-mysore-alliance',
+      8: 'kalaiyar-kovil',
+      9: 'the-udaiyaal-regiment',
       10: 'kuyilis-fire',
       11: 'the-intelligence-network',
       12: 'the-sluice-gambit',

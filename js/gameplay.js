@@ -210,6 +210,12 @@ class SivagangaGameplay {
       this.handleResize();
       window.sivagangaTheCompanysShadow.init(this.canvas);
       window.sivagangaTheCompanysShadow.start();
+    } else if (lvl.id === 8 && window.sivagangaKalaiyarKovil) {
+      // Level 8: "Kalaiyar Kovil" - Scripted Narrative Turning Point & Sacred Vigil
+      this.hidePuzzleOverlays();
+      this.handleResize();
+      window.sivagangaKalaiyarKovil.init(this.canvas);
+      window.sivagangaKalaiyarKovil.start();
     } else {
       // Standard Grid Stealth Stage
       this.hidePuzzleOverlays();
@@ -457,7 +463,7 @@ class SivagangaGameplay {
 
   bindControls() {
     window.addEventListener('keydown', (e) => {
-      if (!this.isLevelActive) return;
+      if (!this.isLevelActive || !this.currentLevel?.gridSize || this.currentLevel?.id === 8) return;
 
       let dx = 0;
       let dy = 0;
@@ -479,7 +485,7 @@ class SivagangaGameplay {
 
     if (this.canvas) {
       this.canvas.addEventListener('click', (e) => {
-        if (!this.isLevelActive || !this.cellSize) return;
+        if (!this.isLevelActive || !this.cellSize || !this.currentLevel?.gridSize || this.currentLevel?.id === 8) return;
         const rect = this.canvas.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
         const clickY = e.clientY - rect.top;
@@ -503,12 +509,17 @@ class SivagangaGameplay {
     const exitBtn = document.getElementById('level-exit-btn');
 
     if (pauseBtn) {
-      pauseBtn.onclick = () => this.togglePause();
+      pauseBtn.onclick = () => {
+        if (this.currentLevel?.id === 8) return;
+        this.togglePause();
+      };
     }
 
     if (restartBtn) {
       restartBtn.onclick = () => {
+        if (this.currentLevel?.id === 8) return;
         if (window.sivagangaCourtyard) window.sivagangaCourtyard.stop();
+        if (window.sivagangaKalaiyarKovil) window.sivagangaKalaiyarKovil.stop();
         if (this.currentLevel) this.start(this.currentLevel.id);
       };
     }
@@ -518,6 +529,7 @@ class SivagangaGameplay {
         this.isLevelActive = false;
         if (window.sivagangaCourtyard) window.sivagangaCourtyard.stop();
         if (window.sivagangaValariSilambam) window.sivagangaValariSilambam.stop();
+        if (window.sivagangaKalaiyarKovil) window.sivagangaKalaiyarKovil.stop();
         if (window.sivagangaRouter) {
           window.sivagangaRouter.navigate('/chronicle');
         } else {
@@ -582,6 +594,7 @@ class SivagangaGameplay {
     }
 
     window.addEventListener('keydown', (e) => {
+      if (this.currentLevel?.id === 8) return;
       if (e.key === 'Escape') {
         const loreModal = document.getElementById('level-lore-modal');
         if (loreModal && (loreModal.classList.contains('active') || loreModal.style.display === 'flex')) {
