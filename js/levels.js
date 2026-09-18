@@ -163,18 +163,23 @@ window.sivagangaLevels = [
   {
     id: 9,
     chapter: 2,
-    chapterTitle: 'Chapter II: The Exile at Dindigul & The Triple Alliance (1772–1779)',
-    title: 'The Udaiyaal Regiment',
-    subtitle: 'Training the Women\'s Brigade',
-    sigilType: 'rangoli_spiral',
-    mechanicName: 'Unit Formation Drills & Silambam Stances',
-    mechanicDesc: 'Direct the Udaiyaal women\'s brigade in traditional Silambam staff formations. Coordinate synchronized defensive and offensive rings.',
-    loreBriefing: 'Velu Nachiyar commissions her trusted commander Kuyili to build the Udaiyaal Regiment—the first documented all-female military brigade in Indian history, named in honor of a loyal shepherdess Udaiyaal who died protecting royal secrets.',
-    objective: 'Align 4 training squads into balanced defensive and offensive rings.',
-    newSystem: 'Squad Formation Coordination',
-    puzzleType: 'regiment_drill',
-    allianceUnlocked: 3, // Udaiyaal Regiment Alliance
-    historicalFact: 'The Udaiyaal regiment was named after Udaiyaal, a young shepherdess tortured by the British who refused to disclose Velu Nachiyar\'s whereabouts, sacrificing her life for the queen.'
+    chapterTitle: 'Chapter II: The Sovereign Reign & Flight to Virupachi (1746–1772)',
+    title: 'Flight to Virupachi',
+    subtitle: 'The Chapter 2 Stealth Finale — Night Escape with Infant Vellachi (1772)',
+    sigilType: 'carried_lantern',
+    mechanicName: 'Stealth Escort Gauntlet & Coordinated Search Sweeps',
+    mechanicDesc: 'Escort infant Vellachi Nachiyar through dense night forest and outlying village paths toward the Virupachi mountain sanctuary. Evade overlapping patrol cones and telegraphed search sweeps while preserving the infant safety glow.',
+    loreBriefing: 'Following the fall of Kalaiyar Kovil and the martyrdom of King Muthuvaduganatha on June 25, 1772, Rani Velu Nachiyar flees the burning perimeter of Sivaganga under cover of night. Clasping her infant daughter Vellachi to her chest and carrying a brass oil lantern in hand, she must navigate through enemy cordons and palisade checkpoints toward the distant highland fortress of Virupachi, ruled by Chieftain Gopala Nayaker.',
+    objective: 'Evade colonial patrols, protect infant Vellachi, and reach Chieftain Gopala Nayaker\'s mountain scouts at Virupachi.',
+    newSystem: 'Escort Safety Aura, In-World Lantern & Telegraphed Search Sweeps',
+    isStealthEscort: true,
+    isTrial: true,
+    isChapterFinale: true,
+    dialogue: {
+      speaker: 'Velu Nachiyar',
+      text: 'Hush, my daughter Vellachi. The sacred ember of Sivaganga still burns within us. Hold fast to the shadows until the mountain beacon of Virupachi welcomes us.'
+    },
+    historicalFact: 'Following the martyrdom of her husband King Muthuvaduganatha at Kalaiyar Kovil in 1772, Rani Velu Nachiyar successfully escaped with her infant daughter Vellachi Nachiyar to the safety of Virupachi near Dindigul, where Chieftain Gopala Nayaker provided sanctuary and military refuge for eight years.'
   },
   {
     id: 10,

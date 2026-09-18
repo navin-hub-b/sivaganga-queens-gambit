@@ -88,6 +88,12 @@ class SivagangaGameplay {
     if (window.sivagangaTheCompanysShadow && window.sivagangaTheCompanysShadow.isActive) {
       window.sivagangaTheCompanysShadow.stop();
     }
+    if (window.sivagangaKalaiyarKovil && window.sivagangaKalaiyarKovil.isActive) {
+      window.sivagangaKalaiyarKovil.stop();
+    }
+    if (window.sivagangaFlightToVirupachi && window.sivagangaFlightToVirupachi.isActive) {
+      window.sivagangaFlightToVirupachi.stop();
+    }
 
     const lvl = window.sivagangaLevels.find(l => l.id === levelNumber);
     if (!lvl) return;
@@ -99,8 +105,8 @@ class SivagangaGameplay {
     this.selectedHero = 'velu';
     this.ripples = [];
 
-    // For Levels 1 through 7, enter the bespoke experiences directly!
-    if (lvl.id >= 1 && lvl.id <= 7) {
+    // For Levels 1 through 9, enter the bespoke experiences directly!
+    if (lvl.id >= 1 && lvl.id <= 9) {
       const sigilModal = document.getElementById('sigil-modal');
       if (sigilModal) sigilModal.style.display = 'none';
       this.setupStage(lvl);
@@ -216,6 +222,12 @@ class SivagangaGameplay {
       this.handleResize();
       window.sivagangaKalaiyarKovil.init(this.canvas);
       window.sivagangaKalaiyarKovil.start();
+    } else if (lvl.id === 9 && window.sivagangaFlightToVirupachi) {
+      // Level 9: "Flight to Virupachi" - Chapter 2 Finale Stealth Escort Gauntlet
+      this.hidePuzzleOverlays();
+      this.handleResize();
+      window.sivagangaFlightToVirupachi.init(this.canvas);
+      window.sivagangaFlightToVirupachi.start();
     } else {
       // Standard Grid Stealth Stage
       this.hidePuzzleOverlays();
@@ -646,6 +658,13 @@ class SivagangaGameplay {
     }
     if (window.sivagangaCourtyard) window.sivagangaCourtyard.stop();
     if (window.sivagangaValariSilambam) window.sivagangaValariSilambam.stop();
+    if (window.sivagangaHorseAndBow) window.sivagangaHorseAndBow.stop();
+    if (window.sivagangaTonguesOfTheWorld) window.sivagangaTonguesOfTheWorld.stop();
+    if (window.sivagangaTheBetrothal) window.sivagangaTheBetrothal.stop();
+    if (window.sivagangaQueenOfSivaganga) window.sivagangaQueenOfSivaganga.stop();
+    if (window.sivagangaTheCompanysShadow) window.sivagangaTheCompanysShadow.stop();
+    if (window.sivagangaKalaiyarKovil) window.sivagangaKalaiyarKovil.stop();
+    if (window.sivagangaFlightToVirupachi) window.sivagangaFlightToVirupachi.stop();
     this.hidePuzzleOverlays();
   }
 

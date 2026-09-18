@@ -106,10 +106,10 @@ class SivagangaChronicle {
         x: 1250, y: 480
       },
       {
-        id: 9, chapter: 2, chapterName: 'II. Virupakshi Sanctuary & Alliance (1772–1779)',
-        title: 'The Udaiyaal Regiment', icon: 'crossed_staves', mechanic: 'Unit Formation Drills & Silambam Stances',
-        desc: 'Drill the first all-female regiment in protective Silambam combat rings under Commander Kuyili.',
-        x: 1380, y: 600
+        id: 9, chapter: 2, chapterName: 'II. The Sovereign Reign & Flight to Virupachi (1746–1772)',
+        title: 'Flight to Virupachi', icon: 'carried_lantern', mechanic: 'Stealth Escort Gauntlet & Coordinated Sweeps',
+        desc: 'Chapter II Finale: Escort infant Vellachi through dense night forest and patrol cordons to reach Chieftain Gopala Nayaker\'s mountain sanctuary at Virupachi.',
+        x: 1380, y: 600, isChapterFinale: true
       },
       {
         id: 10, chapter: 2, chapterName: 'II. Virupakshi Sanctuary & Alliance (1772–1779)',
@@ -1161,8 +1161,8 @@ class SivagangaChronicle {
       { from: 4, to: 5, label: '~ Western Ghats Highway to Sivaganga ~', minUnlocked: 6, curveOffset: -28 },
       { from: 5, to: 6, label: '~ Virupakshi Highland Trail ~', minUnlocked: 7, curveOffset: 24 },
       { from: 6, to: 7, label: '~ Dindigul Diplomatic Road ~', minUnlocked: 8, curveOffset: -24 },
-      { from: 7, to: 8, label: '~ Udaiyaal Regiment Camp ~', minUnlocked: 9, curveOffset: 24 },
-      { from: 8, to: 9, label: '~ Highland Mountain Defile ~', minUnlocked: 10, curveOffset: -24 },
+      { from: 7, to: 8, label: '~ Night Forest Trail to Virupachi ~', minUnlocked: 9, curveOffset: 24 },
+      { from: 8, to: 9, label: '~ Virupachi Mountain Redoubt ~', minUnlocked: 10, curveOffset: -24 },
       { from: 9, to: 10, label: '~ Reconnaissance Valley Track ~', minUnlocked: 11, curveOffset: 28 },
       { from: 10, to: 11, label: '~ Sentry Lantern Line ~', minUnlocked: 12, curveOffset: -24 },
       { from: 11, to: 12, label: '~ Cantonment Ledger Route ~', minUnlocked: 13, curveOffset: 24 },

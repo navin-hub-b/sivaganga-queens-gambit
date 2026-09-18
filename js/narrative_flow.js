@@ -141,24 +141,24 @@ class SivagangaNarrativeFlow {
           '"Sivaganga is not lost," she whispered into the dawn. "While we draw breath, foreign arms shall never hold this realm." The ride to the Virupakshi hills had begun.'
         ],
         nextPreview: {
-          icon: '⚔',
-          label: 'NEXT TRIAL · IX: THE UDAIYAAL REGIMENT',
-          desc: 'In the forest sanctuaries of Virupakshi, Commander Kuyili and Velu Nachiyar assemble the first documented all-female regiment in Indian history.'
+          icon: '🪔',
+          label: 'NEXT TRIAL · IX: FLIGHT TO VIRUPACHI (Chapter II Finale)',
+          desc: 'June 1772: Under cover of midnight, escort infant Vellachi through dense forest patrols toward the highland sanctuary of Chieftain Gopala Nayaker at Virupachi.'
         }
       },
       9: {
-        chapterTag: 'CHAPTER II · THE SOVEREIGN REIGN (1746–1772) — CHAPTER FINALE',
-        completedTitle: 'Trial IX: The Mysore Alliance — Treaty Signed',
-        completedSubtitle: 'Chapter II Complete · Exile Begins',
+        chapterTag: 'CHAPTER II · THE SOVEREIGN REIGN & FLIGHT TO VIRUPACHI (1746–1772) — CHAPTER FINALE',
+        completedTitle: 'Trial IX: Flight to Virupachi — Sanctuary Reached',
+        completedSubtitle: 'Chapter II Complete · The Highland Refuge',
         story: [
-          'Hyder Ali studied the ledgers for a long time. Then he looked up at the queen before him and said, simply: "You have already done the hardest work. You know your enemy\'s plans before they have acted."',
-          'The treaty was drawn: Mysorean cavalry, French-trained infantry advisors, and a treasury line sufficient to arm five thousand. In return, Sivaganga would remain a sovereign ally — never a vassal.',
-          'Before the ink dried, a messenger arrived from Sivaganga. The fort had fallen. The Company and the Nawab had moved a year ahead of schedule. The exile had begun. Chapter III opens.'
+          'The forest shadows receded as the torchlit palisades of Virupachi Fortress came into view against the granite slopes of the Palani hills.',
+          'Chieftain Gopala Nayaker rode out to meet the Queen, bowing low before the child Vellachi cradled against her breast. "You are safe beneath our mountain walls, Rani Velu Nachiyar," the chieftain vowed. "Virupachi and Dindigul stand with Sivaganga."',
+          'The Chapter II stealth trial concludes. The eight-year strategic exile begins. In the mountain redoubt, the Udaiyaal women\'s regiment will be trained, and the triple alliance with Nawab Hyder Ali and the Maruthu brothers will be forged. Chapter III opens.'
         ],
         nextPreview: {
-          icon: '🔥',
-          label: 'CHAPTER III: THE EXILE & THE RETURN — Trial X: Kuyili\'s Fire',
-          desc: 'In the forest camps of the Virupakshi hills, a warrior woman named Kuyili joins the resistance. Train an army of seven hundred in secret.'
+          icon: '⚔',
+          label: 'CHAPTER III: THE EXILE & THE TRIPLE ALLIANCE — Trial X: The Convoy of Five Thousand',
+          desc: 'In the mountain defiles of Dindigul, assemble the allied vanguard and coordinate the march toward the plains of Sivaganga.'
         }
       },
       10: {
@@ -568,7 +568,8 @@ class SivagangaNarrativeFlow {
       'sivagangaTheBetrothal',
       'sivagangaQueenOfSivaganga',
       'sivagangaTheCompanysShadow',
-      'sivagangaKalaiyarKovil'
+      'sivagangaKalaiyarKovil',
+      'sivagangaFlightToVirupachi'
     ];
     stoppers.forEach(key => {
       if (window[key]?.isActive) window[key].stop();
@@ -598,7 +599,7 @@ class SivagangaNarrativeFlow {
       6: 'queen-of-sivaganga',
       7: 'the-companys-shadow',
       8: 'kalaiyar-kovil',
-      9: 'the-udaiyaal-regiment',
+      9: 'flight-to-virupachi',
       10: 'kuyilis-fire',
       11: 'the-intelligence-network',
       12: 'the-sluice-gambit',

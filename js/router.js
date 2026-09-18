@@ -20,7 +20,7 @@ class SivagangaRouter {
       { id: 6, slug: '06-queen-of-sivaganga', title: 'Queen of Sivaganga', chapter: 2 },
       { id: 7, slug: '07-the-companys-shadow', title: "The Company's Shadow", chapter: 2 },
       { id: 8, slug: '08-kalaiyar-kovil', title: 'Kalaiyar Kovil', chapter: 2 },
-      { id: 9, slug: '09-the-udaiyaal-regiment', title: 'The Udaiyaal Regiment', chapter: 2, isFinale: true },
+      { id: 9, slug: '09-flight-to-virupachi', title: 'Flight to Virupachi', chapter: 2, isFinale: true },
       { id: 10, slug: '10-the-convoy-of-five-thousand', title: 'The Convoy of Five Thousand', chapter: 2, isFinale: true },
       { id: 11, slug: '11-kuyilis-eye', title: "Kuyili's Eye", chapter: 3 },
       { id: 12, slug: '12-the-valari-arc', title: 'The Valari Arc', chapter: 3 },

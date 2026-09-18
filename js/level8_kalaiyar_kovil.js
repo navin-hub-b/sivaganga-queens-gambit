@@ -1059,7 +1059,7 @@ class SivagangaLevel8KalaiyarKovil {
       if (window.sivagangaGameplay) {
         window.sivagangaGameplay.start(9);
       } else if (window.sivagangaRouter) {
-        window.sivagangaRouter.navigate('/level/09-the-udaiyaal-regiment');
+        window.sivagangaRouter.navigate('/level/09-flight-to-virupachi');
       }
       this.isTransitioning = false;
     };
