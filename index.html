@@ -269,7 +269,8 @@
          Toggleable via [📜 Lore (H)] button or [H] / [F1] / [Esc]
          ===================================================================== -->
     <div id="level-lore-modal" class="palm-manuscript-modal" style="display: none;">
-      <div class="manuscript-leaf-body" style="max-width: 580px; text-align: left;">
+      <div class="manuscript-leaf-body" style="max-width: 580px; text-align: left; position: relative;">
+        <button id="lore-modal-x-btn" class="plaque-close-btn" title="Dismiss [Esc]" style="position:absolute; top:12px; right:16px; font-size:24px; cursor:pointer; background:none; border:none; color:#D9A441; line-height:1;">×</button>
         <div id="lore-modal-chapter-tag" style="font-size: 12px; letter-spacing: 2px; color: var(--accent-sage); text-transform: uppercase; margin-bottom: 6px;">
           CHAPTER I &bull; RAMANATHAPURAM
         </div>
@@ -330,7 +331,8 @@
     <!-- =====================================================================
          PRE-TRIAL RANGOLI SIGIL PREVIEW MODAL
          ===================================================================== -->
-    <div id="sigil-modal" class="sigil-preview-modal" style="display: none;">
+    <div id="sigil-modal" class="sigil-preview-modal" style="display: none; position: relative;">
+      <button id="sigil-close-btn" class="plaque-close-btn" title="Dismiss [Esc]" style="position:absolute; top:12px; right:16px; font-size:24px; cursor:pointer; background:none; border:none; color:#D9A441; line-height:1;">×</button>
       <div class="sigil-canvas-box">
         <canvas id="sigil-canvas" width="160" height="160"></canvas>
       </div>

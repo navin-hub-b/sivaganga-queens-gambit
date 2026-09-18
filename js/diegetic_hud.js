@@ -175,12 +175,28 @@ class SivagangaDiegeticHUD {
     window.sivagangaAudio.playResolveBell();
 
     const proceedBtn = document.getElementById('sigil-proceed-btn');
-    const handleProceed = () => {
-      proceedBtn.removeEventListener('click', handleProceed);
+    const closeBtn = document.getElementById('sigil-close-btn');
+
+    const handleDismiss = () => {
+      proceedBtn.removeEventListener('click', handleDismiss);
+      if (closeBtn) closeBtn.removeEventListener('click', handleDismiss);
       modal.style.display = 'none';
       if (onProceed) onProceed();
     };
-    proceedBtn.addEventListener('click', handleProceed);
+
+    proceedBtn.addEventListener('click', handleDismiss);
+    if (closeBtn) closeBtn.addEventListener('click', handleDismiss);
+    modal.onclick = (e) => {
+      if (e.target === modal) handleDismiss();
+    };
+
+    const handleEsc = (e) => {
+      if (e.key === 'Escape' && modal.style.display === 'flex') {
+        window.removeEventListener('keydown', handleEsc);
+        handleDismiss();
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
   }
 
   renderRangoliPattern(ctx, type, width, height) {

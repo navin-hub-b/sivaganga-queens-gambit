@@ -20,6 +20,12 @@ class SivagangaNarrativeFlow {
     /** @type {number|null} Current level that just completed */
     this._lastCompletedLevel = null;
 
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.isModalVisible) {
+        this._closeBridgeModal();
+      }
+    });
+
     // =========================================================================
     // HISTORICAL NARRATIVE BRIDGES  (indexed 1→20, i.e. bridges[N] is what
     // appears after level N completes, bridging N → N+1)
@@ -461,13 +467,9 @@ class SivagangaNarrativeFlow {
     if (prevBtn) {
       if (lvl.id > 1) {
         prevBtn.style.display = '';
+        prevBtn.innerHTML = `&larr; Prev: Level ${lvl.id - 1}`;
         prevBtn.onclick = () => {
-          const prevId = lvl.id - 1;
-          if (window.sivagangaRouter) {
-            window.sivagangaRouter.navigate(window.sivagangaRouter.getLevelUrl(prevId));
-          } else if (window.sivagangaGameplay) {
-            window.sivagangaGameplay.start(prevId);
-          }
+          this.advanceToNextLevel(lvl.id - 1);
         };
       } else {
         prevBtn.style.display = 'none';
@@ -476,16 +478,12 @@ class SivagangaNarrativeFlow {
 
     // Next button
     if (nextBtn) {
-      const canGoNext = (lvl.id < 20) && (unlockedUpTo >= lvl.id + 1 || lvl.id <= 9);
+      const canGoNext = (lvl.id < 20);
       if (canGoNext) {
         nextBtn.style.display = '';
+        nextBtn.innerHTML = `Next: Level ${lvl.id + 1} &rarr;`;
         nextBtn.onclick = () => {
-          const nextId = lvl.id + 1;
-          if (window.sivagangaRouter) {
-            window.sivagangaRouter.navigate(window.sivagangaRouter.getLevelUrl(nextId));
-          } else if (window.sivagangaGameplay) {
-            window.sivagangaGameplay.start(nextId);
-          }
+          this.advanceToNextLevel(lvl.id + 1);
         };
       } else {
         nextBtn.style.display = 'none';
@@ -530,7 +528,8 @@ class SivagangaNarrativeFlow {
          <button id="narrative-bridge-chronicle-btn" class="btn-tamil">View Chronicle Map</button>`;
 
     modal.innerHTML = `
-      <div class="narrative-bridge-card">
+      <div class="narrative-bridge-card" style="position: relative;">
+        <button id="narrative-bridge-close-btn" class="plaque-close-btn" title="Dismiss [Esc]" style="position:absolute; top:12px; right:16px; font-size:24px; cursor:pointer; background:none; border:none; color:#D9A441; line-height:1;">×</button>
         <div class="narrative-bridge-header">
           <span class="narrative-bridge-chapter-tag">${bridge.chapterTag}</span>
           <h2 class="narrative-bridge-title">${bridge.completedTitle}</h2>
@@ -549,8 +548,16 @@ class SivagangaNarrativeFlow {
     modal.style.display = 'flex';
 
     // Wire buttons
+    const closeBtn = document.getElementById('narrative-bridge-close-btn');
     const continueBtn = document.getElementById('narrative-bridge-continue-btn');
     const chronicleBtn = document.getElementById('narrative-bridge-chronicle-btn');
+
+    if (closeBtn) {
+      closeBtn.onclick = () => this._closeBridgeModal();
+    }
+    modal.onclick = (e) => {
+      if (e.target === modal) this._closeBridgeModal();
+    };
 
     if (continueBtn) {
       continueBtn.onclick = () => this.advanceToNextLevel(levelId + 1);

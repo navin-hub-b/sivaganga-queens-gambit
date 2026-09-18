@@ -279,8 +279,20 @@ class SivagangaLevel7TheCompanysShadow {
     window.addEventListener('keydown', this.boundKeyDown);
     window.addEventListener('keyup', this.boundKeyUp);
 
-    // Canvas click listener to dismiss prologue window mode directly
-    this.boundCanvasClick = () => {
+    // Canvas click listener to dismiss prologue window mode directly or advance to Level 8
+    this.boundCanvasClick = (e) => {
+      const rect = this.canvas.getBoundingClientRect();
+      const mx = (e.clientX - rect.left) * (this.width / rect.width);
+      const my = (e.clientY - rect.top) * (this.height / rect.height);
+
+      if (this.skipTo8Btn) {
+        const b = this.skipTo8Btn;
+        if (mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h) {
+          this.completeLevel();
+          return;
+        }
+      }
+
       if (this.viewMode === 'window') {
         this.transitionToInfiltration();
       }
@@ -333,6 +345,12 @@ class SivagangaLevel7TheCompanysShadow {
 
   handleKeyDown(e) {
     if (!this.isActive) return;
+
+    if (e.key === '8' || e.key === 'n' || e.key === 'N') {
+      e.preventDefault();
+      this.completeLevel();
+      return;
+    }
 
     // In window mode, any key descends into fort grounds
     if (this.viewMode === 'window') {
@@ -651,8 +669,10 @@ class SivagangaLevel7TheCompanysShadow {
     if (this.isLevelCompleted) return;
     this.isLevelCompleted = true;
 
-    // Atomic Victory Save
+    // Atomic Victory Save & Unlock Level 8
     window.sivagangaSave?.recordLevelVictory(7, { intelCount: 3 });
+    window.sivagangaSave?.unlockLevel(8);
+    window.sivagangaSave?.recordChronicleNode(7);
     window.sivagangaAudio?.playResolveBell();
 
     this.showFeedback('Infiltration Successful! Enemy troop movements secured.', '#A7BEAE');
@@ -669,7 +689,8 @@ class SivagangaLevel7TheCompanysShadow {
     }
 
     overlay.innerHTML = `
-      <div class="level7-victory-card">
+      <div class="level7-victory-card" style="position: relative;">
+        <button id="level7-victory-close-btn" class="plaque-close-btn" title="Dismiss [Esc]" style="position:absolute; top:12px; right:16px; font-size:24px; cursor:pointer; background:none; border:none; color:#D9A441; line-height:1;">×</button>
         <div class="level7-victory-header">
           <span class="level7-victory-chapter">CHAPTER II · THE SOVEREIGN REIGN (1772)</span>
           <h2 class="level7-victory-title">Trial VII: The Company's Shadow — Complete</h2>
@@ -699,6 +720,15 @@ class SivagangaLevel7TheCompanysShadow {
     `;
 
     overlay.style.display = 'flex';
+
+    // Dismiss buttons
+    const closeBtn = document.getElementById('level7-victory-close-btn');
+    if (closeBtn) {
+      closeBtn.onclick = () => { overlay.style.display = 'none'; };
+    }
+    overlay.onclick = (e) => {
+      if (e.target === overlay) overlay.style.display = 'none';
+    };
 
     // Advance to Level 8
     document.getElementById('level7-advance-btn').onclick = () => {
@@ -1047,16 +1077,36 @@ class SivagangaLevel7TheCompanysShadow {
     ctx.fillText('Descend to the market lanes to recover 3 strategic ledgers', bx + 24, by + 134);
     ctx.fillText('before the Citadel Gates are sealed for the night.', bx + 24, by + 156);
 
-    // Interactive Button Prompt
-    ctx.fillStyle = 'rgba(184, 80, 66, 0.9)';
-    ctx.fillRect(bx + 40, by + 172, bw - 80, 32);
+    // Interactive Button Prompts
+    const btnW1 = 170;
+    const btnW2 = 180;
+    const gap = 12;
+    const startX = bx + (bw - (btnW1 + btnW2 + gap)) / 2;
+
+    // Infiltrate button
+    ctx.fillStyle = 'rgba(184, 80, 66, 0.95)';
+    ctx.fillRect(startX, by + 172, btnW1, 32);
     ctx.strokeStyle = '#D9A441';
-    ctx.strokeRect(bx + 40, by + 172, bw - 80, 32);
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(startX, by + 172, btnW1, 32);
 
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = 'bold 12px "Montserrat", sans-serif';
+    ctx.font = 'bold 11px "Montserrat", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('PRESS [SPACE / ENTER] TO INFILTRATE', bx + bw / 2, by + 193);
+    ctx.fillText('INFILTRATE [SPACE]', startX + btnW1 / 2, by + 192);
+
+    // Direct advance button to Level 8
+    this.skipTo8Btn = { x: startX + btnW1 + gap, y: by + 172, w: btnW2, h: 32 };
+    ctx.fillStyle = 'rgba(46, 31, 27, 0.95)';
+    ctx.fillRect(this.skipTo8Btn.x, by + 172, btnW2, 32);
+    ctx.strokeStyle = '#D9A441';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(this.skipTo8Btn.x, by + 172, btnW2, 32);
+
+    ctx.fillStyle = '#D9A441';
+    ctx.font = 'bold 11px "Montserrat", sans-serif';
+    ctx.fillText('LEVEL 8: KALAIYAR KOVIL →', this.skipTo8Btn.x + btnW2 / 2, by + 192);
+
     ctx.restore();
   }
 
@@ -1419,6 +1469,27 @@ class SivagangaLevel7TheCompanysShadow {
       ctx.textAlign = 'center';
       ctx.fillText(this.feedbackText, this.width / 2, 503);
     }
+
+    // 4. In-Game Advance Button to Level 8 (Top Right)
+    const btnW = 270;
+    const btnH = 32;
+    const btnX = this.width - btnW - 40;
+    const btnY = 10;
+    this.skipTo8Btn = { x: btnX, y: btnY, w: btnW, h: btnH };
+
+    ctx.fillStyle = '#B85042';
+    ctx.beginPath();
+    ctx.roundRect(btnX, btnY, btnW, btnH, 4);
+    ctx.fill();
+
+    ctx.strokeStyle = '#D9A441';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 12px "Calibri", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Advance to Level 8: Kalaiyar Kovil →', btnX + btnW / 2, btnY + 20);
 
     ctx.restore();
   }

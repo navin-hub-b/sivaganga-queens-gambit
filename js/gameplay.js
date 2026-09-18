@@ -47,15 +47,17 @@ class SivagangaGameplay {
       };
     }
     const loreCloseBtn = document.getElementById('lore-modal-close-btn');
-    if (loreCloseBtn) {
-      loreCloseBtn.onclick = (e) => {
-        if (e) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-        this.toggleLoreModal(false);
-      };
-    }
+    const loreXBtn = document.getElementById('lore-modal-x-btn');
+    const handleCloseLore = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      this.toggleLoreModal(false);
+    };
+    if (loreCloseBtn) loreCloseBtn.onclick = handleCloseLore;
+    if (loreXBtn) loreXBtn.onclick = handleCloseLore;
+
     const loreModal = document.getElementById('level-lore-modal');
     if (loreModal) {
       loreModal.onclick = (e) => {
@@ -611,13 +613,13 @@ class SivagangaGameplay {
     }
 
     window.addEventListener('keydown', (e) => {
-      if (this.currentLevel?.id === 8) return;
       if (e.key === 'Escape') {
         const loreModal = document.getElementById('level-lore-modal');
         if (loreModal && (loreModal.classList.contains('active') || loreModal.style.display === 'flex')) {
           this.toggleLoreModal(false);
           return;
         }
+        if (this.currentLevel?.id === 8) return;
         if (this.isLevelActive) {
           this.togglePause();
         }

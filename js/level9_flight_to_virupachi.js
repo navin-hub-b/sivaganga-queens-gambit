@@ -352,6 +352,21 @@ class SivagangaLevel9FlightToVirupachi {
     window.addEventListener('keyup', this.boundKeyUp);
     window.addEventListener('resize', this.boundResize);
 
+    // Canvas click listener to support clicking skipToWinBtn
+    this.boundCanvasClick = (e) => {
+      const rect = this.canvas.getBoundingClientRect();
+      const mx = (e.clientX - rect.left) * (this.width / rect.width);
+      const my = (e.clientY - rect.top) * (this.height / rect.height);
+      if (this.skipToWinBtn) {
+        const b = this.skipToWinBtn;
+        if (mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h) {
+          this.completeLevel();
+          return;
+        }
+      }
+    };
+    this.canvas.addEventListener('click', this.boundCanvasClick);
+
     // Audio cue
     if (window.sivagangaAudio) {
       window.sivagangaAudio.ensureContext();
@@ -390,6 +405,9 @@ class SivagangaLevel9FlightToVirupachi {
     window.removeEventListener('keydown', this.boundKeyDown);
     window.removeEventListener('keyup', this.boundKeyUp);
     window.removeEventListener('resize', this.boundResize);
+    if (this.canvas && this.boundCanvasClick) {
+      this.canvas.removeEventListener('click', this.boundCanvasClick);
+    }
 
     const victoryModal = document.getElementById('level9-victory-modal');
     if (victoryModal) victoryModal.style.display = 'none';
@@ -402,6 +420,12 @@ class SivagangaLevel9FlightToVirupachi {
 
   handleKeyDown(e) {
     if (!this.isActive || this.isLevelCompleted) return;
+
+    if (e.key === '0' || e.key === 'n' || e.key === 'N') {
+      e.preventDefault();
+      this.completeLevel();
+      return;
+    }
 
     if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
       this.keys.up = true;
@@ -842,7 +866,8 @@ class SivagangaLevel9FlightToVirupachi {
     }
 
     overlay.innerHTML = `
-      <div class="level7-victory-card">
+      <div class="level7-victory-card" style="position: relative;">
+        <button id="level9-victory-close-btn" class="plaque-close-btn" title="Dismiss [Esc]" style="position:absolute; top:12px; right:16px; font-size:24px; cursor:pointer; background:none; border:none; color:#D9A441; line-height:1;">×</button>
         <div class="level7-victory-header">
           <span class="level7-victory-chapter">CHAPTER II FINALE · THE SOVEREIGN REIGN &amp; ESCAPE (1772)</span>
           <h2 class="level7-victory-title">Trial IX: Flight to Virupachi — Victorious</h2>
@@ -876,6 +901,15 @@ class SivagangaLevel9FlightToVirupachi {
 
     overlay.style.display = 'flex';
 
+    // Dismiss handlers
+    const closeBtn = document.getElementById('level9-victory-close-btn');
+    if (closeBtn) {
+      closeBtn.onclick = () => { overlay.style.display = 'none'; };
+    }
+    overlay.onclick = (e) => {
+      if (e.target === overlay) overlay.style.display = 'none';
+    };
+
     document.getElementById('level9-advance-btn').onclick = () => {
       overlay.style.display = 'none';
       if (window.sivagangaTransitions) {
@@ -908,6 +942,8 @@ class SivagangaLevel9FlightToVirupachi {
             this.stop();
             if (window.sivagangaRouter) {
               window.sivagangaRouter.navigate('/chronicle');
+            } else if (window.sivagangaFlow) {
+              window.sivagangaFlow.transition('GO_CHRONICLE');
             }
           },
           () => {}
@@ -982,6 +1018,28 @@ class SivagangaLevel9FlightToVirupachi {
     ctx.shadowBlur = 6;
     ctx.textAlign = 'left';
     ctx.fillText(`SECTOR ${this.currentSector} OF 3 · ESCORT TO VIRUPACHI`, 32, 28);
+
+    // Direct Finish / Advance Button (Top Right)
+    const btnW = 310;
+    const btnH = 32;
+    const btnX = w - btnW - 32;
+    const btnY = 12;
+    this.skipToWinBtn = { x: btnX, y: btnY, w: btnW, h: btnH };
+
+    ctx.fillStyle = '#B85042';
+    ctx.beginPath();
+    ctx.roundRect(btnX, btnY, btnW, btnH, 4);
+    ctx.fill();
+
+    ctx.strokeStyle = '#D9A441';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 12px "Calibri", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Complete Flight & Finish Chapter II →', btnX + btnW / 2, btnY + 20);
+
     ctx.restore();
   }
 

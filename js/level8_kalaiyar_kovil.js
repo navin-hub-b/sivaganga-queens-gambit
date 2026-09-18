@@ -119,18 +119,42 @@ class SivagangaLevel8KalaiyarKovil {
 
     this.handleResize();
 
-    // 1. Strict Input Shielding: Capture and drop all keyboard, pointer, and touch input
-    this.installInputShield();
-
-    // 2. Suppress non-relevant HUD elements: only keep the solitary oil lamp
+    // Configure HUD: keep header buttons and Journey Ribbon active and responsive
     this.configureDiegeticHUDForVigil(true);
 
-    // 3. Audio Atmosphere
+    // Audio Atmosphere
     if (window.sivagangaAudio) {
       window.sivagangaAudio.ensureContext();
       window.sivagangaAudio.playTempleBell();
     }
 
+    // Canvas click listener to advance acts or jump to Level 9
+    this.boundCanvasClick = (e) => {
+      const rect = this.canvas.getBoundingClientRect();
+      const mx = (e.clientX - rect.left) * (this.width / rect.width);
+      const my = (e.clientY - rect.top) * (this.height / rect.height);
+      this.handleCanvasClick(mx, my);
+    };
+    this.canvas.addEventListener('click', this.boundCanvasClick);
+
+    // Standard non-capturing keydown listener
+    this.boundKeyDown = (e) => {
+      if (!this.isActive) return;
+      if (e.key === '9' || e.key === 'n' || e.key === 'N') {
+        e.preventDefault();
+        this.transitionToLevel9();
+        return;
+      }
+      if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        if (this.currentAct === 5) {
+          this.transitionToLevel9();
+        } else {
+          this.advanceActFast();
+        }
+      }
+    };
+    window.addEventListener('keydown', this.boundKeyDown);
     window.addEventListener('resize', this.boundResize);
   }
 
@@ -160,8 +184,12 @@ class SivagangaLevel8KalaiyarKovil {
       this.animationId = null;
     }
 
-    // Remove input shielding
-    this.removeInputShield();
+    if (this.canvas && this.boundCanvasClick) {
+      this.canvas.removeEventListener('click', this.boundCanvasClick);
+    }
+    if (this.boundKeyDown) {
+      window.removeEventListener('keydown', this.boundKeyDown);
+    }
 
     // Restore full diegetic HUD
     this.configureDiegeticHUDForVigil(false);
@@ -169,78 +197,24 @@ class SivagangaLevel8KalaiyarKovil {
     window.removeEventListener('resize', this.boundResize);
   }
 
-  /**
-   * Technical Contract: Strict Input Shielding.
-   * Intercepts all input events in the capture phase to guarantee zero accidental
-   * state modification, pause triggers, or movement errors during the scripted sequence.
-   */
-  installInputShield() {
-    const events = [
-      'keydown', 'keyup', 'keypress',
-      'mousedown', 'mouseup', 'click', 'dblclick',
-      'pointerdown', 'pointerup', 'pointermove',
-      'touchstart', 'touchend', 'touchmove',
-      'wheel', 'contextmenu'
-    ];
-
-    events.forEach(evt => {
-      window.addEventListener(evt, this.boundBlockInput, { capture: true, passive: false });
-    });
-
-    // Also lock interaction engine
-    if (window.sivagangaInteraction) {
-      window.sivagangaInteraction.setLock(true);
-    }
-  }
-
-  removeInputShield() {
-    const events = [
-      'keydown', 'keyup', 'keypress',
-      'mousedown', 'mouseup', 'click', 'dblclick',
-      'pointerdown', 'pointerup', 'pointermove',
-      'touchstart', 'touchend', 'touchmove',
-      'wheel', 'contextmenu'
-    ];
-
-    events.forEach(evt => {
-      window.removeEventListener(evt, this.boundBlockInput, { capture: true, passive: false });
-    });
-
-    if (window.sivagangaInteraction) {
-      window.sivagangaInteraction.setLock(false);
-    }
-  }
-
-  blockInput(e) {
-    // Fast-forward / quick-advance through the sacred acts on player click or space/enter
-    if (e.type === 'click' || e.type === 'pointerup') {
-      if (this.currentAct === 5) {
-        const rect = this.canvas.getBoundingClientRect();
-        const mx = (e.clientX - rect.left) * (this.width / rect.width);
-        const my = (e.clientY - rect.top) * (this.height / rect.height);
-        this.handleAct5Click(mx, my);
-      } else {
-        this.advanceActFast();
-      }
-      e.stopImmediatePropagation();
-      e.preventDefault();
-      return;
-    }
-
-    if (e.type === 'keydown' && (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight' || e.key === 'Escape')) {
-      if (this.currentAct === 5) {
+  handleCanvasClick(mx, my) {
+    // 1. Check direct skip to Level 9 button
+    if (this.skipTo9Btn) {
+      const b = this.skipTo9Btn;
+      if (mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h) {
         this.transitionToLevel9();
-      } else {
-        this.advanceActFast();
+        return;
       }
-      e.stopImmediatePropagation();
-      e.preventDefault();
+    }
+
+    // 2. Check Act 5 resolution card button
+    if (this.currentAct === 5) {
+      this.handleAct5Click(mx, my);
       return;
     }
 
-    // In all other cases during the scripted sequence: swallow input cleanly
-    e.stopImmediatePropagation();
-    if (e.cancelable) e.preventDefault();
+    // 3. Fast-forward through acts
+    this.advanceActFast();
   }
 
   advanceActFast() {
@@ -272,9 +246,9 @@ class SivagangaLevel8KalaiyarKovil {
   }
 
   /**
-   * UI/UX Spec: Suppress all extraneous HUD except the solitary Diya lamp.
-   * Hides bells, bangles, garland, and header buttons so the experience is
-   * purely cinematic and contemplative.
+   * Diegetic HUD configuration during the sacred vigil.
+   * Keeps the Journey Ribbon and Level Header buttons 100% interactive so
+   * the player can always navigate or advance simply.
    */
   configureDiegeticHUDForVigil(enableVigil) {
     const bells = document.querySelector('.hud-archway-bells');
@@ -287,19 +261,25 @@ class SivagangaLevel8KalaiyarKovil {
       if (bells) bells.style.display = 'none';
       if (bangles) bangles.style.display = 'none';
       if (garland) garland.style.display = 'none';
-      if (ribbon) ribbon.style.opacity = '0.3';
+      if (ribbon) {
+        ribbon.style.opacity = '1';
+        ribbon.style.pointerEvents = 'auto';
+      }
       headerBtns.forEach(b => {
-        b.style.pointerEvents = 'none';
-        b.style.opacity = '0.2';
+        b.style.pointerEvents = 'auto';
+        b.style.opacity = '1';
       });
     } else {
       if (bells) bells.style.display = '';
       if (bangles) bangles.style.display = '';
       if (garland) garland.style.display = '';
-      if (ribbon) ribbon.style.opacity = '';
+      if (ribbon) {
+        ribbon.style.opacity = '1';
+        ribbon.style.pointerEvents = 'auto';
+      }
       headerBtns.forEach(b => {
-        b.style.pointerEvents = '';
-        b.style.opacity = '';
+        b.style.pointerEvents = 'auto';
+        b.style.opacity = '1';
       });
     }
   }
@@ -483,6 +463,54 @@ class SivagangaLevel8KalaiyarKovil {
 
     // Render Poetic Narration Banner in Cambria
     this.renderNarrationText(ctx, w, h);
+
+    // Render In-Game Flow Controls Bar
+    this.renderControlsBar(ctx, w, h);
+
+    ctx.restore();
+  }
+
+  renderControlsBar(ctx, w, h) {
+    if (this.currentAct === 5) {
+      this.skipTo9Btn = null;
+      return;
+    }
+
+    ctx.save();
+    const barH = 34;
+    const barY = h - barH - 8;
+
+    // Status prompt
+    ctx.fillStyle = 'rgba(46, 31, 27, 0.88)';
+    ctx.fillRect(16, barY, 310, barH);
+    ctx.strokeStyle = 'rgba(217, 164, 65, 0.5)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(16, barY, 310, barH);
+
+    ctx.fillStyle = '#eeddcc';
+    ctx.font = '12px "Cambria", serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Act ${this.currentAct} of 5 · Click or [SPACE] to advance ▶`, 28, barY + 21);
+
+    // Direct advance button to Level 9
+    const btnW = 300;
+    const btnH = barH;
+    const btnX = w - btnW - 16;
+    this.skipTo9Btn = { x: btnX, y: barY, w: btnW, h: btnH };
+
+    ctx.fillStyle = '#B85042';
+    ctx.beginPath();
+    ctx.roundRect(btnX, barY, btnW, btnH, 4);
+    ctx.fill();
+
+    ctx.strokeStyle = '#D9A441';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 12.5px "Calibri", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Advance to Level 9: Flight to Virupachi →', btnX + btnW / 2, barY + 21);
 
     ctx.restore();
   }
