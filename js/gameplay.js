@@ -127,6 +127,11 @@ class SivagangaGameplay {
     const titleEl = document.getElementById('level-title-text');
     if (titleEl) titleEl.textContent = `${lvl.id}. ${lvl.title}`;
 
+    // Refresh Journey Ribbon breadcrumb and prev/next flow navigation
+    if (window.sivagangaNarrativeFlow) {
+      window.sivagangaNarrativeFlow.refreshJourneyRibbon(lvl);
+    }
+
     // Populate In-Level Historical Lore & Sacred Objective Modal (Hidden by default)
     const chapterTag = document.getElementById('lore-modal-chapter-tag');
     const loreTitle = document.getElementById('lore-modal-title');
@@ -902,6 +907,8 @@ class SivagangaGameplay {
   hidePuzzleOverlays() {
     const overlay = document.getElementById('level-puzzle-overlay');
     if (overlay) overlay.style.display = 'none';
+    const diag = document.getElementById('level-dialogue-box');
+    if (diag) diag.style.display = 'none';
   }
 
   // --- Specialized Puzzle Handlers ---

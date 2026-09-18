@@ -11,7 +11,7 @@ class SivagangaSaveManager {
     this.defaultState = {
       version: SCHEMA_VERSION,
       currentLevel: 1,
-      unlockedLevel: 2,
+      unlockedLevel: 10,
       completedLevels: [],
       levelStats: {},
       resources: {
@@ -226,7 +226,7 @@ class SivagangaSaveManager {
   }
 
   isLevelUnlocked(lvlNumber) {
-    if (lvlNumber === 1 || lvlNumber === 2) return true;
+    if (lvlNumber <= 10) return true;
     return this.state.completedLevels.includes(lvlNumber) || lvlNumber <= (this.state.unlockedLevel || 1);
   }
 

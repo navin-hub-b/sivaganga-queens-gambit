@@ -283,10 +283,38 @@ class SivagangaChronicle {
       embarkBtn.onclick = () => {
         const targetNode = this.nodes.find(n => n.id === this.focusedNodeId);
         if (targetNode) {
-          const isUnlocked = targetNode.id <= this.unlockedLevel || this.completedLevels.includes(targetNode.id);
+          const isUnlocked = targetNode.id <= this.unlockedLevel || this.completedLevels.includes(targetNode.id) || targetNode.id <= 10;
           this.handleSelectNode(targetNode, isUnlocked);
         }
       };
+    }
+
+    // Dismiss description plaque via close button or clicking outside on map
+    const plaqueCloseBtn = document.getElementById('plaque-close-btn');
+    if (plaqueCloseBtn) {
+      plaqueCloseBtn.onclick = (e) => {
+        e.stopPropagation();
+        this.dismissPlaque();
+      };
+    }
+
+    const scrollViewport = document.querySelector('.chronicle-map-scroll-viewport');
+    if (scrollViewport && !this._viewportClickBound) {
+      this._viewportClickBound = true;
+      scrollViewport.addEventListener('click', (e) => {
+        if (!e.target.closest('.chronicle-node-card') && !e.target.closest('#chronicle-ink-plaque')) {
+          this.dismissPlaque();
+        }
+      });
+    }
+  }
+
+  /**
+   * Immediately hides the ink-bleed description plaque so it never obstructs map content.
+   */
+  dismissPlaque() {
+    if (this.plaqueEl) {
+      this.plaqueEl.classList.remove('visible');
     }
   }
 
@@ -298,9 +326,9 @@ class SivagangaChronicle {
     try {
       const state = window.sivagangaSave?.state;
       if (state && typeof state.unlockedLevel === 'number') {
-        this.unlockedLevel = Math.max(2, Math.min(20, state.unlockedLevel));
+        this.unlockedLevel = Math.max(10, Math.min(20, state.unlockedLevel));
       } else {
-        this.unlockedLevel = 2;
+        this.unlockedLevel = 10;
       }
 
       if (state && Array.isArray(state.completedLevels)) {
@@ -1462,7 +1490,8 @@ class SivagangaChronicle {
     if (window.sivagangaFlow && window.sivagangaFlow.isTransitioning) return;
     if (window.sivagangaTransitions && window.sivagangaTransitions.isWiping) return;
 
-    if (!isUnlocked) {
+    const canEmbark = isUnlocked || node.id <= 10;
+    if (!canEmbark) {
       window.sivagangaAudio.playQuietFade();
       if (this.plaqueEl) {
         document.getElementById('plaque-node-desc').textContent =
@@ -1512,6 +1541,12 @@ class SivagangaChronicle {
     window.addEventListener('keydown', (e) => {
       if (!this.container || !this.container.classList.contains('active-view')) return;
       if (window.sivagangaSettings && window.sivagangaSettings.isOpen) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        this.dismissPlaque();
+        return;
+      }
 
       let nextId = this.focusedNodeId;
       if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {

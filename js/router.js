@@ -205,7 +205,8 @@ class SivagangaRouter {
       const isUnlocked = window.sivagangaSave.isLevelUnlocked(lvlId);
       const isCompleted = window.sivagangaSave.isLevelCompleted(lvlId);
 
-      if (!isUnlocked && !isCompleted) {
+      // In the seamless campaign flow, levels 1 through 10 are always accessible
+      if (lvlId > 10 && !isUnlocked && !isCompleted) {
         return {
           allowed: false,
           redirect: '/chronicle',

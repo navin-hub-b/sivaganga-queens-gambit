@@ -279,6 +279,14 @@ class SivagangaLevel7TheCompanysShadow {
     window.addEventListener('keydown', this.boundKeyDown);
     window.addEventListener('keyup', this.boundKeyUp);
 
+    // Canvas click listener to dismiss prologue window mode directly
+    this.boundCanvasClick = () => {
+      if (this.viewMode === 'window') {
+        this.transitionToInfiltration();
+      }
+    };
+    this.canvas.addEventListener('click', this.boundCanvasClick);
+
     // Initial HUD update
     this.updateDiegeticLamp(0.0);
     this.updateHUDGarland();
@@ -315,6 +323,9 @@ class SivagangaLevel7TheCompanysShadow {
     }
     window.removeEventListener('keydown', this.boundKeyDown);
     window.removeEventListener('keyup', this.boundKeyUp);
+    if (this.canvas && this.boundCanvasClick) {
+      this.canvas.removeEventListener('click', this.boundCanvasClick);
+    }
 
     // Restore HUD Diya flame to stable golden state
     this.restoreDiegeticLamp();
@@ -323,12 +334,10 @@ class SivagangaLevel7TheCompanysShadow {
   handleKeyDown(e) {
     if (!this.isActive) return;
 
-    // In window mode, Space or Enter descends into fort grounds
+    // In window mode, any key descends into fort grounds
     if (this.viewMode === 'window') {
-      if (e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault();
-        this.transitionToInfiltration();
-      }
+      e.preventDefault();
+      this.transitionToInfiltration();
       return;
     }
 

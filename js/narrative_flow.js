@@ -462,19 +462,30 @@ class SivagangaNarrativeFlow {
       if (lvl.id > 1) {
         prevBtn.style.display = '';
         prevBtn.onclick = () => {
-          if (window.sivagangaGameplay) window.sivagangaGameplay.start(lvl.id - 1);
+          const prevId = lvl.id - 1;
+          if (window.sivagangaRouter) {
+            window.sivagangaRouter.navigate(window.sivagangaRouter.getLevelUrl(prevId));
+          } else if (window.sivagangaGameplay) {
+            window.sivagangaGameplay.start(prevId);
+          }
         };
       } else {
         prevBtn.style.display = 'none';
       }
     }
 
-    // Next button (only if unlocked)
+    // Next button
     if (nextBtn) {
-      if (lvl.id < 20 && unlockedUpTo >= lvl.id + 1) {
+      const canGoNext = (lvl.id < 20) && (unlockedUpTo >= lvl.id + 1 || lvl.id <= 9);
+      if (canGoNext) {
         nextBtn.style.display = '';
         nextBtn.onclick = () => {
-          if (window.sivagangaGameplay) window.sivagangaGameplay.start(lvl.id + 1);
+          const nextId = lvl.id + 1;
+          if (window.sivagangaRouter) {
+            window.sivagangaRouter.navigate(window.sivagangaRouter.getLevelUrl(nextId));
+          } else if (window.sivagangaGameplay) {
+            window.sivagangaGameplay.start(nextId);
+          }
         };
       } else {
         nextBtn.style.display = 'none';

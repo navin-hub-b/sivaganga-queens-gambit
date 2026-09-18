@@ -212,28 +212,52 @@ class SivagangaLevel8KalaiyarKovil {
   }
 
   blockInput(e) {
-    // If we've reached Act 5, allow clicks/keypresses on the resolution button
-    if (this.currentAct === 5) {
-      if (e.type === 'click' || e.type === 'pointerup') {
+    // Fast-forward / quick-advance through the sacred acts on player click or space/enter
+    if (e.type === 'click' || e.type === 'pointerup') {
+      if (this.currentAct === 5) {
         const rect = this.canvas.getBoundingClientRect();
         const mx = (e.clientX - rect.left) * (this.width / rect.width);
         const my = (e.clientY - rect.top) * (this.height / rect.height);
         this.handleAct5Click(mx, my);
-        e.stopImmediatePropagation();
-        e.preventDefault();
-        return;
+      } else {
+        this.advanceActFast();
       }
-      if (e.type === 'keydown' && (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight')) {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      return;
+    }
+
+    if (e.type === 'keydown' && (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight' || e.key === 'Escape')) {
+      if (this.currentAct === 5) {
         this.transitionToLevel9();
-        e.stopImmediatePropagation();
-        e.preventDefault();
-        return;
+      } else {
+        this.advanceActFast();
       }
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      return;
     }
 
     // In all other cases during the scripted sequence: swallow input cleanly
     e.stopImmediatePropagation();
     if (e.cancelable) e.preventDefault();
+  }
+
+  advanceActFast() {
+    if (this.currentAct === 1) {
+      this.elapsedTime = 14.1;
+    } else if (this.currentAct === 2) {
+      this.elapsedTime = 27.1;
+    } else if (this.currentAct === 3) {
+      this.elapsedTime = 40.1;
+    } else if (this.currentAct === 4) {
+      this.elapsedTime = 54.1;
+    } else if (this.currentAct === 5) {
+      this.transitionToLevel9();
+    }
+    if (window.sivagangaAudio) {
+      window.sivagangaAudio.playFocusPing?.();
+    }
   }
 
   handleResize() {

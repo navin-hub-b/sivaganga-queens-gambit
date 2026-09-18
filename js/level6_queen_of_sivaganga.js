@@ -47,8 +47,8 @@ class SivagangaLevel6QueenOfSivaganga {
     this.decisionsHistory = [];
     this.viewMode = 'table'; // 'table' (council desk) or 'town' (panoramic window zoom)
 
-    // Intro screen: shown on first entry to explain the mechanic
-    this.showIntro = true;
+    // Intro screen: non-blocking by default so decisions and table are immediately visible
+    this.showIntro = false;
     this.introTimer = 0; // counts up after player dismisses; -1 means not yet shown
 
     // Smooth physical object animation ratios (interpolated towards target)
@@ -521,6 +521,14 @@ class SivagangaLevel6QueenOfSivaganga {
     }
 
     this.spawnCeremonialPetals();
+
+    // Seamless Campaign Flow: Trigger Royal Scribe Bridge to Level 7
+    if (window.sivagangaNarrativeFlow) {
+      window.sivagangaNarrativeFlow.onLevelComplete(6, {
+        reignDecisionsCompleted: true,
+        turnsResolved: 4
+      });
+    }
   }
 
   transitionToChronicle() {
@@ -538,21 +546,26 @@ class SivagangaLevel6QueenOfSivaganga {
 
     if (window.sivagangaInteraction) window.sivagangaInteraction.setLock(true);
 
+    const proceed = () => {
+      this.stop();
+      if (window.sivagangaRouter) {
+        window.sivagangaRouter.navigate('/level/07-the-companys-shadow');
+      } else if (window.sivagangaGameplay) {
+        window.sivagangaGameplay.start(7);
+      }
+    };
+
     if (window.sivagangaTransitions) {
       window.sivagangaTransitions.wipe(
-        () => {
-          this.stop();
-          if (window.sivagangaGameplay) {
-            window.sivagangaGameplay.start(7);
-          } else if (window.sivagangaRouter) {
-            window.sivagangaRouter.navigate('/level/07-the-companys-shadow');
-          }
-        },
+        proceed,
         () => {
           if (window.sivagangaInteraction) window.sivagangaInteraction.setLock(false);
           this.isTransitioning = false;
         }
       );
+    } else {
+      proceed();
+      this.isTransitioning = false;
     }
   }
 
@@ -784,7 +797,7 @@ class SivagangaLevel6QueenOfSivaganga {
       this.renderArchedWindowView(ctx, 260, 55, 280, 180, false);
 
       // 3. Current Decision Dialogue & Advisor Counsel
-      if (!this.showIntro) this.renderDecisionPanel(ctx, w, h);
+      this.renderDecisionPanel(ctx, w, h);
 
       // 4. Low Teak Council Table with Physical Objects
       this.renderCouncilTableAndResources(ctx, w, h);
@@ -793,10 +806,10 @@ class SivagangaLevel6QueenOfSivaganga {
       this.renderParticles(ctx);
 
       // 6. Turn Progress Bar (always visible when in table view)
-      if (!this.showIntro) this.renderTurnProgressBar(ctx, w, h);
+      this.renderTurnProgressBar(ctx, w, h);
 
       // 7. Action Guide & Feedback Toast
-      if (!this.showIntro) this.renderBottomGuideAndFeedback(ctx, w, h);
+      this.renderBottomGuideAndFeedback(ctx, w, h);
     } else {
       // Full Panoramic Window Establishing View
       this.renderPanoramicTownView(ctx, w, h);
