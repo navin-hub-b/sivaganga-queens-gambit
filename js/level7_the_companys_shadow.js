@@ -285,14 +285,6 @@ class SivagangaLevel7TheCompanysShadow {
       const mx = (e.clientX - rect.left) * (this.width / rect.width);
       const my = (e.clientY - rect.top) * (this.height / rect.height);
 
-      if (this.skipTo8Btn) {
-        const b = this.skipTo8Btn;
-        if (mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h) {
-          this.completeLevel();
-          return;
-        }
-      }
-
       if (this.viewMode === 'window') {
         this.transitionToInfiltration();
       }
@@ -348,7 +340,7 @@ class SivagangaLevel7TheCompanysShadow {
 
     if (e.key === '8' || e.key === 'n' || e.key === 'N') {
       e.preventDefault();
-      this.completeLevel();
+      this.transitionToLevel8();
       return;
     }
 
@@ -661,130 +653,62 @@ class SivagangaLevel7TheCompanysShadow {
     if (!this.escapeGate.isUnlocked) return;
     const dist = Math.hypot(this.player.x - this.escapeGate.x, this.player.y - this.escapeGate.y);
     if (dist < this.escapeGate.radius) {
-      this.completeLevel();
+      this.transitionToLevel8();
+    }
+  }
+
+  transitionToLevel8() {
+    if (this.isTransitioning || this.isLevelCompleted) return;
+    this.isLevelCompleted = true;
+    this.isTransitioning = true;
+
+    // 1. Atomic Save & Unlock Level 8
+    window.sivagangaSave?.recordLevelVictory(7, { intelCount: 3 });
+    window.sivagangaSave?.unlockLevel(8);
+    window.sivagangaSave?.recordChronicleNode(7);
+
+    // 2. Audio Atmosphere
+    window.sivagangaAudio?.playResolveBell();
+    window.sivagangaAudio?.playPalmLeafScroll();
+
+    // 3. Show Diegetic Feedback
+    this.showFeedback('Council Gate Entered! Escaping to Kalaiyar Kovil...', '#A7BEAE');
+
+    // 4. Remove any existing victory modal
+    const modal = document.getElementById('level7-victory-modal');
+    if (modal) modal.remove();
+
+    // 5. Seamless Transition Wipe into Level 8
+    if (window.sivagangaInteraction) window.sivagangaInteraction.setLock(true);
+
+    const proceed = () => {
+      this.stop();
+      if (window.sivagangaRouter) {
+        window.sivagangaRouter.navigate('/level/08-kalaiyar-kovil');
+      } else if (window.sivagangaGameplay) {
+        window.sivagangaGameplay.start(8);
+      }
+      this.isTransitioning = false;
+    };
+
+    if (window.sivagangaTransitions) {
+      window.sivagangaTransitions.wipe(
+        proceed,
+        () => {
+          if (window.sivagangaInteraction) window.sivagangaInteraction.setLock(false);
+          this.isTransitioning = false;
+        }
+      );
+    } else {
+      proceed();
     }
   }
 
   completeLevel() {
-    if (this.isLevelCompleted) return;
-    this.isLevelCompleted = true;
-
-    // Atomic Victory Save & Unlock Level 8
-    window.sivagangaSave?.recordLevelVictory(7, { intelCount: 3 });
-    window.sivagangaSave?.unlockLevel(8);
-    window.sivagangaSave?.recordChronicleNode(7);
-    window.sivagangaAudio?.playResolveBell();
-
-    this.showFeedback('Infiltration Successful! Enemy troop movements secured.', '#A7BEAE');
-    this.renderVictoryOverlay();
+    this.transitionToLevel8();
   }
 
-  renderVictoryOverlay() {
-    let overlay = document.getElementById('level7-victory-modal');
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = 'level7-victory-modal';
-      overlay.className = 'level7-victory-overlay';
-      document.getElementById('app-root')?.appendChild(overlay);
-    }
 
-    overlay.innerHTML = `
-      <div class="level7-victory-card" style="position: relative;">
-        <button id="level7-victory-close-btn" class="plaque-close-btn" title="Dismiss [Esc]" style="position:absolute; top:12px; right:16px; font-size:24px; cursor:pointer; background:none; border:none; color:#D9A441; line-height:1;">×</button>
-        <div class="level7-victory-header">
-          <span class="level7-victory-chapter">CHAPTER II · THE SOVEREIGN REIGN (1772)</span>
-          <h2 class="level7-victory-title">Trial VII: The Company's Shadow — Complete</h2>
-          <p class="level7-victory-subtitle">Sivaganga's Counter-Espionage Secured</p>
-        </div>
-        <div class="level7-victory-body">
-          <p>
-            Rani Velu Nachiyar slipped through the twilight shadows of the fort and market,
-            evading British East India Company scouts and Nawab sepoys to secure all three
-            intercepted intelligence ledgers.
-          </p>
-          <div class="level7-intel-summary">
-            <div class="intel-summary-item">✔ EIC Garrison Roster &amp; Artillery Route</div>
-            <div class="intel-summary-item">✔ Nawab of Arcot's Extortion Demand</div>
-            <div class="intel-summary-item">✔ Secret Sluice Survey of the Southern Moat</div>
-          </div>
-          <p style="font-style: italic; color: #eeddcc; font-size: 13px; margin-top: 10px;">
-            The ledgers confirm what she feared most: the Company and the Nawab have plotted a surprise strike on Kalaiyar Kovil. We prepare for the fateful dawn.
-          </p>
-        </div>
-        <div class="level7-victory-actions">
-          <button id="level7-replay-btn" class="btn-tamil">↺ Replay Trial VII</button>
-          <button id="level7-advance-btn" class="btn-tamil btn-primary">Advance to Level 8: Kalaiyar Kovil →</button>
-          <button id="level7-chronicle-btn" class="btn-tamil">Chronicle Map</button>
-        </div>
-      </div>
-    `;
-
-    overlay.style.display = 'flex';
-
-    // Dismiss buttons
-    const closeBtn = document.getElementById('level7-victory-close-btn');
-    if (closeBtn) {
-      closeBtn.onclick = () => { overlay.style.display = 'none'; };
-    }
-    overlay.onclick = (e) => {
-      if (e.target === overlay) overlay.style.display = 'none';
-    };
-
-    // Advance to Level 8
-    document.getElementById('level7-advance-btn').onclick = () => {
-      overlay.style.display = 'none';
-      if (window.sivagangaTransitions) {
-        window.sivagangaTransitions.wipe(
-          () => {
-            this.stop();
-            if (window.sivagangaRouter) {
-              window.sivagangaRouter.navigate('/level/08-kalaiyar-kovil');
-            } else if (window.sivagangaGameplay) {
-              window.sivagangaGameplay.start(8);
-            }
-          },
-          () => {}
-        );
-      } else {
-        this.stop();
-        if (window.sivagangaRouter) {
-          window.sivagangaRouter.navigate('/level/08-kalaiyar-kovil');
-        } else if (window.sivagangaGameplay) {
-          window.sivagangaGameplay.start(8);
-        }
-      }
-    };
-
-    // Replay: restart level 7
-    document.getElementById('level7-replay-btn').onclick = () => {
-      overlay.style.display = 'none';
-      this.isLevelCompleted = false;
-      this.stop();
-      if (window.sivagangaGameplay) {
-        window.sivagangaGameplay.start(7);
-      }
-    };
-
-    // Chronicle Map
-    document.getElementById('level7-chronicle-btn').onclick = () => {
-      overlay.style.display = 'none';
-      if (window.sivagangaTransitions) {
-        window.sivagangaTransitions.wipe(
-          () => {
-            this.stop();
-            if (window.sivagangaRouter) {
-              window.sivagangaRouter.navigate('/chronicle');
-            } else if (window.sivagangaFlow) {
-              window.sivagangaFlow.transition('GO_CHRONICLE');
-            }
-          },
-          () => {}
-        );
-      } else if (window.sivagangaRouter) {
-        window.sivagangaRouter.navigate('/chronicle');
-      }
-    };
-  }
 
   /**
    * Updates diegetic Diya oil lamp HUD element and in-world indicator
@@ -1077,35 +1001,20 @@ class SivagangaLevel7TheCompanysShadow {
     ctx.fillText('Descend to the market lanes to recover 3 strategic ledgers', bx + 24, by + 134);
     ctx.fillText('before the Citadel Gates are sealed for the night.', bx + 24, by + 156);
 
-    // Interactive Button Prompts
-    const btnW1 = 170;
-    const btnW2 = 180;
-    const gap = 12;
-    const startX = bx + (bw - (btnW1 + btnW2 + gap)) / 2;
+    // Interactive Button Prompt
+    const btnW = 260;
+    const startX = bx + (bw - btnW) / 2;
 
-    // Infiltrate button
     ctx.fillStyle = 'rgba(184, 80, 66, 0.95)';
-    ctx.fillRect(startX, by + 172, btnW1, 32);
+    ctx.fillRect(startX, by + 172, btnW, 32);
     ctx.strokeStyle = '#D9A441';
     ctx.lineWidth = 1.5;
-    ctx.strokeRect(startX, by + 172, btnW1, 32);
+    ctx.strokeRect(startX, by + 172, btnW, 32);
 
     ctx.fillStyle = '#FFFFFF';
     ctx.font = 'bold 11px "Montserrat", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('INFILTRATE [SPACE]', startX + btnW1 / 2, by + 192);
-
-    // Direct advance button to Level 8
-    this.skipTo8Btn = { x: startX + btnW1 + gap, y: by + 172, w: btnW2, h: 32 };
-    ctx.fillStyle = 'rgba(46, 31, 27, 0.95)';
-    ctx.fillRect(this.skipTo8Btn.x, by + 172, btnW2, 32);
-    ctx.strokeStyle = '#D9A441';
-    ctx.lineWidth = 1.5;
-    ctx.strokeRect(this.skipTo8Btn.x, by + 172, btnW2, 32);
-
-    ctx.fillStyle = '#D9A441';
-    ctx.font = 'bold 11px "Montserrat", sans-serif';
-    ctx.fillText('LEVEL 8: KALAIYAR KOVIL →', this.skipTo8Btn.x + btnW2 / 2, by + 192);
+    ctx.fillText('INFILTRATE FORT LANES [SPACE / CLICK]', startX + btnW / 2, by + 192);
 
     ctx.restore();
   }
@@ -1469,27 +1378,6 @@ class SivagangaLevel7TheCompanysShadow {
       ctx.textAlign = 'center';
       ctx.fillText(this.feedbackText, this.width / 2, 503);
     }
-
-    // 4. In-Game Advance Button to Level 8 (Top Right)
-    const btnW = 270;
-    const btnH = 32;
-    const btnX = this.width - btnW - 40;
-    const btnY = 10;
-    this.skipTo8Btn = { x: btnX, y: btnY, w: btnW, h: btnH };
-
-    ctx.fillStyle = '#B85042';
-    ctx.beginPath();
-    ctx.roundRect(btnX, btnY, btnW, btnH, 4);
-    ctx.fill();
-
-    ctx.strokeStyle = '#D9A441';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 12px "Calibri", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Advance to Level 8: Kalaiyar Kovil →', btnX + btnW / 2, btnY + 20);
 
     ctx.restore();
   }

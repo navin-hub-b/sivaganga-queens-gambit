@@ -98,8 +98,6 @@ class SivagangaLevel8KalaiyarKovil {
     // Particles array (drifting morning mist, quiet temple incense, sparks of the ember)
     this.particles = [];
 
-    // Bound Input Blocker handler
-    this.boundBlockInput = this.blockInput.bind(this);
     this.boundResize = this.handleResize.bind(this);
   }
 
@@ -198,22 +196,13 @@ class SivagangaLevel8KalaiyarKovil {
   }
 
   handleCanvasClick(mx, my) {
-    // 1. Check direct skip to Level 9 button
-    if (this.skipTo9Btn) {
-      const b = this.skipTo9Btn;
-      if (mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h) {
-        this.transitionToLevel9();
-        return;
-      }
-    }
-
-    // 2. Check Act 5 resolution card button
+    // 1. Check Act 5 resolution card
     if (this.currentAct === 5) {
       this.handleAct5Click(mx, my);
       return;
     }
 
-    // 3. Fast-forward through acts
+    // 2. Fast-forward through acts
     this.advanceActFast();
   }
 
@@ -471,46 +460,25 @@ class SivagangaLevel8KalaiyarKovil {
   }
 
   renderControlsBar(ctx, w, h) {
-    if (this.currentAct === 5) {
-      this.skipTo9Btn = null;
-      return;
-    }
+    if (this.currentAct === 5) return;
 
     ctx.save();
-    const barH = 34;
+    const text = `Act ${this.currentAct} of 5 · Click anywhere or press [SPACE] to advance ▶`;
+    ctx.font = '12px "Cambria", serif';
+    const tw = ctx.measureText(text).width + 30;
+    const barH = 26;
     const barY = h - barH - 8;
+    const barX = (w - tw) / 2;
 
-    // Status prompt
     ctx.fillStyle = 'rgba(46, 31, 27, 0.88)';
-    ctx.fillRect(16, barY, 310, barH);
-    ctx.strokeStyle = 'rgba(217, 164, 65, 0.5)';
+    ctx.fillRect(barX, barY, tw, barH);
+    ctx.strokeStyle = 'rgba(217, 164, 65, 0.45)';
     ctx.lineWidth = 1;
-    ctx.strokeRect(16, barY, 310, barH);
+    ctx.strokeRect(barX, barY, tw, barH);
 
     ctx.fillStyle = '#eeddcc';
-    ctx.font = '12px "Cambria", serif';
-    ctx.textAlign = 'left';
-    ctx.fillText(`Act ${this.currentAct} of 5 · Click or [SPACE] to advance ▶`, 28, barY + 21);
-
-    // Direct advance button to Level 9
-    const btnW = 300;
-    const btnH = barH;
-    const btnX = w - btnW - 16;
-    this.skipTo9Btn = { x: btnX, y: barY, w: btnW, h: btnH };
-
-    ctx.fillStyle = '#B85042';
-    ctx.beginPath();
-    ctx.roundRect(btnX, barY, btnW, btnH, 4);
-    ctx.fill();
-
-    ctx.strokeStyle = '#D9A441';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 12.5px "Calibri", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('Advance to Level 9: Flight to Virupachi →', btnX + btnW / 2, barY + 21);
+    ctx.fillText(text, w / 2, barY + 17);
 
     ctx.restore();
   }

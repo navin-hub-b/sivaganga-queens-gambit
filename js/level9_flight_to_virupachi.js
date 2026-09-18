@@ -352,19 +352,8 @@ class SivagangaLevel9FlightToVirupachi {
     window.addEventListener('keyup', this.boundKeyUp);
     window.addEventListener('resize', this.boundResize);
 
-    // Canvas click listener to support clicking skipToWinBtn
-    this.boundCanvasClick = (e) => {
-      const rect = this.canvas.getBoundingClientRect();
-      const mx = (e.clientX - rect.left) * (this.width / rect.width);
-      const my = (e.clientY - rect.top) * (this.height / rect.height);
-      if (this.skipToWinBtn) {
-        const b = this.skipToWinBtn;
-        if (mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h) {
-          this.completeLevel();
-          return;
-        }
-      }
-    };
+    // Canvas click listener
+    this.boundCanvasClick = (e) => {};
     this.canvas.addEventListener('click', this.boundCanvasClick);
 
     // Audio cue
@@ -1018,28 +1007,6 @@ class SivagangaLevel9FlightToVirupachi {
     ctx.shadowBlur = 6;
     ctx.textAlign = 'left';
     ctx.fillText(`SECTOR ${this.currentSector} OF 3 · ESCORT TO VIRUPACHI`, 32, 28);
-
-    // Direct Finish / Advance Button (Top Right)
-    const btnW = 310;
-    const btnH = 32;
-    const btnX = w - btnW - 32;
-    const btnY = 12;
-    this.skipToWinBtn = { x: btnX, y: btnY, w: btnW, h: btnH };
-
-    ctx.fillStyle = '#B85042';
-    ctx.beginPath();
-    ctx.roundRect(btnX, btnY, btnW, btnH, 4);
-    ctx.fill();
-
-    ctx.strokeStyle = '#D9A441';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 12px "Calibri", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Complete Flight & Finish Chapter II →', btnX + btnW / 2, btnY + 20);
-
     ctx.restore();
   }
 

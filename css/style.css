@@ -2010,19 +2010,6 @@ html, body {
   transform: translateY(-1px);
 }
 
-#level-next-btn {
-  background: #B85042;
-  border-color: #D9A441;
-  color: #ffffff;
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(184, 80, 66, 0.4);
-}
-
-#level-next-btn:hover {
-  background: #cf4f3f;
-  border-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(217, 164, 65, 0.5);
-}
 
 .journey-chronicle-btn {
   border-color: rgba(167, 190, 174, 0.5);

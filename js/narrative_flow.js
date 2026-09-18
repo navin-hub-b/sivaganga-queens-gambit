@@ -452,43 +452,11 @@ class SivagangaNarrativeFlow {
     const chapterEl = document.getElementById('level-breadcrumb-chapter');
     const stepEl    = document.getElementById('level-breadcrumb-step');
     const badgeEl   = document.getElementById('level-mechanic-badge');
-    const prevBtn   = document.getElementById('level-prev-btn');
-    const nextBtn   = document.getElementById('level-next-btn');
     const chronBtn  = document.getElementById('level-chronicle-btn-ribbon');
-
-    const save = window.sivagangaSave?.state;
-    const unlockedUpTo = save?.unlockedLevel ?? 1;
 
     if (chapterEl) chapterEl.textContent = lvl.chapterTitle || `CHAPTER ${lvl.chapter || 1}`;
     if (stepEl)    stepEl.textContent    = `TRIAL ${lvl.id} OF 20`;
     if (badgeEl)   badgeEl.textContent   = lvl.mechanicName || lvl.newSystem || '';
-
-    // Prev button
-    if (prevBtn) {
-      if (lvl.id > 1) {
-        prevBtn.style.display = '';
-        prevBtn.innerHTML = `&larr; Prev: Level ${lvl.id - 1}`;
-        prevBtn.onclick = () => {
-          this.advanceToNextLevel(lvl.id - 1);
-        };
-      } else {
-        prevBtn.style.display = 'none';
-      }
-    }
-
-    // Next button
-    if (nextBtn) {
-      const canGoNext = (lvl.id < 20);
-      if (canGoNext) {
-        nextBtn.style.display = '';
-        nextBtn.innerHTML = `Next: Level ${lvl.id + 1} &rarr;`;
-        nextBtn.onclick = () => {
-          this.advanceToNextLevel(lvl.id + 1);
-        };
-      } else {
-        nextBtn.style.display = 'none';
-      }
-    }
 
     // Chronicle shortcut
     if (chronBtn) {
